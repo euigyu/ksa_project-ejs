@@ -1,0 +1,97 @@
+    <%- include('../header') %>
+  </head>
+  <script>
+  $(function(){
+    function get2digits (num){
+      return ('0' + num).slice(-2);
+    }
+  
+    function getDate(dateObj){
+      if(dateObj instanceof Date)
+        return dateObj.getFullYear() + '-' + get2digits(dateObj.getMonth()+1)+ '-' + get2digits(dateObj.getDate());
+    }
+  
+    function getTime(dateObj){
+      if(dateObj instanceof Date)
+        return get2digits(dateObj.getHours()) + ':' + get2digits(dateObj.getMinutes())+ ':' + get2digits(dateObj.getSeconds());
+    }
+  
+    function convertDate(){
+      $('[data-date]').each(function(index,element){
+        var dateString = $(element).data('date');
+        if(dateString){
+          var date = new Date(dateString);
+          $(element).html(getDate(date));
+        }
+      });
+    }
+  
+    function convertDateTime(){
+      $('[data-date-time]').each(function(index,element){
+        var dateString = $(element).data('date-time');
+        if(dateString){
+          var date = new Date(dateString);
+          $(element).html(getDate(date)+' '+getTime(date));
+        }
+      });
+    }
+  
+    convertDate();
+    convertDateTime();
+  });
+</script>
+  <body>
+    <!-- include('../partials/nav')  -->
+
+    <div class="container mb-3">
+
+      <h2 class="mb-3">Board</h2>
+
+      <table class="board-table table table-sm border-bottom">
+
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">Title</th>
+            <th scope="col">name</th>
+            <th scope="col" class="date">Date</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% if(posts == null || posts.length == 0){ %>
+            <tr>
+              <td colspan=2> There is no data to show :( </td>
+            </tr>
+          <% } %>
+          <% posts.forEach(function(post,index) { %>
+            <tr>
+              <td>
+                <a href="/board/<%= post.board_id %>"><div class="ellipsis"><%= post.title %></div></a>
+              </td>
+              <td>
+                <span><%= post.name %></span>  
+              </td>
+              <% if(post.update_at) { %>
+                <td class="date">
+                    <span data-date="<%= post.update_at %>"></span>
+                </td>
+              <% } %>
+              <% if(post.update_at==null) { %>
+                <td class="date">
+                    <span data-date="<%= post.create_at %>"></span>
+                  </td>
+              <% } %>
+              
+            </tr>
+          <% }) %>
+        </tbody>
+
+      </table>
+
+      <div>
+        <a class="btn btn-primary" href="/board/new">New</a>
+      </div>
+
+    </div>
+  </body>
+</html>

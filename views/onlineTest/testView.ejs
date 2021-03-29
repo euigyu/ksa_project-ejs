@@ -1,0 +1,74 @@
+<% include ../header %>
+<body>
+    <table border="1" style="width:950px">
+        <tbody id='tbody'>
+            <tr class="box">
+                <td class="col-md-1" style="width:20%"><strong>필기 평가 문제</strong></td>
+                <td class="active col-md-11 content"style="width:80%">
+                    <br/>
+                    <input class="form-control" type="text" name="question" placeholder="문제입력"/>
+                    <input style="width:20%" class="form-control question_ex1" type="text" placeholder="보기 입력"/>
+                    <input style="width:20%" class="form-control question_ex2" type="text" placeholder="보기 입력"/>
+                    <input style="width:20%" class="form-control question_ex3" type="text" placeholder="보기 입력"/>
+                    <input style="width:20%" class="form-control question_ex4" type="text" placeholder="보기 입력"/><br/>
+                    <input style="width:20%" class="form-control question_result" type="text" placeholder="정답"/>
+                    <input class="form-control" type="text" name="question_comment" placeholder="해설"/><br/>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <button class="addQuestion">문제 추가</button>
+    <button class="register">문제 등록</button>
+</body>
+
+<script>
+    //추가 버튼 
+    var no = 2;
+    var check = no-1 ;
+    $('.addQuestion').on('click', function (e) {
+        e.preventDefault()
+        e.stopPropagation()
+        var addStaffText =     
+            '<tr class="box">'+
+            '    <td class="active col-md-1" style="width:20%"><strong>필기 평가 문제</strong></td>'+
+            '    <td class="col-md-11 content" style="width:80%">'+
+            '    <br/><input class="form-control" type="text" name="question" placeholder="문제입력"/>'+
+            '    <input style="width:20%" class="form-control question_ex1" type="text" placeholder="보기 입력"/>'+
+            '    <input style="width:20%" class="form-control question_ex2" type="text" placeholder="보기 입력"/>'+
+            '    <input style="width:20%" class="form-control question_ex3" type="text" placeholder="보기 입력"/>'+
+            '    <input style="width:20%" class="form-control question_ex4" type="text" placeholder="보기 입력"/><br/>'+
+            '    <input style="width:20%" class="form-control question_result" type="text" placeholder="정답"/>'+
+            '    <input class="form-control" type="text" name="question_comment" placeholder="해설"/><br/>'+
+            '    <button class="btnt" name="delete"/>삭제</button>'+
+            '    </td>'+
+            '</tr>';
+        var trHtml = $('#tbody'); //last를 사용하여 마지막 태그 호출
+        no++;
+        trHtml.append(addStaffText); //마지막 태그 뒤에 붙인다.
+    });
+
+    $('.register').on('click', function (e) {
+        $('.box').each((idx, element) => {
+            var test = new Array(); 
+            test = [
+                $(element).children('.content').children('.question_ex1').val() ,
+                $(element).children('.content').children('.question_ex2').val(),
+                $(element).children('.content').children('.question_ex3').val(),
+                $(element).children('.content').children('.question_ex4').val()
+        ]
+            console.log(test);
+            // console.log($(element).children('.content').children('.question_ex1').val())
+        });
+    })
+    //삭제 버튼
+    $(document).on("click","button[name=delete]",function(){
+        
+        var trHtml = $(this).parent().parent();
+        
+        trHtml.remove(); //tr 테그 삭제
+        
+    });
+</script>
+<% include ../footer %>
+</html>
+

@@ -1,0 +1,60 @@
+<% include ../header %> 
+<body>
+ <!-- Wrapper -->
+<div class="wrapp" style="text-align:center; vertical-align:middle; background-color: #eee;
+border-bottom: 1px solid #ddd; height:40px;">
+  <div id="breadcrumb_line" style="display:inline-block;margin-top: 10px;margin-bottom: 10px;">
+    ksa 온라인 강의</div>
+</div> <!-- / .wrapper -->
+    <!-- Jumbotron -->
+        <div class="carousel-inner">
+        <aside style="width:20%;float:left; font-size:0.75em;">
+          <h2 style="margin-block-start:0.83em; margin-block-end:0.83em;margin-inline-start:0px;margin-inline-end:0px; padding-inline-start: 20px;">강의 목록</h2>
+        <nav>
+          <% for (var i=0 ; i < rows.length; i++ ) { %>
+          <ol style="display: block;
+          list-style-type: decimal;
+          margin-block-start: 1em;
+          margin-block-end: 1em;
+          margin-inline-start: 0px;
+          margin-inline-end: 0px;
+          padding-inline-start: 20px;
+          list-style:none;">
+            <li style="display:list-item;">
+              <a style="color:#999" href="/<%=rows[i].sub_eng%>/<%=rows[i].id%>"> <%= rows[i].sub_detail %> </a> 
+            </li>
+          </ol>
+          <% } %>
+        </nav>
+      </aside>
+        <div class="container2" style="margin:0px;height:550px;">
+          <div style="width:50%;height:100%;float:left;">
+            <%-links[0].sub_link %>
+            <!-- <iframe width="100%" height="100%" src="https://www.youtube.com/embed/oM7Cp-cX-vU" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+          </div>
+          <div style="width:30%;height:100%;float:left;">
+            <div class="toolbar" style="margin:20px; text-align:left;">
+              <!-- <a href="" data-command='h1'>크게</a>
+              <a href="" data-command='h2'>보통</a>
+              <a href="" data-command='h3'>작게</a> -->
+              <!-- <a onclick="boldText()" data-command='bold'>
+                <i class='fa fa-bold'></i>
+              </a>
+              <a onclick="italicText()"" data-command='italic'>
+                <i class='fa fa-italic'></i>
+              </a>
+              <a onclick="underlineText()" data-command='underline'>
+                <i class='fa fa-underline'></i>
+              </a> -->
+                  <textarea id="text" contenteditable="true" style="width:90%;height:200px;" placeholder="메모"></textarea>
+                  <button onclick="saveTextAsFile(text.value,'memo.txt')">저장</button>
+             </div>
+              <!-- <input type="text" placeholder="메모 내용"> -->
+            </div>
+            </div>
+        </div>
+        <br>
+        <!-- </div>  -->
+</body>
+  <% include ../footer %>
+</html>

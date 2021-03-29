@@ -1,0 +1,46 @@
+.zeta-menu-bar {
+    
+    display: white;
+    width: 100%;
+    text-align:center;
+  }
+  .zeta-menu { 
+      margin: auto; 
+      padding: auto;
+      display:inline-block; 
+    }
+    
+  .zeta-menu li {
+    float: left;
+    list-style:none;
+    position: relative;
+  }
+  .zeta-menu li:hover { background: pink; }
+  .zeta-menu li.expand { background: white; }
+  .zeta-menu li.expand>a { color: hotpink; }
+  .zeta-menu a {
+    color: white;
+    display: block;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: large;
+    font-weight: bold;
+  }
+  .zeta-menu ul {
+    background: #eee;
+    border: 1px solid silver;
+    display: none;
+    padding: 0;
+    position: absolute;
+    left: 0;
+    top: 100%;
+    width: 180px;
+  }
+  .zeta-menu ul li { float: none; }
+  .zeta-menu ul li.expand { background: #ddd; }
+  .zeta-menu ul li.expand a { color: black; }
+  .zeta-menu ul a { 
+    font-size:small;  
+    color: black; 
+}
+  .zeta-menu ul ul { left: 100%; top: 0; }
