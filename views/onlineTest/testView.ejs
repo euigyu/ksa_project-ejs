@@ -6,13 +6,13 @@
                 <td class="col-md-1" style="width:20%"><strong>필기 평가 문제</strong></td>
                 <td class="active col-md-11 content"style="width:80%">
                     <br/>
-                    <input class="form-control" type="text" name="question" placeholder="문제입력"/>
+                    <input class="form-control question" type="text" placeholder="문제입력"/>
                     <input style="width:20%" class="form-control question_ex1" type="text" placeholder="보기 입력"/>
                     <input style="width:20%" class="form-control question_ex2" type="text" placeholder="보기 입력"/>
                     <input style="width:20%" class="form-control question_ex3" type="text" placeholder="보기 입력"/>
                     <input style="width:20%" class="form-control question_ex4" type="text" placeholder="보기 입력"/><br/>
                     <input style="width:20%" class="form-control question_result" type="text" placeholder="정답"/>
-                    <input class="form-control" type="text" name="question_comment" placeholder="해설"/><br/>
+                    <input class="form-control question_comment" type="text" placeholder="해설"/><br/>
                 </td>
             </tr>
         </tbody>
@@ -32,7 +32,7 @@
             '<tr class="box">'+
             '    <td class="active col-md-1" style="width:20%"><strong>필기 평가 문제</strong></td>'+
             '    <td class="col-md-11 content" style="width:80%">'+
-            '    <br/><input class="form-control" type="text" name="question" placeholder="문제입력"/>'+
+            '    <br/><input class="form-control question" type="text" placeholder="문제입력"/>'+
             '    <input style="width:20%" class="form-control question_ex1" type="text" placeholder="보기 입력"/>'+
             '    <input style="width:20%" class="form-control question_ex2" type="text" placeholder="보기 입력"/>'+
             '    <input style="width:20%" class="form-control question_ex3" type="text" placeholder="보기 입력"/>'+
@@ -48,17 +48,20 @@
     });
 
     $('.register').on('click', function (e) {
+        var arr = []
         $('.box').each((idx, element) => {
-            var test = new Array(); 
-            test = [
-                $(element).children('.content').children('.question_ex1').val() ,
-                $(element).children('.content').children('.question_ex2').val(),
-                $(element).children('.content').children('.question_ex3').val(),
-                $(element).children('.content').children('.question_ex4').val()
-        ]
-            console.log(test);
-            // console.log($(element).children('.content').children('.question_ex1').val())
+            var test = {
+                question : $(element).children('.content').children('.question').val(),
+                question_ex1: $(element).children('.content').children('.question_ex1').val() ,
+                question_ex2: $(element).children('.content').children('.question_ex2').val(),
+                question_ex3: $(element).children('.content').children('.question_ex3').val(),
+                question_ex4: $(element).children('.content').children('.question_ex4').val(),
+                question_result: $(element).children('.content').children('.question_result').val(),
+                question_comment: $(element).children('.content').children('.question_comment').val(),
+            }; 
+            arr.push(test)
         });
+        console.log(arr)
     })
     //삭제 버튼
     $(document).on("click","button[name=delete]",function(){
