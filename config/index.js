@@ -1,3 +1,3 @@
 module.exports = {
-  dbIp: 'http://localhost:3008',
+  dbIp: 'http://localhost:3008/api',
 }
