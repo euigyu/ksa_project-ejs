@@ -9,12 +9,12 @@
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb p-1 pl-2 pr-2">
           <li class="breadcrumb-item"><a href="/">Home</a></li>
-          <li class="breadcrumb-item"><a href="/board">Board</a></li>
-          <li class="breadcrumb-item active" aria-current="page">New Post</li>
+          <li class="breadcrumb-item"><a href="/board/<%= modulenames[0].module_eng%>">Board</a></li>
+          <li class="breadcrumb-item active" aria-current="page"><a><%= modulenames[0].module_kr%></a> 게시글 작성</li>
         </ol>
       </nav>
 
-      <form action="/insert" method="post">
+      <form action="/insert/<%=modulenames[0].module_eng%>" method="post">
         <div class="form-group">
           <label for="name">Name</label>
           <input type="text" id="name" name="name" value="" class="form-control">
@@ -32,7 +32,7 @@
         </div>
 
         <div>
-          <a class="btn btn-primary" href="/board">Back</a>
+          <a class="btn btn-primary" href="/board/<%= modulenames[0].module_eng%>">Back</a>
           <button type="submit" class="btn btn-primary">Submit</button>
         </div>
 

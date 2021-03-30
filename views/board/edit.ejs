@@ -9,13 +9,13 @@
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb p-1 pl-2 pr-2">
           <li class="breadcrumb-item"><a href="/">Home</a></li>
-          <li class="breadcrumb-item"><a href="/board">Board</a></li>
-          <li class="breadcrumb-item"><a href="/board/<%= content[0].board_id %>"><%= content[0].title %></a></li>
+          <li class="breadcrumb-item"><a href="/board/<%=subject%>">Board</a></li>
+          <li class="breadcrumb-item"><a href="/board/<%=subject%>/<%= content[0].board_id %>"><%= content[0].title %></a></li>
           <li class="breadcrumb-item active" aria-current="page">Edit Post</li>
         </ol>
       </nav>
 
-      <form action="/edit/<%= content[0].board_id %>" method="post">
+      <form action="/edit/<%=subject%>/<%= content[0].board_id %>" method="post">
         <div class="form-group">
           <label for="name">Name</label>
           <input type="text" id="name" name="name" value="<%= content[0].name %>" class="form-control">
@@ -32,7 +32,7 @@
         </div>
 
         <div>
-          <a class="btn btn-primary" href="/board/<%= content[0].board_id %>">Back</a>
+          <a class="btn btn-primary" href="/board/<%=subject%>/<%= content[0].board_id %>">Back</a>
           <button type="submit" class="btn btn-primary">Submit</button>
         </div>
 

@@ -6,14 +6,22 @@ const db = mysql.createConnection({
   password : 'fiveworks',
 //   database : '-'
 });
-// function lectureList(callback){ 
-//   db.query('SELECT sub, sub_detail, sub_link FROM fiveworks_aurora_db.`ksa_lecture` where sub="선형대수학"', (err, rows) => {
-//      if(err){
-//       throw err;
-//      }  
-//      callback(JSON.parse(JSON.stringify(rows))); 
-//     }); 
-//   }
+function moduleList(callback){ 
+  db.query('SELECT * FROM fiveworks_aurora_db.`ksa_moduleList`', (err, modules) => {
+     if(err){
+      throw err;      
+     }  
+     callback(JSON.parse(JSON.stringify(modules))); 
+    }); 
+ }
+ function moduleName(sub, callback){ 
+  db.query('SELECT * FROM fiveworks_aurora_db.`ksa_moduleList` where module_eng = "'+sub+'"', (err, subject) => {
+     if(err){
+      throw err;      
+     }  
+     callback(JSON.parse(JSON.stringify(subject))); 
+    }); 
+ }
 function lectureList(lecture, callback){ 
   db.query('SELECT * FROM fiveworks_aurora_db.`ksa_lectureList` where sub_eng="' + lecture + '"', (err, rows) => {
      if(err){
@@ -30,8 +38,8 @@ function lectureLink(lecture,id,callback){
     callback(JSON.parse(JSON.stringify(links))); 
    });
 }
-function boardList(callback){ 
-  db.query('select * from fiveworks_aurora_db.`ksa_board` where `delete` != "T" order by board_id desc' , (err, posts) => {
+function boardList(sub,callback){ 
+  db.query('select * from fiveworks_aurora_db.`ksa_board` where subject = "'+sub+'" and `delete` != "T" order by board_id desc' , (err, posts) => {
      if(err){
       throw err;      
      }  
@@ -45,10 +53,21 @@ function contents(id, callback){
      }  
      callback(JSON.parse(JSON.stringify(content))); 
     }); 
-}  
+}
+function scoreInfo(id, callback){ 
+  db.query('select * from fiveworks_aurora_db.`ksa_scoreInfo` where subject ="'+id+'"' , (err, scores) => {
+     if(err){
+      throw err;      
+     }  
+     callback(JSON.parse(JSON.stringify(scores))); 
+    }); 
+}    
 module.exports = {
   lectureList,
   lectureLink,
   boardList,
-  contents
+  contents,
+  moduleList,
+  moduleName,
+  scoreInfo
 }

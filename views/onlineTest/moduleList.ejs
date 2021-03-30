@@ -1,0 +1,30 @@
+<% include ../header %> 
+<body>
+ <!-- Wrapper -->
+<!-- / .wrapper -->
+    <!-- Jumbotron -->
+        <div class="carousel-inner">
+        <aside style="width:20%;float:left; font-size:0.75em;">
+          <h2 style="margin-block-start:0.83em; margin-block-end:0.83em;margin-inline-start:0px;margin-inline-end:0px; padding-inline-start: 20px;">강의 목록</h2>
+        <nav>
+          <% for (var i=0 ; i < modules.length; i++ ) { %>
+          <ol style="display: block;
+          list-style-type: decimal;
+          margin-block-start: 1em;
+          margin-block-end: 1em;
+          margin-inline-start: 0px;
+          margin-inline-end: 0px;
+          padding-inline-start: 20px;
+          list-style:none;">
+            <li style="display:list-item;">
+              <a style="color:#999" href="/onlineTest/<%=modules[i].module_eng%>/submit"> <%= modules[i].module_kr %> </a> 
+            </li>
+          </ol>
+          <% } %>
+        </nav>
+      </aside>
+     </div>
+        <!-- </div>  -->
+</body>
+  <% include ../footer %>
+</html>

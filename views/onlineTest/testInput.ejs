@@ -1,9 +1,9 @@
 <% include ../header %>
 <body>
-    <table border="1" style="width:950px">
+    <table border="1" style="width:80%">
         <tbody id='tbody'>
             <tr class="box">
-                <td class="col-md-1" style="width:20%"><strong>필기 평가 문제</strong></td>
+                <td class="col-md-1" style="width:20%;"><strong><%=modulenames[0].module_kr%> 평가 문제</strong></td>
                 <td class="active col-md-11 content"style="width:80%">
                     <br/>
                     <input class="form-control question" type="text" placeholder="문제입력"/>
@@ -23,14 +23,12 @@
 
 <script>
     //추가 버튼 
-    var no = 2;
-    var check = no-1 ;
     $('.addQuestion').on('click', function (e) {
         e.preventDefault()
         e.stopPropagation()
         var addStaffText =     
             '<tr class="box">'+
-            '    <td class="active col-md-1" style="width:20%"><strong>필기 평가 문제</strong></td>'+
+            '    <td class="active col-md-1" style="width:20%"><strong><%=modulenames[0].module_kr%>평가 문제</strong></td>'+
             '    <td class="col-md-11 content" style="width:80%">'+
             '    <br/><input class="form-control question" type="text" placeholder="문제입력"/>'+
             '    <input style="width:20%" class="form-control question_ex1" type="text" placeholder="보기 입력"/>'+
@@ -43,7 +41,6 @@
             '    </td>'+
             '</tr>';
         var trHtml = $('#tbody'); //last를 사용하여 마지막 태그 호출
-        no++;
         trHtml.append(addStaffText); //마지막 태그 뒤에 붙인다.
     });
 
