@@ -25,37 +25,5 @@
     </fieldset>
 </form>       
 
-<script>
-    $('.register').on('click', function (e) {
-        if($('.input_name').val() == ""){
-            alert("이름을 입력하세요");
-        }
-        else if(($('.input_no').val() == "")){
-            alert("수강생 번호를 입력하세요");
-        }
-        else{
-            alert("시작");
-        } 
-    });
-    $('.register').on('click', function (e) {
-        var check = [];
-        $('input[type="radio"]:checked').each(function() {
-            ($(this).data('mnum'));
-            check.push($(this).data('mnum'));
-        })
-        $.ajax({
-            url: '/onlineTest/'+'<%=subject%>'+'/testcheck',
-            // dataType: 'json',
-            contentType: "application/json",
-            type: 'POST',
-            data: check,
-            success: function(result) {
-               if (result) {
-                alert("문제 입력이 완료 되었습니다");
-               }
-            }
-        });
-        alert(check);
-    });
-</script>
+
 <% include ../footer %>

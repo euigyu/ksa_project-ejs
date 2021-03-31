@@ -81,11 +81,11 @@ router.post("/:subject/editscore/edit", function (req, res) {
 });
 //필기평가 모듈 선택페이지
 router.get('/onlineTest', function(req, res, next) { 
-  dbcon.moduleList((modules) =>{ 
-    res.render('onlineTest/moduleList', { 
-      modules:modules 
-    });
-  }); 
+  dbcon.moduleList(function (modules) {
+      res.render('onlineTest/moduleList', {
+        modules: modules
+      });
+    }); 
 })
 //필기 평가 페이지
 router.get('/onlineTest/:subject', async function(req, res, next) { 
@@ -94,7 +94,7 @@ router.get('/onlineTest/:subject', async function(req, res, next) {
     dbcon.moduleName(subject,function (modulenames){
       dbcon.onlineTestList(subject,function(questions){
         questions = questions.map(question => ({ ...question, m_nos: question.m_nos.split(','), choices: question.choices.split(',')}))
-        console.log(questions);
+        // console.log(questions[0].m_nos);
         res.render('onlineTest/testpage', {
           modules: modules,
           modulenames: modulenames,
@@ -105,6 +105,26 @@ router.get('/onlineTest/:subject', async function(req, res, next) {
     });
   }); 
 })
+//필기 평가 결과 처리 ajax
+router.post('/onlineTest/:subject/testcheck', function (req, res) {
+  var array = req.body; 
+  var subject = req.params.subject;
+  dbcon.testcheck(function(checkdata){
+    dbcon.moduleList(function (modules) {
+      dbcon.moduleName(subject,function (modulenames) {
+        dbcon.multipleChoiceList(subject,function (multiples){
+        console.log(checkdata);  
+        res.render('onlineTest/resultpage', {
+            modules: modules,
+            modulenames: modulenames,
+            multiples: multiples,
+            subject
+          });
+        });
+      });
+    });
+  });
+});
 //필기 평가 문제입력 페이지
 router.get('/onlineTest/:subject/submit', function(req, res, next) { 
   var subject=req.params.subject;
