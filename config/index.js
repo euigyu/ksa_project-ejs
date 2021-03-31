@@ -1,3 +1,7 @@
+const path = require('path')
+
 module.exports = {
-  dbIp: 'http://localhost:3008',
+  root: path.join(__dirname, '..'),
+  dbIp: 'http://localhost:3008/api',
+  fileApi: 'http://localhost:3008/api/file'
 }
