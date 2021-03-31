@@ -14,7 +14,7 @@
         </ol>
       </nav>
 
-      <form action="/insert/<%=modulenames[0].module_eng%>" method="post">
+      <!-- <form action="/insert/<%=modulenames[0].module_eng%>" method="post"> -->
         <div class="form-group">
           <label for="name">Name</label>
           <input type="text" id="name" name="name" value="" class="form-control">
@@ -28,16 +28,23 @@
 
         <div class="form-group">
           <label for="content">content</label>
-          <textarea id="cotent" name="content" rows="5" class="form-control"></textarea>
+          <textarea id="content" name="content" rows="5" class="form-control"></textarea>
         </div>
+        <div class="filebox">
+          <label for="fileupload">업로드</label>
+          <input type="file" id="fileupload" name="files" multiple>
+        </div>
+        <div id="file-list"></div>
 
         <div>
           <a class="btn btn-primary" href="/board/<%= modulenames[0].module_eng%>">Back</a>
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="submit" class="btn btn-primary submit" >Submit</button>
         </div>
 
-      </form>
+      <!-- </form> -->
+
 
     </div>
+    <script src="/js/board_new.js"></script>
   </body>
 </html>
