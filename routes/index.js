@@ -1,10 +1,16 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 const mysql= require('mysql');
-const axios = require('axios')
-const config = require('../config')
 const dbcon = require('../db/mysql'); // db 모듈 추가 /* GET home page. */ 
 const db = mysql.createConnection({
+  host     : 'fiveworks-instance-1.cbth2mnfdm9m.ap-northeast-2.rds.amazonaws.com',
+  user     : 'wilshere',
+  password : 'fiveworks',
+//   database : '-'
+});
+const promiseMysql = require('mysql2/promise')
+const pool = promiseMysql.createPool({
+  connectionLimit: 70,
   host     : 'fiveworks-instance-1.cbth2mnfdm9m.ap-northeast-2.rds.amazonaws.com',
   user     : 'wilshere',
   password : 'fiveworks',
@@ -89,68 +95,59 @@ router.get('/onlineTest', function(req, res, next) {
   }); 
 })
 //필기 평가 페이지
-router.get('/onlineTest/:subject', function(req, res, next) { 
+router.get('/onlineTest/:subject', async function(req, res, next) { 
   var subject=req.params.subject;
   dbcon.moduleList(function (modules) {
-      dbcon.moduleName(subject,function (modulenames){
-        dbcon.onlineTestList(subject,function(questions){
-        console.log(questions);  
+    dbcon.moduleName(subject,function (modulenames){
+      dbcon.onlineTestList(subject,function(questions){
+        questions = questions.map(question => ({ ...question, m_nos: question.m_nos.split(','), choices: question.choices.split(',')}))
+        console.log(questions);
         res.render('onlineTest/testpage', {
-            modules: modules,
-            modulenames: modulenames,
-            questions: questions,
-            subject
-          });
+          modules: modules,
+          modulenames: modulenames,
+          questions: questions,
+          subject
         });
       });
-    }); 
+    });
+  }); 
 })
 //필기 평가 문제입력 페이지
 router.get('/onlineTest/:subject/submit', function(req, res, next) { 
   var subject=req.params.subject;
   dbcon.moduleList(function (modules) {
       dbcon.moduleName(subject,function (modulenames) {
-        console.log(modulenames);  
+        dbcon.multipleChoiceList(subject,function (multiples){
+        console.log(multiples);  
         res.render('onlineTest/testInput', {
             modules: modules,
             modulenames: modulenames,
+            multiples: multiples,
             subject
           });
         });
+      });
     }); 
 })
 //필기 평가 문제 입력 ajax처리
-router.post('/onlineTest/:subject/testinput', function(req, res, next){
+router.post('/onlineTest/:subject/testinput',async function(req, res, next){
   var subject=req.params.subject;
   subject = req.params.subject;
   var array = req.body.arr; 
   console.log(array);
-  for(var i =0;i<array.length;i++){
-    let[result] = db.query('INSERT INTO fiveworks_aurora_db.ksa_onlineTest (`subject`, `question`, `comment`) VALUES (?, ?, ?);',
-    [subject, array[i].question, array[i].question_comment], function () {
-      console.log(result);
-      // res.status(200).send("succes");
-    });
-    // let conn = await pool.getConnection(async _conn => _conn)
-    // let [result] = await conn.query('insert into fiveworks_aurora_db.`ksa_board`(name,std_no,subject,title,content,create_at) values (?,?,?,?,?,CURRENT_TIMESTAMP)',
-    //   [student.name, student.std_no, subject, student.title, student.content])
+  let conn = await pool.getConnection(async _conn => _conn)
+  for(var i=0; i<array.length;i++){
+    let [result] = await conn.query('INSERT INTO fiveworks_aurora_db.ksa_onlineTest (`subject`, `question`, `comment`) VALUES (?, ?, ?);',
+      [subject,array[i].question, array[i].question_comment])
+    console.log(result.insertId);
+    var q_no =result.insertId; 
+    await conn.query('INSERT INTO fiveworks_aurora_db.ksa_multipleChoice (q_no,subject, choice, answer) VALUES (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?);',
+      [q_no,subject,array[i].question_ex1, array[i].question_ex1_answer,q_no,subject,array[i].question_ex2,array[i].question_ex2_answer,q_no,subject,array[i].question_ex3,array[i].question_ex3_answer,q_no,subject,array[i].question_ex4,array[i].question_ex4_answer])
+  }
+    conn.release()
+    res.status(200).send("success");
+  });
   
-    // if(student.files.length) {
-    //   let sql = 'insert into fiveworks_aurora_db.`ksa_attachment`(board_id, filename, originalname, endpoint) values '
-    //   student.files.forEach((file, idx) => {
-    //     sql += `(${result.insertId}, '${file.filename}', '${file.originalname}', '${config.fileApi}')`
-    //     if(student.files.length - 1 != idx) {
-    //       sql += ','
-    //     }
-    //   })
-    //   await conn.query(sql)
-    // }
-  
-    // conn.release()
-  
-    // res.status(200).send();
-  };
-});
 
 //실기평가 게시판
 router.get('/board/:subject', function(req, res, next) { 
@@ -239,31 +236,16 @@ router.post('/board/:subject/:id/delete', function(req, res, next) {
     })
   });;
 //게시글 확인
-  router.get('/board/:subject/:id', async (req, res, next) => { 
+  router.get('/board/:subject/:id', function(req, res, next) { 
   const id=req.params.id;
   const subject=req.params.subject;
-
-  const rows = await axios.get(`${config.dbIp}/board/${id}`)
-  const files = await axios.get(`${config.dbIp}/board/${id}/files`)
-
-  var content = {}
-  if (rows.data.length) {
-    content = rows.data[0]
-    console.log(content);
-  }
-  res.render('board/content', {
-    content: rows.data,
-    files: files.data,
-    subject: subject || ''
-  })
-
-  // dbcon.contents(id, function (content) {
-  //     console.log(content[0]);
-  //     res.render('board/content', {
-  //       content: content,
-  //       subject
-  //     });
-  //   }); 
+  dbcon.contents(id, function (content) {
+      console.log(content[0]);
+      res.render('board/content', {
+        content: content,
+        subject
+      });
+    }); 
 });
 
 router.get('/lecture/:lecture/:id', function(req, res, next) { 

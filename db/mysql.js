@@ -6,6 +6,14 @@ const db = mysql.createConnection({
   password : 'fiveworks',
 //   database : '-'
 });
+const promiseMysql = require('mysql2/promise')
+const pool = promiseMysql.createPool({
+  connectionLimit: 70,
+  host     : 'fiveworks-instance-1.cbth2mnfdm9m.ap-northeast-2.rds.amazonaws.com',
+  user     : 'wilshere',
+  password : 'fiveworks',
+//   database : '-'
+})
 function moduleList(callback){ 
   db.query('SELECT * FROM fiveworks_aurora_db.`ksa_moduleList`', (err, modules) => {
      if(err){
@@ -62,14 +70,48 @@ function scoreInfo(id, callback){
      callback(JSON.parse(JSON.stringify(scores))); 
     }); 
 }
-function onlineTestList(id, callback){ 
-  db.query('select * from fiveworks_aurora_db.`ksa_onlineTest` where subject ="'+id+'"' , (err, question) => {
+function onlineTestList(subject, callback){ 
+  let sql = 'select ot.subject, ot.q_no, ot.question, ot.`comment`, group_concat(mul.m_no) as m_nos, group_concat(mul.choice) as choices from fiveworks_aurora_db.ksa_onlineTest as ot, fiveworks_aurora_db.ksa_multipleChoice as mul where ot.q_no = mul.q_no and'
+  sql += ' ot.subject = "' + subject + '" group by ot.q_no'
+  db.query(sql , (err, question) => {
      if(err){
       throw err;      
      }  
      callback(JSON.parse(JSON.stringify(question))); 
     }); 
-}     
+  // db.query('select * from fiveworks_aurora_db.`ksa_onlineTest` where subject ="'+id+'"' , (err, question) => {
+  //    if(err){
+  //     throw err;      
+  //    }  
+  //    callback(JSON.parse(JSON.stringify(question))); 
+  //   }); 
+}
+// function multipleChoiceList(id, callback){ 
+//   db.query('select * from fiveworks_aurora_db.`ksa_multipleCoice` where subject ="'+id+'"' , (err, multiples) => {
+//      if(err){
+//       throw err;      
+//      }  
+//      console.log(multiples);
+//      for(var i=0; i< multiples.length; i++){
+//        console.log(multiples);
+
+//      }
+//      callback(JSON.parse(JSON.stringify(multiples))); 
+//     }); 
+// }
+function multipleChoiceList(id, callback){ 
+  db.query('select * from fiveworks_aurora_db.`ksa_multipleChoice` where q_no="'+id+'"' , (err, multiples) => {
+     if(err){
+      throw err;      
+     }  
+    //  console.log(multiples);
+    //  for(var i=0; i< multiples.length; i++){
+    //    console.log(multiples[i]);
+
+    //  }
+     callback(JSON.parse(JSON.stringify(multiples))); 
+    }); 
+}
 module.exports = {
   lectureList,
   lectureLink,
@@ -78,5 +120,6 @@ module.exports = {
   moduleList,
   moduleName,
   scoreInfo,
-  onlineTestList
+  onlineTestList,
+  multipleChoiceList
 }
