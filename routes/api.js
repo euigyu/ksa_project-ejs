@@ -107,6 +107,17 @@ router.get('/board/:id', async function(req, res, next) {
 
 //   res.status(200).send();
 // });
+router.get('/onlineTestList/:subject', async (req, res, next) => {
+  var subject = req.params.subject;
+  var sql = 'select ot.subject, ot.q_no, ot.question, ot.`comment`, group_concat(mul.m_no) as m_nos, group_concat(mul.choice) as choices from fiveworks_aurora_db.ksa_onlineTest as ot, fiveworks_aurora_db.ksa_multipleChoice as mul where ot.q_no = mul.q_no and'
+  sql += ' ot.subject = "' + subject + '" group by ot.q_no'
+
+  let conn = await pool.getConnection(async _conn => _conn)
+  let [rows] = await conn.query(sql)
+  conn.release()
+  res.status(200).send(rows)
+})
+
 router.get('/boardList/:subject', async (req, res, next) => {
   var subject = req.params.subject;
   let conn = await pool.getConnection(async _conn => _conn)

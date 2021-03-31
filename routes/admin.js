@@ -67,4 +67,37 @@ router.get('/moduleList', async (req, res, next) => {
   })
 });
 
+//필기 평가 페이지
+router.get('/onlineTest/:subject', async function(req, res, next) { 
+  var subject=req.params.subject;
+
+  checkToken(req, res, next, async (isLogin) => {
+    const modules = await axios.get(`${config.dbIp}/moduleList`)
+    const moduleNames = await axios.get(`${config.dbIp}/moduleList/${subject}`)
+    const questions = await axios.get(`${config.dbIp}/onlineTestList/${subject}`)
+
+    res.render('onlineTest/testpage', {
+      modules: modules.data,
+      modulenames: moduleNames.data,
+      questions: questions.data,
+      subject,
+    });
+  })
+})
+
+//필기평가 모듈 선택페이지
+router.get('/onlineTest', async (req, res, next) => { 
+  checkToken(req, res, next, async (isLogin) => {
+    let modules = await axios.get(`${config.dbIp}/moduleList`)
+    if (isLogin) {
+      res.render('onlineTest/moduleList', {
+        modules: modules.data,
+        isLogin
+      });
+    } else {
+      res.render('login', {})
+    }
+  })
+})
+
 module.exports = router
