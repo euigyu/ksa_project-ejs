@@ -112,6 +112,15 @@ function multipleChoiceList(id, callback){
      callback(JSON.parse(JSON.stringify(multiples))); 
     }); 
 }
+function testcheck(callback){ 
+  db.query('select m_no, q_no from fiveworks_aurora_db.ksa_multipleChoice where answer="t"' , (err, callback) => {
+     if(err){
+      throw err;      
+     }  
+     callback(JSON.parse(JSON.stringify(callback))); 
+    }); 
+}
+
 module.exports = {
   lectureList,
   lectureLink,
@@ -121,5 +130,6 @@ module.exports = {
   moduleName,
   scoreInfo,
   onlineTestList,
-  multipleChoiceList
+  multipleChoiceList,
+  testcheck
 }
