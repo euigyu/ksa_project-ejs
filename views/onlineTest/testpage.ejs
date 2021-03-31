@@ -1,0 +1,39 @@
+<% include ../header %>
+<form>
+    <table style="width:100%">
+        <tbody>
+            <tr>
+                <td>
+                    <input class=input_name type="text" style="width:20%" class="form-control" placeholder="이름"/>
+                    <input class=input_no type="text" style="width:20%" class="form-control" placeholder="수강생 번호"/>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <fieldset>
+        <legend><br>문제 페이지 <br>이름과 수강생 번호를 반드시 입력하세요</legend>
+    <% for (var i=0 ; i < questions.length; i++ ) { %>
+        <h4><b><%=questions[i].question%></b><h4>
+        <% for (var j=0 ; j < questions[i].choices.length; j++ ) { %>
+            <input type="checkbox" value="<%=questions[i].choices[j]%>" onClick=""> <%=questions[i].choices[j]%><br>
+        <% } %>
+    <% } %>
+    <legend></legend>
+        <button class="register" type="">제출</button>
+    </fieldset>
+</form>       
+
+<script>
+    $('.register').on('click', function (e) {
+        if($('.input_name').val() == ""){
+            alert("이름을 입력하세요");
+        }
+        else if(($('.input_no').val() == "")){
+            alert("수강생 번호를 입력하세요");
+        }
+        else{
+            alert("시작");
+        } 
+    });
+</script>
+<% include ../footer %>
