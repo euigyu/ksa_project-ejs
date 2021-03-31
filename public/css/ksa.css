@@ -52,3 +52,10 @@
   width:20rem; 
   border-radius:20px;
 }
+
+input[type="radio"].correct:checked + label {
+  color: green;
+}
+input[type="radio"].incorrect:checked  + label {
+  color: red;
+}

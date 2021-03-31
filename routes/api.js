@@ -51,9 +51,6 @@ router.post('/login', async (req, res, next) => {
   if (rows.length) {
     // const result = await compare(user.pwd, rows[0].pwd)
     const result = user.pwd == rows[0].pwd
-    console.log(rows[0].pwd);
-    console.log(user.pwd);
-    console.log(result);
     if (result) {
       const jsontoken = sign({result: user.id }, 'secret', {
         expiresIn: '3h'
@@ -98,15 +95,15 @@ router.get('/board/:id', async function(req, res, next) {
   res.status(200).send(rows)
 });
 
-// router.post('/testInput/:subject', async function(req, res, next) { 
-//   var subject=req.params.subject;
-//   var body = req.body;
-//   let conn = await pool.getConnection(async _conn => _conn)
-//   let [rows] = await conn.query('insert into fiveworks_aurora_db.`ksa_board`(name,std_no,subject,title,content,create_at) values (?,?,?,?,?,CURRENT_TIMESTAMP)', [body.name, body.std_no, subject, body.title, body.content])
-//   conn.release()
+router.get('/multipleChoiceList/:subject', async function(req, res, next) { 
+  const subject = req.params.subject
+  let conn = await pool.getConnection(async _conn => _conn)
+  let [rows] = await conn.query('select q_no, group_concat(m_no) as m_nos from fiveworks_aurora_db.`ksa_multipleChoice` where subject="' + subject + '" and `answer` = "t" group by q_no')
+  conn.release()
 
-//   res.status(200).send();
-// });
+  res.status(200).send(rows)
+});
+
 router.get('/onlineTestList/:subject', async (req, res, next) => {
   var subject = req.params.subject;
   var sql = 'select ot.subject, ot.q_no, ot.question, ot.`comment`, group_concat(mul.m_no) as m_nos, group_concat(mul.choice) as choices from fiveworks_aurora_db.ksa_onlineTest as ot, fiveworks_aurora_db.ksa_multipleChoice as mul where ot.q_no = mul.q_no and'

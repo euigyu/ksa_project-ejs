@@ -3,6 +3,7 @@ const router = express.Router();
 const mysql= require('mysql');
 const axios = require('axios')
 const { checkToken } = require('../auth')
+const queryString = require('query-string')
 const config = require('../config')
 const dbcon = require('../db/mysql'); // db 모듈 추가 /* GET home page. */ 
 const db = mysql.createConnection({
@@ -90,40 +91,55 @@ router.get('/onlineTest', function(req, res, next) {
 //필기 평가 페이지
 router.get('/onlineTest/:subject', async function(req, res, next) { 
   var subject=req.params.subject;
-  dbcon.moduleList(function (modules) {
-    dbcon.moduleName(subject,function (modulenames){
-      dbcon.onlineTestList(subject,function(questions){
-        questions = questions.map(question => ({ ...question, m_nos: question.m_nos.split(','), choices: question.choices.split(',')}))
-        // console.log(questions[0].m_nos);
-        res.render('onlineTest/testpage', {
-          modules: modules,
-          modulenames: modulenames,
-          questions: questions,
-          subject
-        });
-      });
-    });
-  }); 
+  
+  const modules = await axios.get(`${config.dbIp}/moduleList`)
+  const moduleNames = await axios.get(`${config.dbIp}/moduleList/${subject}`)
+  const questions = await axios.get(`${config.dbIp}/onlineTestList/${subject}`)
+
+  const ques = questions.data.map(question => ({...question, m_nos: question.m_nos.split(','), choices: question.choices.split(',')}))
+  res.render('onlineTest/testpage', {
+    modules: modules.data,
+    modulenames: moduleNames.data,
+    questions: ques,
+    subject,
+  });
 })
 //필기 평가 결과 처리 ajax
-router.post('/onlineTest/:subject/testcheck', function (req, res) {
-  var array = req.body; 
+router.get('/onlineTest/:subject/result', async (req, res, next) => {
+  var checked = req.query.checked;
+  console.log(checked);
   var subject = req.params.subject;
-  dbcon.testcheck(function(checkdata){
-    dbcon.moduleList(function (modules) {
-      dbcon.moduleName(subject,function (modulenames) {
-        dbcon.multipleChoiceList(subject,function (multiples){
-        console.log(checkdata);  
-        res.render('onlineTest/resultpage', {
-            modules: modules,
-            modulenames: modulenames,
-            multiples: multiples,
-            subject
-          });
-        });
-      });
-    });
+
+  const modules = await axios.get(`${config.dbIp}/moduleList`)
+  const moduleNames = await axios.get(`${config.dbIp}/moduleList/${subject}`)
+  const questions = await axios.get(`${config.dbIp}/onlineTestList/${subject}`)
+
+  const ques = questions.data.map(question => ({...question, m_nos: question.m_nos.split(','), choices: question.choices.split(',')}))
+
+  res.render('onlineTest/resultpage', {
+    modules: modules.data,
+    modulenames: moduleNames.data,
+    questions: ques,
+    checked: checked,
+    subject
   });
+  // array = [1, 2, 34]
+
+  // dbcon.testcheck(function(checkdata){
+  //   dbcon.moduleList(function (modules) {
+  //     dbcon.moduleName(subject,function (modulenames) {
+  //       dbcon.multipleChoiceList(subject,function (multiples){
+  //       console.log(checkdata);  
+  //       res.render('onlineTest/resultpage', {
+  //           modules: modules,
+  //           modulenames: modulenames,
+  //           multiples: multiples,
+  //           subject
+  //         });
+  //       });
+  //     });
+  //   });
+  // });
 });
 //필기 평가 문제입력 페이지
 router.get('/onlineTest/:subject/submit', function(req, res, next) { 
