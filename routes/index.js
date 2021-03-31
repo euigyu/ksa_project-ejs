@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const mysql= require('mysql');
+const axios = require('axios')
+const { checkToken } = require('../auth')
+const config = require('../config')
 const dbcon = require('../db/mysql'); // db 모듈 추가 /* GET home page. */ 
 const db = mysql.createConnection({
   host     : 'fiveworks-instance-1.cbth2mnfdm9m.ap-northeast-2.rds.amazonaws.com',
@@ -52,14 +55,23 @@ router.post('/board/:subject/selectscore/result', function(req, res, next) {
    });
 }); 
 //실기평가 점수 입력 페이지
-router.get('/:subject/enterscore', function(req, res, next) { 
-  var subject = req.params.subject;
-  dbcon.moduleName(subject, function(modulenames){
-  res.render('board/enterScore', { 
-    modulenames:modulenames,
-    subject
-  });
- });
+router.get('/:subject/enterscore', (req, res, next) => { 
+  checkToken(req, res, next, (isLogin) => {
+    console.log(isLogin);
+    if (isLogin) {
+      var subject = req.params.subject;
+  
+      dbcon.moduleName(subject, function(modulenames){
+        res.render('board/enterScore', { 
+          modulenames:modulenames,
+          subject
+        });
+      });
+    } else {
+      res.render('login',{})
+    }
+
+  })
 });
 //실기 평가 성정 입력 ajax통신
 router.post("/:subject/enterscore", function (req, res) {
