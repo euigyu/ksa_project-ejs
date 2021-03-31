@@ -5,6 +5,10 @@ const uploader = require('../config/uploader')
 const path = require('path')
 const fs = require('fs')
 const sharp = require('sharp')
+const { sign } = require('jsonwebtoken')
+const passport = require('passport')
+const passportJWT = require('passport-jwt')
+const { genSaltSync, hashSync, compareSync ,compare } = require('bcrypt')
 const promiseMysql = require('mysql2/promise')
 
 const pool = promiseMysql.createPool({
@@ -13,6 +17,59 @@ const pool = promiseMysql.createPool({
   user     : 'wilshere',
   password : 'fiveworks',
 //   database : '-'
+})
+
+router.post('/register', async (req, res, next) => {
+  const body = req.body
+  const user = body.user
+  if (!user.id || !user.pwd) {
+    return res.json({
+    success: 0
+  })  
+  }
+  const salt = genSaltSync(10)
+  const id = user.id
+  const pwd = hashSync(user.pwd.trim() , salt)
+
+  let conn = await pool.getConnection(async _conn => _conn)
+  const [result] = await conn.query('insert into fiveworks_aurora_db.`ksa_user` (`id`, `pwd`) values ("' + id + '", "' + pwd + '")')
+
+  conn.release()
+
+  return res.json({
+    success: 1
+  }) 
+})
+
+router.post('/login', async (req, res, next) => {
+  const body = req.body
+  const user = body.user
+  let conn = await pool.getConnection(async _conn => _conn)
+  
+  // getUser
+  let [rows] = await conn.query('select * from fiveworks_aurora_db.`ksa_user` where `id` = "'+ user.id +'" ')
+  if (rows.length) {
+    // const result = await compare(user.pwd, rows[0].pwd)
+    const result = user.pwd == rows[0].pwd
+    console.log(rows[0].pwd);
+    console.log(user.pwd);
+    console.log(result);
+    if (result) {
+      const jsontoken = sign({result: user.id }, 'secret', {
+        expiresIn: '3h'
+      })
+
+      console.log(1);
+      res.cookie('token', jsontoken, { httpOnly: true })
+      return res.json({
+        success: 1,
+        token: jsontoken
+      })
+    }
+  }
+  return res.json({
+    success: 0
+  })
 })
 
 router.get('/board', async function(req, res, next) { 
@@ -41,15 +98,48 @@ router.get('/board/:id', async function(req, res, next) {
   res.status(200).send(rows)
 });
 
-router.post('/testInput/:subject', async function(req, res, next) { 
-  var subject=req.params.subject;
-  var body = req.body;
-  let conn = await pool.getConnection(async _conn => _conn)
-  let [rows] = await conn.query('insert into fiveworks_aurora_db.`ksa_board`(name,std_no,subject,title,content,create_at) values (?,?,?,?,?,CURRENT_TIMESTAMP)', [body.name, body.std_no, subject, body.title, body.content])
-  conn.release()
+// router.post('/testInput/:subject', async function(req, res, next) { 
+//   var subject=req.params.subject;
+//   var body = req.body;
+//   let conn = await pool.getConnection(async _conn => _conn)
+//   let [rows] = await conn.query('insert into fiveworks_aurora_db.`ksa_board`(name,std_no,subject,title,content,create_at) values (?,?,?,?,?,CURRENT_TIMESTAMP)', [body.name, body.std_no, subject, body.title, body.content])
+//   conn.release()
 
-  res.status(200).send();
-});
+//   res.status(200).send();
+// });
+router.get('/onlineTestList/:subject', async (req, res, next) => {
+  var subject = req.params.subject;
+  var sql = 'select ot.subject, ot.q_no, ot.question, ot.`comment`, group_concat(mul.m_no) as m_nos, group_concat(mul.choice) as choices from fiveworks_aurora_db.ksa_onlineTest as ot, fiveworks_aurora_db.ksa_multipleChoice as mul where ot.q_no = mul.q_no and'
+  sql += ' ot.subject = "' + subject + '" group by ot.q_no'
+
+  let conn = await pool.getConnection(async _conn => _conn)
+  let [rows] = await conn.query(sql)
+  conn.release()
+  res.status(200).send(rows)
+})
+
+router.get('/boardList/:subject', async (req, res, next) => {
+  var subject = req.params.subject;
+  let conn = await pool.getConnection(async _conn => _conn)
+  let [rows] = await conn.query('select * from fiveworks_aurora_db.`ksa_board` where subject = "'+ subject +'" and `delete` != "T" order by board_id desc')
+  conn.release()
+  res.status(200).send(rows)
+})
+
+router.get('/moduleList/:subject', async (req, res, next) => {
+  var subject = req.params.subject;
+  let conn = await pool.getConnection(async _conn => _conn)
+  let [rows] = await conn.query('SELECT * FROM fiveworks_aurora_db.`ksa_moduleList` where module_eng = "'+ subject +'"')
+  conn.release()
+  res.status(200).send(rows)
+})
+
+router.get('/moduleList', async (req, res, next) => {
+  let conn = await pool.getConnection(async _conn => _conn)
+  let [rows] = await conn.query('SELECT * FROM fiveworks_aurora_db.`ksa_moduleList`')
+  conn.release()
+  res.status(200).send(rows)
+})
 
 router.post('/file/insert', uploader('ksa').any(), async function(req, res, next) { 
   var files = req.files;

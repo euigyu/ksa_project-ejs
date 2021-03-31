@@ -17,7 +17,7 @@
           padding-inline-start: 20px;
           list-style:none;">
             <li style="display:list-item;">
-              <a style="color:#999" href="/board/<%=modules[i].module_eng%>"> <%= modules[i].module_kr %> </a> 
+              <a style="color:#999" href="<%= locals.isLogin ? '/admin' : '' %>/board/<%=modules[i].module_eng%>"> <%= modules[i].module_kr %> </a> 
             </li>
           </ol>
           <% } %>

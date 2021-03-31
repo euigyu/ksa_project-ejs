@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const mysql= require('mysql');
+const axios = require('axios')
+const { checkToken } = require('../auth')
+const config = require('../config')
 const dbcon = require('../db/mysql'); // db 모듈 추가 /* GET home page. */ 
 const db = mysql.createConnection({
   host     : 'fiveworks-instance-1.cbth2mnfdm9m.ap-northeast-2.rds.amazonaws.com',
@@ -51,16 +54,6 @@ router.post('/board/:subject/selectscore/result', function(req, res, next) {
     // callback(JSON.parse(JSON.stringify(links))); 
    });
 }); 
-//실기평가 점수 입력 페이지
-router.get('/:subject/enterscore', function(req, res, next) { 
-  var subject = req.params.subject;
-  dbcon.moduleName(subject, function(modulenames){
-  res.render('board/enterScore', { 
-    modulenames:modulenames,
-    subject
-  });
- });
-});
 //실기 평가 성정 입력 ajax통신
 router.post("/:subject/enterscore", function (req, res) {
  subject = req.params.subject;
@@ -256,16 +249,23 @@ router.post('/board/:subject/:id/delete', function(req, res, next) {
     })
   });;
 //게시글 확인
-  router.get('/board/:subject/:id', function(req, res, next) { 
+router.get('/board/:subject/:id', async (req, res, next) => {
   const id=req.params.id;
   const subject=req.params.subject;
-  dbcon.contents(id, function (content) {
-      console.log(content[0]);
-      res.render('board/content', {
-        content: content,
-        subject
-      });
-    }); 
+   
+  const rows = await axios.get(`${config.dbIp}/board/${id}`)
+  const files = await axios.get(`${config.dbIp}/board/${id}/files`)
+
+  var content = {}
+  if (rows.data.length) {
+    content = rows.data[0]
+    console.log(content);
+  }
+  res.render('board/content', {
+    content: rows.data,
+    files: files.data,
+    subject: subject || ''
+  })
 });
 
 router.get('/lecture/:lecture/:id', function(req, res, next) { 

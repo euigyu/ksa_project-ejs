@@ -21,12 +21,13 @@
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,500,400italic,500italic,700italic' rel='stylesheet' type='text/css'>
     <!-- CSS Custom -->
     <link href="/css/custom.css" rel="stylesheet">
-
+		
     <link href="/css/color-styles.css" rel="stylesheet">
     <link href="/css/ui-elements.css" rel="stylesheet">
     <!-- CSS menu -->
     <link href="/css/menu.css" rel="stylesheet">
     <!-- <link href="/css/master.css" rel="stylesheet"> -->
+    <link href="/css/ksa.css" rel="stylesheet">
     <title>WEB1 - ${title}</title>
   
   <div class="navbar navbar-dark navbar-static-top" role="navigation">
@@ -41,8 +42,20 @@
               <li><a href="#">파이썬을 활용한 통계학이론 </a></li>
             </ul>
           </li>
-          <li class="dropdown"><a href="/onlineTest" class="bg-hover-color">필기 평가</a>
-          <li class="dropdown"> <a href="/moduleList" class="bg-hover-color"> 실기 평가</a>
+          <div class="">
+            <li class="dropdown"><a href="#" class="bg-hover-color">필기 평가</a>
+                <ul>
+                    <li><a href="/onlineTest">학생</a></li>
+                    <li><a href="/admin/onlineTest">운영자</a></li>
+                </ul>
+            </li>
+            <li class="dropdown"> <a href="#" class="bg-hover-color"> 실기 평가</a>
+                <ul>
+                    <li><a href="/moduleList">학생</a></li>
+                    <li><a href="/admin/moduleList">운영자</a></li>
+                </ul>
+            </li>
+          </div>
       </div> <!-- / Navbar Links -->
     </div> <!-- / container -->
   </div> <!-- / navbar -->

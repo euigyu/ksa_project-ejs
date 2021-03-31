@@ -40,3 +40,8 @@
 #file-list .item.download:hover {
   color:darkblue;
 }
+
+.zeta-menu {
+  display: flex;
+  justify-content: space-around;
+}
