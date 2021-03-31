@@ -1,44 +1,6 @@
     <%- include('../header') %>
   </head>
   <script>
-    $(function(){
-      function get2digits (num){
-        return ('0' + num).slice(-2);
-      }
-    
-      function getDate(dateObj){
-        if(dateObj instanceof Date)
-          return dateObj.getFullYear() + '-' + get2digits(dateObj.getMonth()+1)+ '-' + get2digits(dateObj.getDate());
-      }
-    
-      function getTime(dateObj){
-        if(dateObj instanceof Date)
-          return get2digits(dateObj.getHours()) + ':' + get2digits(dateObj.getMinutes())+ ':' + get2digits(dateObj.getSeconds());
-      }
-    
-      function convertDate(){
-        $('[data-date]').each(function(index,element){
-          var dateString = $(element).data('date');
-          if(dateString){
-            var date = new Date(dateString);
-            $(element).html(getDate(date));
-          }
-        });
-      }
-    
-      function convertDateTime(){
-        $('[data-date-time]').each(function(index,element){
-          var dateString = $(element).data('date-time');
-          if(dateString){
-            var date = new Date(dateString);
-            $(element).html(getDate(date)+' '+getTime(date));
-          }
-        });
-      }
-    
-      convertDate();
-      convertDateTime();
-    });
     </script>
   <body>
     
@@ -53,25 +15,31 @@
       </nav>
 
       <div class="card">
-        <h5 class="card-header p-2"><%= content[0].title %></h5>
+        <h5 class="card-header p-2"><%= content[0]?.title %></h5>
         <div class="row">
 
           <div class="col-md-7 col-lg-8 col-xl-9 order-sm-2 order-md-1">
-            <div class="post-body p-2"><%= content[0].content %></div>
+            <div class="post-body p-2"><%= content[0]?.content %></div>
           </div>
 
           <div class="col-md-5 col-lg-4 col-xl-3 order-sm-1 order-md-2">
             <div class="post-info card m-2 p-2">
               <div>
-                <span>Created</span> : <span data-date-time="<%= content[0].create_at %>"></span></div>
-              <% if(content[0].update_at) { %>
+                <span>Created</span> : <span data-date-time="<%= content[0]?.create_at %>"></span></div>
+              <% if(content[0]?.update_at) { %>
                 <div>
-                 <span>Updated</span> : <span data-date-time="<%= content[0].update_at %>"></span></div>
+                 <span>Updated</span> : <span data-date-time="<%= content[0]?.update_at %>"></span></div>
               <% } %>
             </div>
           </div>
 
         </div>
+      </div>
+      <div id="file-list">
+        <% for(var i =0; i < files.length ; i ++) { %>
+          <div onclick="download('<%= files[i].filename %>', '<%= files[i].endpoint %>', '<%= files[i].originalname %>')" class="item download"><%= files[i].originalname %></div>
+        <% }%>
+        <div></div>
       </div>
 
       <div class="mt-3">
@@ -83,5 +51,6 @@
       </div>
 
     </div>
+    <script src="/js/board_content.js"></script>
   </body>
 </html>

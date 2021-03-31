@@ -1,4 +1,3 @@
-$(function () {
   $(".submit").unbind();
   $(".submit").bind("click", uploadFile);
 
@@ -15,8 +14,8 @@ $(function () {
     var filesTempArrLen = filesTempArr.length;
     for (var i = 0; i < filesArrLen; i++) {
       filesTempArr.push(filesArr[i]);
-      $("#fileList").append(
-        "<div>" +
+      $("#file-list").append(
+        "<div class='item'>" +
           filesArr[i].name +
           '<img src="/images/deleteImage.png" onclick="deleteFile(event, ' +
           (filesTempArrLen + i) +
@@ -51,13 +50,13 @@ $(function () {
     var filesTempArrLen = filesTempArr.length;
     for (var i = 0; i < filesTempArrLen; i++) {
       innerHtmlTemp +=
-        "<div>" +
+        "<div class='item'>" +
         filesTempArr[i].name +
         '<img src="/images/deleteImage.png" onclick="deleteFile(event, ' +
         i +
         ');"></div>';
     }
-    $("#fileList").html(innerHtmlTemp);
+    $("#file-list").html(innerHtmlTemp);
   }
   
   function uploadFile() {
@@ -70,7 +69,21 @@ $(function () {
     student.title = $("#title").val();
     student.content = $("#content").val();
     student.files = files;
-  
+ 
+    // validation
+    if (!student.name) {
+      alert('이름을 입력해 주세요')
+      return 
+    }
+    if (!student.std_no) {
+      alert('학생번호를 입력해 주세요')
+      return
+    }
+    if (!student.title) {
+      alert('제목을 입력해 주세요')
+      return
+    }
+
     $.ajax({
       url: `http://localhost:3008/api/insert/${subject}`,
       processData: false,
@@ -78,8 +91,7 @@ $(function () {
       data: JSON.stringify({ student }),
       type: "POST",
       success: function (result) {
-        alert("업로드 성공!!");
+        location.href = `http://localhost:3008/board/${subject}`
       },
     });
   }
-});
