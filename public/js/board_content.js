@@ -37,10 +37,10 @@ function convertDateTime(){
 
 function download(filename, endpoint, originalname) {
   var url = `${endpoint}/${filename}`
-  console.log(filename);
   var a = document.createElement('a');
   a.href = url // xhr.response is a blob
-  a.download = originalname; // Set the file name.
+  a.setAttribute('download', `${originalname}`); 
+  a.setAttribute('target', '_blank'); 
   a.click();
   a.remove();
   window.URL.revokeObjectURL(url)

@@ -107,6 +107,28 @@ router.get('/board/:id', async function(req, res, next) {
 
 //   res.status(200).send();
 // });
+router.get('/boardList/:subject', async (req, res, next) => {
+  var subject = req.params.subject;
+  let conn = await pool.getConnection(async _conn => _conn)
+  let [rows] = await conn.query('select * from fiveworks_aurora_db.`ksa_board` where subject = "'+ subject +'" and `delete` != "T" order by board_id desc')
+  conn.release()
+  res.status(200).send(rows)
+})
+
+router.get('/moduleList/:subject', async (req, res, next) => {
+  var subject = req.params.subject;
+  let conn = await pool.getConnection(async _conn => _conn)
+  let [rows] = await conn.query('SELECT * FROM fiveworks_aurora_db.`ksa_moduleList` where module_eng = "'+ subject +'"')
+  conn.release()
+  res.status(200).send(rows)
+})
+
+router.get('/moduleList', async (req, res, next) => {
+  let conn = await pool.getConnection(async _conn => _conn)
+  let [rows] = await conn.query('SELECT * FROM fiveworks_aurora_db.`ksa_moduleList`')
+  conn.release()
+  res.status(200).send(rows)
+})
 
 router.post('/file/insert', uploader('ksa').any(), async function(req, res, next) { 
   var files = req.files;
