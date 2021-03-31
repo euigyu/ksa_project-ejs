@@ -24,9 +24,24 @@ router.get('/board/:subject/selectscore', function(req, res, next) {
   var subject =req.params.subject;
   dbcon.moduleName(subject, function(modulenames){
     res.render('board/selectScore', { 
-      modulenames: modulenames
+      modulenames: modulenames,
+      subject
     }); 
   });
+});
+// 실기 평가 성적 조회 ajax통신 
+router.post('/board/:subject/selectscore/result', function(req, res, next) { 
+  var subject = req.params.subject;
+  var body = req.body;
+  console.log(body.std_name);
+  db.query('SELECT * FROM fiveworks_aurora_db.`ksa_scoreInfo` where subject="'+subject+'"and name="'+body.std_name+'" and std_no="'+body.std_no+'"', (err, result) => {
+    if(err){
+     throw err;      
+    }
+    console.log(result); 
+    res.send(result); 
+    // callback(JSON.parse(JSON.stringify(links))); 
+   });
 }); 
 //실기평가 점수 입력 페이지
 router.get('/:subject/enterscore', function(req, res, next) { 
@@ -38,14 +53,12 @@ router.get('/:subject/enterscore', function(req, res, next) {
   });
  });
 });
-//실기 평가 성정 입력
+//실기 평가 성정 입력 ajax통신
 router.post("/:subject/enterscore", function (req, res) {
-  var array = req.body.arr; 
-  // console.log(array.length);
-  var subject = req.params.subject;
+ subject = req.params.subject;
+ var array = req.body.arr; 
   var str ="";
-  console.log(subject);
-  console.log()
+  // console.log(subject);
   for(var i =0;i<array.length;i++){
     db.query('INSERT INTO fiveworks_aurora_db.`ksa_scoreInfo` (`subject`, `group`, `std_no`, `name`, `score`, `personal_cmt`, `team_cmt`) VALUES (?, ?, ?, ?, ?, ?, ?);',
     [subject, array[i].group, array[i].std_no, array[i].std_name, array[i].std_score, array[i].personal_comment,array[i].team_comment], function () {
@@ -53,7 +66,7 @@ router.post("/:subject/enterscore", function (req, res) {
     });
   };
 });
-// 실기 평가 성적 수정
+// 실기 평가 성적 수정 ing...
 router.post("/:subject/editscore/edit", function (req, res) {
   var array = req.body.arr; 
   var subject = req.params.subject;
@@ -65,14 +78,32 @@ router.post("/:subject/editscore/edit", function (req, res) {
     });
   };
 });
-
+//필기평가 모듈 선택페이지
 router.get('/onlineTest', function(req, res, next) { 
   dbcon.moduleList((modules) =>{ 
     res.render('onlineTest/moduleList', { 
       modules:modules 
     });
   }); 
-});
+})
+//필기 평가 페이지
+router.get('/onlineTest/:subject', function(req, res, next) { 
+  var subject=req.params.subject;
+  dbcon.moduleList(function (modules) {
+      dbcon.moduleName(subject,function (modulenames){
+        dbcon.onlineTestList(subject,function(questions){
+        console.log(questions);  
+        res.render('onlineTest/testpage', {
+            modules: modules,
+            modulenames: modulenames,
+            questions: questions,
+            subject
+          });
+        });
+      });
+    }); 
+})
+//필기 평가 문제입력 페이지
 router.get('/onlineTest/:subject/submit', function(req, res, next) { 
   var subject=req.params.subject;
   dbcon.moduleList(function (modules) {
@@ -80,11 +111,46 @@ router.get('/onlineTest/:subject/submit', function(req, res, next) {
         console.log(modulenames);  
         res.render('onlineTest/testInput', {
             modules: modules,
-            modulenames: modulenames
+            modulenames: modulenames,
+            subject
           });
         });
     }); 
+})
+//필기 평가 문제 입력 ajax처리
+router.post('/onlineTest/:subject/testinput', function(req, res, next){
+  var subject=req.params.subject;
+  subject = req.params.subject;
+  var array = req.body.arr; 
+  console.log(array);
+  for(var i =0;i<array.length;i++){
+    let[result] = db.query('INSERT INTO fiveworks_aurora_db.ksa_onlineTest (`subject`, `question`, `comment`) VALUES (?, ?, ?);',
+    [subject, array[i].question, array[i].question_comment], function () {
+      console.log(result);
+      // res.status(200).send("succes");
+    });
+    // let conn = await pool.getConnection(async _conn => _conn)
+    // let [result] = await conn.query('insert into fiveworks_aurora_db.`ksa_board`(name,std_no,subject,title,content,create_at) values (?,?,?,?,?,CURRENT_TIMESTAMP)',
+    //   [student.name, student.std_no, subject, student.title, student.content])
+  
+    // if(student.files.length) {
+    //   let sql = 'insert into fiveworks_aurora_db.`ksa_attachment`(board_id, filename, originalname, endpoint) values '
+    //   student.files.forEach((file, idx) => {
+    //     sql += `(${result.insertId}, '${file.filename}', '${file.originalname}', '${config.fileApi}')`
+    //     if(student.files.length - 1 != idx) {
+    //       sql += ','
+    //     }
+    //   })
+    //   await conn.query(sql)
+    // }
+  
+    // conn.release()
+  
+    // res.status(200).send();
+  };
 });
+
+//실기평가 게시판
 router.get('/board/:subject', function(req, res, next) { 
   var subject= req.params.subject;
   dbcon.boardList(subject, function (posts) {
@@ -97,7 +163,8 @@ router.get('/board/:subject', function(req, res, next) {
       });
     }); 
   });
-});
+})
+//실기평가 성적 수정 페이지
 router.get('/board/:subject/editScore', function(req, res, next) { 
   var subject= req.params.subject;
   dbcon.scoreInfo(subject, function (scores) {
@@ -110,7 +177,7 @@ router.get('/board/:subject/editScore', function(req, res, next) {
     }); 
   });
 });
-
+//강의 모듈 리스트 
 router.get('/moduleList', function(req, res, next) { 
     dbcon.moduleList(function (modules) {
         res.render('board/moduleList', {
@@ -118,7 +185,7 @@ router.get('/moduleList', function(req, res, next) {
         });
       }); 
 });
-
+//실기 평가 게시글 업로드
 router.get('/board/:subject/new', function(req, res, next) { 
   // db.lectureList((rows) =>{ 
     // console.log(rows);
@@ -130,7 +197,7 @@ router.get('/board/:subject/new', function(req, res, next) {
     });
   });
 });
-
+// 게시글 수정 페이지
 router.get('/board/:subject/:id/edit', function(req, res, next) { 
     var id=req.params.id;
     var subject=req.params.subject;
@@ -142,15 +209,7 @@ router.get('/board/:subject/:id/edit', function(req, res, next) {
       });
     }); 
 });
-//온라인 테스트
-router.post("/testInput/:subject", function (req, res) {
-  console.log("삽입 포스트 데이터 진행")
-  var body = req.body;
-  var subject = "선형대수학";
-  db.query('insert into fiveworks_aurora_db.`ksa_board`(name,std_no,subject,title,content,create_at) values (?,?,?,?,?,CURRENT_TIMESTAMP)', [body.name, body.std_no, subject, body.title, body.content], function () {
-  res.redirect('/board');
-  })
-})
+
  //게시글 등록
 router.post("/insert/:subject", function (req, res) {
   console.log("삽입 포스트 데이터 진행")
@@ -167,7 +226,7 @@ router.post('/edit/:subject/:id', function(req, res, next) {
   var body = req.body;
   db.query('update fiveworks_aurora_db.`ksa_board` set name = ? , std_no = ?, title = ?, content = ?, update_at = CURRENT_TIMESTAMP where board_id = ?', [body.name, body.std_no, body.title, body.content, id], function () {
   res.redirect('/board/'+subject+'');
-  })
+  });
 });
 // 게시글 삭제
 router.post('/board/:subject/:id/delete', function(req, res, next) { 
@@ -203,7 +262,7 @@ router.get('/lecture/:lecture/:id', function(req, res, next) {
         });
     });
   });
- 
+
     
 
 module.exports = router;

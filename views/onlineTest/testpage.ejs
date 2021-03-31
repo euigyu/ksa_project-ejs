@@ -1,0 +1,57 @@
+<% include ../header %>
+<form>
+    <table style="width:100%">
+        <tbody>
+            <tr>
+                <td>
+                    <input class=input_name type="text" style="width:20%" class="form-control" placeholder="이름"/>
+                    <input class=input_no type="text" style="width:20%" class="form-control" placeholder="수강생 번호"/>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <fieldset>
+        <legend>평가 페이지</legend>
+    <% for (var i=0 ; i < questions.length; i++ ) { %>
+        <h4><b><%=questions[i].question%></b><h4>
+        <input type="checkbox" value="<%=questions[i].q_ex1%>" onClick=""> <%=questions[i].q_ex1%><br>
+        <input type="checkbox" value="<%=questions[i].q_ex2%>" onClick=""> <%=questions[i].q_ex2%><br>
+        <input type="checkbox" value="<%=questions[i].q_ex3%>" onClick=""> <%=questions[i].q_ex3%><br>
+        <input type="checkbox" value="<%=questions[i].q_ex4%>" onClick=""> <%=questions[i].q_ex4%><p>
+    <% } %>
+    <legend></legend>
+        <button class="register" type="">제출</button>
+    </fieldset>
+    <table border="1" style="width:60%">
+        <tbody id='tbody'>
+            <% for (var i=0 ; i < questions.length; i++ ) { %>
+            <tr class="box">
+                <!-- <td class="col-md-1" style="width:20%"><strong><%=modulenames[0].module_kr%> 실기 평가 성적 수정</strong></td> -->
+                
+                <td class="q_no<%=questions[i].q_no%>"style="width:100%">
+                    <h4><b><%=questions[i].question%></b><h4>
+                    <input class="q_no<%=questions[i].q_no%>" type="checkbox" value="<%=questions[i].q_ex1%>" onClick=""> <%=questions[i].q_ex1%><br>
+                    <input class="q_no<%=questions[i].q_no%>" type="checkbox" value="" onClick=""> <%=questions[i].q_ex2%><br>
+                    <input class="q_no<%=questions[i].q_no%>" type="checkbox" value="<%=questions[i].q_ex3%>" onClick=""> <%=questions[i].q_ex3%><br>
+                    <input class="q_no<%=questions[i].q_no%>" type="checkbox" value="<%=questions[i].q_ex4%>" onClick=""> <%=questions[i].q_ex4%><p>
+                </td>
+            </tr>
+            <% } %>
+        </tbody>
+    </table>
+</form>       
+
+<script>
+    $('.register').on('click', function (e) {
+        if($('.input_name').val() == ""){
+            alert("이름을 입력하세요");
+        }
+        else if(($('.input_no').val() == "")){
+            alert("수강생 번호를 입력하세요");
+        }
+        else{
+            alert("시작");
+        } 
+    });
+</script>
+<% include ../footer %>

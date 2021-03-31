@@ -61,7 +61,15 @@ function scoreInfo(id, callback){
      }  
      callback(JSON.parse(JSON.stringify(scores))); 
     }); 
-}    
+}
+function onlineTestList(id, callback){ 
+  db.query('select * from fiveworks_aurora_db.`ksa_onlineTest` where subject ="'+id+'"' , (err, question) => {
+     if(err){
+      throw err;      
+     }  
+     callback(JSON.parse(JSON.stringify(question))); 
+    }); 
+}     
 module.exports = {
   lectureList,
   lectureLink,
@@ -69,5 +77,6 @@ module.exports = {
   contents,
   moduleList,
   moduleName,
-  scoreInfo
+  scoreInfo,
+  onlineTestList
 }

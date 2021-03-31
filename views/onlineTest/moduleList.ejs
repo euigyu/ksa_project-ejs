@@ -17,12 +17,37 @@
           padding-inline-start: 20px;
           list-style:none;">
             <li style="display:list-item;">
-              <a style="color:#999" href="/onlineTest/<%=modules[i].module_eng%>/submit"> <%= modules[i].module_kr %> </a> 
+              <!-- 문제입력 페이지로 이동 링크 -->
+              <!-- <a style="color:#999" href="/onlineTest/<%=modules[i].module_eng%>/submit"> <%= modules[i].module_kr %> </a>  -->
+              <a style="color:#999" href="/onlineTest/<%=modules[i].module_eng%>"> <%= modules[i].module_kr %> </a> 
             </li>
           </ol>
           <% } %>
         </nav>
       </aside>
+      
+				<!-- Header -->
+					<header id="header">
+						<div class="logo">
+							<span class="icon fa-gem"></span>
+						</div>
+						<div class="content">
+							<div class="inner">
+								<h1>필기 평가</h1>
+								<p>모듈LIST에서 원하는 모듈을 선택하세요.<br />
+								아래에 Test 버튼을 클릭하면 테스트 페이지로 <a href="#">이동</a>합니다.
+							</div>
+						</div>
+						<nav>
+							<ul>
+								<li><a href="#">Test</a></li>
+								<li><a href="#">문제 입력</a></li>
+								<li><a href="#">문제 수정</a></li>
+								<li><a href="#">평가 결과 다운로드</a></li>
+								<!--<li><a href="#elements">Elements</a></li>-->
+							</ul>
+						</nav>
+					</header>
      </div>
         <!-- </div>  -->
 </body>
