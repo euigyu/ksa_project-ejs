@@ -43,5 +43,12 @@
 
 .zeta-menu {
   display: flex;
-  justify-content: space-around;
+  padding: 0;
+  justify-content: space-between;
+}
+
+.login-form {
+  margin: 10rem auto;
+  width:20rem; 
+  border-radius:20px;
 }
