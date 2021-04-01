@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const mysql= require('mysql');
-const axios = require('axios')
+const axios = require('axios');
+const excel = require('exceljs');
 const { checkToken } = require('../auth')
 const queryString = require('query-string')
 const config = require('../config')
@@ -122,25 +123,51 @@ router.get('/onlineTest/:subject/result', async (req, res, next) => {
     questions: ques,
     checked: checked,
     subject
-  });
-  // array = [1, 2, 34]
-
-  // dbcon.testcheck(function(checkdata){
-  //   dbcon.moduleList(function (modules) {
-  //     dbcon.moduleName(subject,function (modulenames) {
-  //       dbcon.multipleChoiceList(subject,function (multiples){
-  //       console.log(checkdata);  
-  //       res.render('onlineTest/resultpage', {
-  //           modules: modules,
-  //           modulenames: modulenames,
-  //           multiples: multiples,
-  //           subject
-  //         });
-  //       });
-  //     });
-  //   });
-  // });
+  })
 });
+router.post('/onlineTest/result/down',(req, res, next) => {
+  // var subject = req.params.subject;
+  // console.log(subject);
+  db.connect((err) => {
+    if (err) throw err;
+    db.query("SELECT * FROM fiveworks_aurora_db.ksa_scoreInfo_online", function (err, data, fields) {
+      const jsonCustomers = JSON.parse(JSON.stringify(data));
+      console.log(jsonCustomers);
+      db.end(function(err) {
+        if (err) {
+        return console.log('error:' + err.message);
+        }
+        console.log(jsonCustomers);
+        res.send(jsonCustomers);
+      });
+    });
+  });    
+  // res.send("data");
+});
+
+ //필기 평가 성적 결과 저장 ajax
+router.post('/onlineTest/:subject/result/', async (req, res, next) => {
+  var subject = req.params.subject;
+  var array = (req.body);
+  console.log(array.name);
+  console.log(subject);
+  let conn = await pool.getConnection(async _conn => _conn)
+  await conn.query('INSERT INTO fiveworks_aurora_db.ksa_scoreInfo_online (`subject`, `name`, `std_no`,`score`) VALUES (?, ?, ?, ?);',
+  [subject,array.name, array.std_no,array.score])
+  conn.release()
+  res.status(200).send("success");
+  }); 
+
+//필기 평가 성적 다운 로드
+// router.post('/onlineTest/:subject/result/down', async (req, res, next) => {
+//   var subject = req.params.subject;
+//   console.log(subject);
+//   let conn = await pool.getConnection(async _conn => _conn)
+//   await conn.query('select * from fiveworks_aurora_db.ksa_scoreInfo_online where = "'+subject+'";',)
+//   conn.release()
+//   res.status(200).send("success");
+//   }); 
+
 //필기 평가 문제입력 페이지
 router.get('/onlineTest/:subject/submit', function(req, res, next) { 
   var subject=req.params.subject;
@@ -176,7 +203,22 @@ router.post('/onlineTest/:subject/testinput',async function(req, res, next){
     conn.release()
     res.status(200).send("success");
   });
-  
+ //필기평가 문제 수정 페이지
+//  router.get('/onlineTest/:subject/testEdit', async function(req, res, next) { 
+//   var subject=req.params.subject;
+
+//   const modules = await axios.get(`${config.dbIp}/moduleList`)
+//   const moduleNames = await axios.get(`${config.dbIp}/moduleList/${subject}`)
+//   const questions = await axios.get(`${config.dbIp}/onlineTestList/${subject}`)
+
+//   const ques = questions.data.map(question => ({...question, m_nos: question.m_nos.split(','), choices: question.choices.split(',')}))
+//   res.render('onlineTest/testEdit', {
+//     modules: modules.data,
+//     modulenames: moduleNames.data,
+//     questions: ques,
+//     subject,
+//   });
+// }) 
 
 //실기평가 게시판
 router.get('/board/:subject', function(req, res, next) { 
@@ -297,9 +339,17 @@ router.get('/lecture/:lecture/:id', function(req, res, next) {
         });
     });
   });
-
-    
-
+  
+  // Create a connection to the database
+  // const con = mysql.createConnection({
+  //  host: 'localhost',
+  //  user: 'root',
+  //  password: '12345',
+  //  database: 'testdb'
+  // });
+  
+  // Open the MySQL connection
+  
 module.exports = router;
 
 

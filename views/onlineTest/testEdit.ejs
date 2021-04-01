@@ -1,0 +1,103 @@
+<% include ../header %>
+<body>
+    <table border="1" style="width:80%">
+        <tbody id='tbody'>
+            <% for (var i=0 ; i < questions.length; i++ ) { %>
+            <tr class="box">
+                <td class="col-md-1" style="width:20%;"><strong><%=modulenames[0].module_kr%> 평가 문제</strong></td>
+                <td class="active col-md-11 content"style="width:80%">
+                    <br/>
+                    <input class="form-control question" type="text" placeholder="<%=questions[i].question%>"/><br>
+                    <% for (var j=0 ; j < questions[i].choices.length; j++ ) { %>
+                    <input style="width:40%" class="form-control question_ex1" type="text" placeholder="<%=questions[i].choices[j]%>"/>
+                    <input style="width:30%" class="form-control question_ex1_answer" type="text" placeholder="보기가 정답일 경우 T, 오답일경우 F로 입력 바랍니다."/>
+                    <input style="width:40%" class="form-control question_ex2" type="text" placeholder="보기 입력"/>
+                    <input style="width:30%" class="form-control question_ex2_answer" type="text" placeholder="보기가 정답일 경우 T, 오답일경우 F로 입력 바랍니다."/>
+                    <input style="width:40%" class="form-control question_ex3" type="text" placeholder="보기 입력"/>
+                    <input style="width:30%" class="form-control question_ex3_answer" type="text" placeholder="보기가 정답일 경우 T, 오답일경우 F로 입력 바랍니다."/>
+                    <input style="width:40%" class="form-control question_ex4" type="text" placeholder="보기 입력"/>
+                    <input style="width:30%" class="form-control question_ex4_answer" type="text" placeholder="보기가 정답일 경우 T, 오답일경우 F로 입력 바랍니다."/><br>
+                    <!-- <input style="width:20%" class="form-control question_result" type="text" placeholder="정답"/> -->
+                    <input class="form-control question_comment" type="text" placeholder="해설"/><br/>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <button class="addQuestion">문제 추가</button>
+    <button class="register">문제 등록</button>
+</body>
+
+<script>
+    //추가 버튼 
+    $('.addQuestion').on('click', function (e) {
+        e.preventDefault()
+        e.stopPropagation()
+        var addStaffText =     
+            '<tr class="box">'+
+            '    <td class="active col-md-1" style="width:20%"><strong><%=modulenames[0].module_kr%>평가 문제</strong></td>'+
+            '    <td class="col-md-11 content" style="width:80%">'+
+            '    <br/><input class="form-control question" type="text" placeholder="문제입력"/><br>'+
+            '    <input style="width:40%" class="form-control question_ex1" type="text" placeholder="보기 입력"/>'+
+            '    <input style="width:30%" class="form-control question_ex1_answer" type="text" placeholder="보기가 정답일 경우 T, 오답일경우 F로 입력 바랍니다."/>'+
+            '    <input style="width:40%" class="form-control question_ex2" type="text" placeholder="보기 입력"/>'+
+            '    <input style="width:30%" class="form-control question_ex2_answer" type="text" placeholder="보기가 정답일 경우 T, 오답일경우 F로 입력 바랍니다."/>'+
+            '    <input style="width:40%" class="form-control question_ex3" type="text" placeholder="보기 입력"/>'+
+            '    <input style="width:30%" class="form-control question_ex3_answer" type="text" placeholder="보기가 정답일 경우 T, 오답일경우 F로 입력 바랍니다."/>'+
+            '    <input style="width:40%" class="form-control question_ex4" type="text" placeholder="보기 입력"/>'+
+            '    <input style="width:30%" class="form-control question_ex4_answer" type="text" placeholder="보기가 정답일 경우 T, 오답일경우 F로 입력 바랍니다."/><br>'+
+            // '    <input style="width:40%" class="form-control question_result" type="text" placeholder="정답"/>'+
+            '    <input class="form-control" type="text" name="question_comment" placeholder="해설"/><br/>'+
+            '    <button class="btnt" name="delete"/>삭제</button>'+
+            '    </td>'+
+            '</tr>';
+        var trHtml = $('#tbody'); //last를 사용하여 마지막 태그 호출
+        trHtml.append(addStaffText); //마지막 태그 뒤에 붙인다.
+    });
+
+    $('.register').on('click', function (e) {
+        var arr = []
+        $('.box').each((idx, element) => {
+            var test = {
+                question : $(element).children('.content').children('.question').val(),
+                question_ex1: $(element).children('.content').children('.question_ex1').val() ,
+                question_ex1_answer: $(element).children('.content').children('.question_ex1_answer').val(),
+                question_ex2: $(element).children('.content').children('.question_ex2').val() ,
+                question_ex2_answer: $(element).children('.content').children('.question_ex2_answer').val() ,
+                question_ex3: $(element).children('.content').children('.question_ex3').val(),
+                question_ex3_answer: $(element).children('.content').children('.question_ex3_answer').val() ,
+                question_ex4: $(element).children('.content').children('.question_ex4').val(),
+                question_ex4_answer: $(element).children('.content').children('.question_ex4_answer').val() ,
+                // question_result: $(element).children('.content').children('.question_result').val(),
+                question_comment: $(element).children('.content').children('.question_comment').val(),
+            }; 
+            arr.push(test)
+        });
+        console.log(arr);
+        var post = 'POST METHOD CALL'
+        // ajax post 통신
+        $.ajax({
+            url: '/onlineTest/'+'<%=subject%>'+'/testinput',
+            // dataType: 'json',
+            contentType: "application/json",
+            type: 'POST',
+            data: JSON.stringify({arr:arr}),
+            success: function(result) {
+               if (result) {
+                alert("문제 입력이 완료 되었습니다");
+                window.location.href ='/onlineTest/'+'<%=subject%>'
+               }
+            }
+        });
+    });
+    //삭제 버튼
+    $(document).on("click","button[name=delete]",function(){
+        
+        var trHtml = $(this).parent().parent();
+        
+        trHtml.remove(); //tr 테그 삭제
+        
+    });
+</script>
+<% include ../footer %>
+</html>
+

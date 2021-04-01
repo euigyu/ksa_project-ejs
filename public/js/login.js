@@ -6,7 +6,7 @@ function login(obj) {
   const user = { id: $id.val(), pwd: $pwd.val() }
 
   $.ajax({
-    url: `http://3.35.50.200:3008/api/login`,
+    url: `http://localhost:3008/api/login`,
     processData: false,
     contentType: "application/json",
     data: JSON.stringify({ user }),

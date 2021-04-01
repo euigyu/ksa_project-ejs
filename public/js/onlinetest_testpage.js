@@ -25,7 +25,7 @@ function submit(e) {
   })
 
   if(checked.length) {
-    url += '?name='+name+'std_no='+std_no+'&';
+    url += '/?name='+name+'&std_no='+std_no+'&';
     $(checked).each(function () {
       url += 'checked='+ this + '&'
     })

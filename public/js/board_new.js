@@ -31,7 +31,7 @@
     }
   
     $.ajax({
-      url: "http://3.35.50.200:3008/api/file/insert",
+      url: "http://localhost:3008/api/file/insert",
       processData: false,
       contentType: false,
       enctype: "multipart/form-data",
@@ -85,13 +85,13 @@
     }
 
     $.ajax({
-      url: `http://3.35.50.200:3008/api/insert/${subject}`,
+      url: `http://localhost:3008/api/insert/${subject}`,
       processData: false,
       contentType: "application/json",
       data: JSON.stringify({ student }),
       type: "POST",
       success: function (result) {
-        location.href = `http://3.35.50.200:3008/board/${subject}`
+        location.href = `http://localhost:3008/board/${subject}`
       },
     });
   }

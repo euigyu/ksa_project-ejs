@@ -44,7 +44,7 @@
                 <% if(locals.isLogin) { %>
 								<li><a href="#">문제 입력</a></li>
 								<li><a href="#">문제 수정</a></li>
-                <li><a href="#">평가 결과 다운로드</a></li>
+                <li><a id="download" href="">평가 결과 다운로드</a></li>
                 <% } %>
 								<!--<li><a href="#elements">Elements</a></li>-->
 							</ul>
@@ -55,3 +55,47 @@
 </body>
   <% include ../footer %>
 </html>
+<script>
+$('#download').unbind()
+// $('.register').bind('click', validation)
+$('#download').bind('click', download)
+function showPopup() { 
+          window.open('/lecture/linearAlgebra/1','_blank', "a", "width=400, height=300, left=100, top=50"); 
+        }
+function download(){
+  alert("start");
+  $.ajax({
+    url: `http://localhost:3008/onlineTest/result/down`,
+    processData: false,
+    contentType: "application/json",
+    data: "",
+    type: "POST",
+    success: function (result) {
+      if (result) {
+        showPopup();
+      }
+    },
+  })
+}
+// $.ajax({ 
+//   type: "POST", 
+//   url: url, // 엑셀 다운로드 관련 미들웨어로 url 
+//   success: function(resp){ 
+//     if(!resp.result) { 
+//       alert('엑셀 다운로드 중 문제가 발생했습니다.'); 
+//       return false; 
+//     } 
+//     let excelUri = "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,"; 
+//     let excelUrl = excelUri + resp.content; // resp.content는 엑셀 데이터입니다. 
+//     let filename = 'ExcelDownLaod-File' // 다운받는 파일의 이름 지정 
+//     setTimeout(function () { 
+//       var a = document.createElement("a"); 
+//       a.href = excelUrl; 
+//       a.download = filename; 
+//       a.click(); 
+//     }, 100); 
+//   } 
+// });
+
+
+</script>
