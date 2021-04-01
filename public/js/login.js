@@ -14,7 +14,13 @@ function login(obj) {
     success: function (result) {
       if (result.token) {
         location.href = '/'
+      } else {
+        alert('다시 입력해주세요!')
       }
     },
+    error: (err) => {
+      console.log(err);
+      alert('오류가 발생했습니다.')
+    }
   })
 }
