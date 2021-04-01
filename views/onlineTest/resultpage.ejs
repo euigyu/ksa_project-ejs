@@ -28,9 +28,12 @@
         <label for="mnum_<%=questions[i].m_nos[j]%>"><%=questions[i].choices[j]%></label>
         <br>
     <% } %>
+    <p style="color:red">해설:<%= questions[i].comment%> </p>
     </div>
 <% } %>
+
 <legend></legend>
+    <span class="score"></span>
     <button class="register" type="">제출</button>
 </fieldset>
 
