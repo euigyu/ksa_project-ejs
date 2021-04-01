@@ -67,7 +67,7 @@ router.get('/moduleList', async (req, res, next) => {
   })
 });
 
-//필기 평가 페이지
+//필기평가 문제 수정 페이지
 router.get('/onlineTest/:subject', async function(req, res, next) { 
   var subject=req.params.subject;
 
@@ -77,7 +77,7 @@ router.get('/onlineTest/:subject', async function(req, res, next) {
     const questions = await axios.get(`${config.dbIp}/onlineTestList/${subject}`)
 
     const ques = questions.data.map(question => ({...question, m_nos: question.m_nos.split(','), choices: question.choices.split(',')}))
-    res.render('onlineTest/testpage', {
+    res.render('onlineTest/testEdit', {
       modules: modules.data,
       modulenames: moduleNames.data,
       questions: ques,

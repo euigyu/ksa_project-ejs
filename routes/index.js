@@ -203,22 +203,6 @@ router.post('/onlineTest/:subject/testinput',async function(req, res, next){
     conn.release()
     res.status(200).send("success");
   });
- //필기평가 문제 수정 페이지
-//  router.get('/onlineTest/:subject/testEdit', async function(req, res, next) { 
-//   var subject=req.params.subject;
-
-//   const modules = await axios.get(`${config.dbIp}/moduleList`)
-//   const moduleNames = await axios.get(`${config.dbIp}/moduleList/${subject}`)
-//   const questions = await axios.get(`${config.dbIp}/onlineTestList/${subject}`)
-
-//   const ques = questions.data.map(question => ({...question, m_nos: question.m_nos.split(','), choices: question.choices.split(',')}))
-//   res.render('onlineTest/testEdit', {
-//     modules: modules.data,
-//     modulenames: moduleNames.data,
-//     questions: ques,
-//     subject,
-//   });
-// }) 
 
 //실기평가 게시판
 router.get('/board/:subject', function(req, res, next) { 
