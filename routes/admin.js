@@ -76,10 +76,11 @@ router.get('/onlineTest/:subject', async function(req, res, next) {
     const moduleNames = await axios.get(`${config.dbIp}/moduleList/${subject}`)
     const questions = await axios.get(`${config.dbIp}/onlineTestList/${subject}`)
 
+    const ques = questions.data.map(question => ({...question, m_nos: question.m_nos.split(','), choices: question.choices.split(',')}))
     res.render('onlineTest/testpage', {
       modules: modules.data,
       modulenames: moduleNames.data,
-      questions: questions.data,
+      questions: ques,
       subject,
     });
   })

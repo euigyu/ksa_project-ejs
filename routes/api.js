@@ -9,15 +9,7 @@ const { sign } = require('jsonwebtoken')
 const passport = require('passport')
 const passportJWT = require('passport-jwt')
 const { genSaltSync, hashSync, compareSync ,compare } = require('bcrypt')
-const promiseMysql = require('mysql2/promise')
-
-const pool = promiseMysql.createPool({
-  connectionLimit: 70,
-  host     : 'fiveworks-instance-1.cbth2mnfdm9m.ap-northeast-2.rds.amazonaws.com',
-  user     : 'wilshere',
-  password : 'fiveworks',
-//   database : '-'
-})
+const pool = require('../db')
 
 router.post('/register', async (req, res, next) => {
   const body = req.body
@@ -52,15 +44,12 @@ router.post('/login', async (req, res, next) => {
     // const result = await compare(user.pwd, rows[0].pwd)
     const result = user.pwd == rows[0].pwd
     if (result) {
-      const jsontoken = sign({result: user.id }, 'secret', {
-        expiresIn: '3h'
-      })
+      const token = sign({result: user.id }, 'secret', {  })
 
-      console.log(1);
-      res.cookie('token', jsontoken, { httpOnly: true })
+      res.cookie('token', token, { httpOnly: true })
       return res.json({
         success: 1,
-        token: jsontoken
+        token
       })
     }
   }
