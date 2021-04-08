@@ -2,15 +2,14 @@
 <body>
  <!-- Wrapper -->
 <div class="wrapp" style="text-align:center; vertical-align:middle; background-color: #eee;
-border-bottom: 1px solid #ddd; height:40px;">
-  <div id="breadcrumb_line" style="display:inline-block;margin-top: 10px;margin-bottom: 10px;">
-    ksa 온라인 강의</div>
+border-bottom: 1px solid #ddd; height:20px;">
+  <div id="breadcrumb_line" style="display:inline-block;margin-top: 10px;margin-bottom: 10px;"></div>
 </div> <!-- / .wrapper -->
     <!-- Jumbotron -->
         <div class="carousel-inner">
-        <aside style="width:20%;float:left; font-size:0.75em;">
-          <h2 style="margin-block-start:0.83em; margin-block-end:0.83em;margin-inline-start:0px;margin-inline-end:0px; padding-inline-start: 20px;">강의 목록</h2>
-        <nav>
+        <div style="width:20%;float:left; font-size:0.75em; overflow:auto; height:550px;">
+          <h2 class="cusor" style="margin-block-start:0.83em; margin-block-end:0.83em;margin-inline-start:0px;margin-inline-end:0px; padding: 20px;"><%=rows[0].sub_kor%> 강의 목록 ∨</h2>
+        <nav class="hide">
           <% for (var i=0 ; i < rows.length; i++ ) { %>
           <ol style="display: block;
           list-style-type: decimal;
@@ -19,16 +18,17 @@ border-bottom: 1px solid #ddd; height:40px;">
           margin-inline-start: 0px;
           margin-inline-end: 0px;
           padding-inline-start: 20px;
-          list-style:none;">
+          list-style:none;
+          font-size:12px">
             <li style="display:list-item;">
               <a style="color:#999" href="/lecture/<%=rows[i].sub_eng%>/<%=rows[i].id%>"> <%= rows[i].sub_detail %> </a> 
             </li>
           </ol>
           <% } %>
         </nav>
-      </aside>
+      </div>
         <div class="container2" style="margin:0px;height:550px;">
-          <div style="width:50%;height:100%;float:left;">
+          <div style="width:50%;height:100%;float:left;border:2px solid black;">
             <%-links[0].sub_link %>
             <!-- <iframe width="100%" height="100%" src="https://www.youtube.com/embed/oM7Cp-cX-vU" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
           </div>
@@ -46,7 +46,7 @@ border-bottom: 1px solid #ddd; height:40px;">
               <a onclick="underlineText()" data-command='underline'>
                 <i class='fa fa-underline'></i>
               </a> -->
-                  <textarea id="text" contenteditable="true" style="width:90%;height:200px;" placeholder="메모"></textarea>
+                  <textarea id="text" contenteditable="true" style="font-size:12px; width:90%;height:200px;" placeholder="메모"></textarea>
                   <button onclick="saveTextAsFile(text.value,'memo.txt')">저장</button>
              </div>
               <!-- <input type="text" placeholder="메모 내용"> -->
@@ -58,3 +58,17 @@ border-bottom: 1px solid #ddd; height:40px;">
 </body>
   <% include ../footer %>
 </html>
+<script>
+ $('.cusor').unbind()
+// $('.register').bind('click', validation)
+$('.cusor').bind('click', hide)
+  // html dom 이 다 로딩된 후 실행된다.
+
+  function hide(){
+    // memu 클래스 바로 하위에 있는 a 태그를 클릭했을때
+    $(this).next("nav").toggleClass("hide");
+  }
+  
+
+</script>
+

@@ -44,3 +44,9 @@
     color: black; 
 }
   .zeta-menu ul ul { left: 100%; top: 0; }
+
+  .cusor{cursor:pointer;}
+  .cusor:hover{background:pink;}
+  .show {display:block} /*보여주기*/
+  .hide {display:none} /*숨기기*/
+

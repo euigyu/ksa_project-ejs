@@ -6,15 +6,19 @@ $('.register').bind('click', submit)
 
 function validation () {
   if ($('.input_name').val() == "") {
-    return alert("이름을 입력하세요");
-  } else if (($('.input_no').val() == "")) {
-    return alert("수강생 번호를 입력하세요");
-  } else {
-    return alert("시작");
+    alert("이름을 입력하세요");
+    return true;
+  } 
+  else if (($('.input_no').val() == "")) {
+    alert("수강생 번호를 입력하세요");
+    return true;
   }
 }
 
 function submit(e) {
+  if(validation()){
+    return false
+  };
   var checked = [];
   var url = `/onlineTest/${subject}/result`
   var name= $('.input_name').val();

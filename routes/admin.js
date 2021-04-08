@@ -14,15 +14,20 @@ const pool = promiseMysql.createPool({
 //   database : '-'
 });
 
+
 //실기평가 점수 입력 페이지
 router.get('/:subject/enterscore', async (req, res, next) => { 
   checkToken(req, res, next, async (isLogin) => {
     if (isLogin) {
       var subject = req.params.subject;
-  
+      const scores = await axios.get(`${config.dbIp}/scoreInfo/${subject}`)
       const moduleNames = await axios.get(`${config.dbIp}/moduleList/${subject}`)
+      // console.log(moduleNames.data[0].module_kr)
+      // console.log(scores);
+      // console.log("1")
       res.render('board/enterScore', { 
         modulenames: moduleNames.data,
+        scores: scores.data,
         subject
       });
     } else {
@@ -77,7 +82,7 @@ router.get('/onlineTest/:subject', async function(req, res, next) {
     const questions = await axios.get(`${config.dbIp}/onlineTestList/${subject}`)
 
     const ques = questions.data.map(question => ({...question, m_nos: question.m_nos.split(','), choices: question.choices.split(',')}))
-    res.render('onlineTest/testEdit', {
+    res.render('onlineTest/testInput', {
       modules: modules.data,
       modulenames: moduleNames.data,
       questions: ques,

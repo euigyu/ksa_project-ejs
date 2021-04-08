@@ -2,86 +2,13 @@
 <body>
     <table border="1" style="width:100%">
         <tbody id='tbody'>
-            <tr class="box">
-                <td class="col-md-1" style="width:20%"><strong><%=modulenames[0].module_kr%> 실기 평가 성적 입력</strong></td>
-                <td class="active col-md-11 content"style="width:80%">
-                    <br/>
-                    <input style="width:20%" class="form-control group" type="text" placeholder="분반"/>
-                    <input style="width:20%" class="form-control std_no" type="text" placeholder="수강생 번호"/>
-                    <input style="width:20%" class="form-control std_name" type="text" placeholder="이름"/>
-                    <input style="width:20%" class="form-control std_score" type="text" placeholder="점수"/>
-                    <textarea style="width:80%" class="form-control personal_comment" type="textarea" placeholder="개인 과제 평가 코멘트"></textarea>
-                    <textarea style="width:80%" class="form-control team_comment" type="textarea" placeholder="팀 과제 평가 코멘트"></textarea><br/>
-                </td>
-            </tr>
         </tbody>
     </table>
-    <button class="addQuestion">입력 폼 추가</button>
-    <button class="register">성적 저장</button>
+    <button class="addInput">성적 입력 폼 추가</button>
+    <button class="register">성적 등록</button>
 </body>
 
-<script>
-    
- //추가 버튼
-    $('.addQuestion').on('click', function (e) {
-        e.preventDefault()
-        e.stopPropagation()
-        var addStaffText =     
-            '<tr class="box">'+
-                '<td class="active col-md-1" style="width:20%"><strong>실기 평가 성적 입력</strong></td>'+
-                '<td class="active col-md-11 content"style="width:80%">'+
-                '<br/><input style="width:20%" class="form-control group" type="text" placeholder="분반"/>'+
-                '<input style="width:20%" class="form-control std_no" type="text" placeholder="수강생 번호"/>'+
-                '<input style="width:20%" class="form-control std_name" type="text" placeholder="이름"/>'+
-                '<input style="width:20%" class="form-control std_score" type="text" placeholder="점수"/>'+
-                '<textarea style="width:80%" class="form-control personal_comment" type="textarea" placeholder="개인 과제 평가 코멘트"></textarea>'+
-                '<textarea style="width:80%" class="form-control team_comment" type="textarea" placeholder="팀 과제 평가 코멘트"></textarea><br/>'+
-                '<button class="add" name="delete"/>삭제</button>'+
-                '</td>'+
-            '</tr>';
-        var trHtml = $('#tbody'); 
-        trHtml.append(addStaffText);
-    });
-
-    $('.register').on('click', function (e) {
-        var arr = []
-        $('.box').each((idx, element) => {
-            var test = {
-                group : $(element).children('.content').children('.group').val(),
-                std_no: $(element).children('.content').children('.std_no').val() ,
-                std_name: $(element).children('.content').children('.std_name').val(),
-                std_score: $(element).children('.content').children('.std_score').val(),
-                personal_comment: $(element).children('.content').children('.personal_comment').val(),
-                team_comment: $(element).children('.content').children('.team_comment').val(),
-            }; 
-            arr.push(test);
-
-        var post = 'POST METHOD CALL';
-        //Ajax POST Method TEST
-        $.ajax({
-            url: '/'+'<%=subject%>'+'/enterscore',
-            // dataType: 'json',
-            contentType: "application/json",
-            type: 'POST',
-            data: JSON.stringify({arr:arr}),
-            success: function(result) {
-               if (result) {
-                alert("성적 입력이 되었습니다");
-                window.location.href ='/board/'+'<%=subject%>'
-               }
-            }
-        });
-      });
-    });
-    //삭제 버튼
-    $(document).on("click","button[name=delete]",function(){
-        
-        var trHtml = $(this).parent().parent();
-        
-        trHtml.remove(); //tr 테그 삭제
-        
-    });
-</script>
+<script src="/js/board_enterScore.js"> </script>
 <% include ../footer %>
 </html>
 

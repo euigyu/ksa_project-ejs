@@ -61,25 +61,26 @@ router.post("/:subject/enterscore", function (req, res) {
  subject = req.params.subject;
  var array = req.body.arr; 
   var str ="";
-  // console.log(subject);
-  for(var i =0;i<array.length;i++){
-    db.query('INSERT INTO fiveworks_aurora_db.`ksa_scoreInfo` (`subject`, `group`, `std_no`, `name`, `score`, `personal_cmt`, `team_cmt`) VALUES (?, ?, ?, ?, ?, ?, ?);',
-    [subject, array[i].group, array[i].std_no, array[i].std_name, array[i].std_score, array[i].personal_comment,array[i].team_comment], function () {
-      res.status(200).send("succes");
-    });
-  };
+  console.log(array);
+  console.log('what')
+  // for(var i =0;i<array.length;i++){
+  //   db.query('INSERT INTO fiveworks_aurora_db.`ksa_scoreInfo` (`subject`, `group`, `std_no`, `name`, `score`, `personal_cmt`, `team_cmt`) VALUES (?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE name=?, std_no=?;'
+  //   [subject, array[i].group, array[i].std_no, array[i].std_name, array[i].std_score, array[i].personal_comment,array[i].team_comment, array[i].std_name, array[i].std_score], function () {
+  //     res.status(200).send("succes");
+  //   });
+  // };
 });
 // 실기 평가 성적 수정 ing...
 router.post("/:subject/editscore/edit", function (req, res) {
   var array = req.body.arr; 
   var subject = req.params.subject;
-  conssole(array);
-  for(var i =0;i<array.length;i++){
-    db.query('UPDATE fiveworks_aurora_db.`ksa_scoreInfo` SET `score`=?, `personal_cmt`=?, `team_cmt`=? WHERE `subject`=? and `std_no`=?',
-    [array[i].std_score, array[i].personal_comment,array[i].team_comment,subject, array[i].std_no], function () {
-      res.status(200).send("succes");
-    });
-  };
+  console.log(array);
+  // for(var i =0;i<array.length;i++){
+  //   db.query('UPDATE fiveworks_aurora_db.`ksa_scoreInfo` SET `score`=?, `personal_cmt`=?, `team_cmt`=? WHERE `subject`=? and `std_no`=?',
+  //   [array[i].std_score, array[i].personal_comment,array[i].team_comment,subject, array[i].std_no], function () {
+  //     res.status(200).send("succes");
+  //   });
+  // };
 });
 //필기평가 모듈 선택페이지
 router.get('/onlineTest', function(req, res, next) { 
@@ -125,25 +126,18 @@ router.get('/onlineTest/:subject/result', async (req, res, next) => {
     subject
   })
 });
-router.post('/onlineTest/result/down',(req, res, next) => {
+//필기평가 성적 다운로드
+router.post('/onlineTest/result/down', async (req, res, next) => {
   // var subject = req.params.subject;
   // console.log(subject);
-  db.connect((err) => {
-    if (err) throw err;
-    db.query("SELECT * FROM fiveworks_aurora_db.ksa_scoreInfo_online", function (err, data, fields) {
-      const jsonCustomers = JSON.parse(JSON.stringify(data));
-      console.log(jsonCustomers);
-      db.end(function(err) {
-        if (err) {
-        return console.log('error:' + err.message);
-        }
-        console.log(jsonCustomers);
-        res.send(jsonCustomers);
-      });
+    let conn = await pool.getConnection(async _conn =>conn) 
+    let [data]=await conn.query("SELECT * FROM fiveworks_aurora_db.ksa_scoreInfo_online order by subject asc")
+      // const jsonCustomers = JSON.parse(JSON.stringify(data));
+     console.log(JSON.parse(JSON.stringify(data)));
+     conn.release();
+     var result = JSON.parse(JSON.stringify(data));
+     res.status(200).send(result);
     });
-  });    
-  // res.send("data");
-});
 
  //필기 평가 성적 결과 저장 ajax
 router.post('/onlineTest/:subject/result/', async (req, res, next) => {
@@ -324,15 +318,6 @@ router.get('/lecture/:lecture/:id', function(req, res, next) {
     });
   });
   
-  // Create a connection to the database
-  // const con = mysql.createConnection({
-  //  host: 'localhost',
-  //  user: 'root',
-  //  password: '12345',
-  //  database: 'testdb'
-  // });
-  
-  // Open the MySQL connection
   
 module.exports = router;
 

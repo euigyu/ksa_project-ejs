@@ -75,6 +75,14 @@ router.get('/board/:id/files', async function(req, res, next) {
   res.status(200).send(rows)
 });
 
+router.get('/scoreInfo/:id', async function(req, res, next) { 
+  var id=req.params.id;
+  let conn = await pool.getConnection(async _conn => _conn)
+  let [rows] = await conn.query('select * from fiveworks_aurora_db.`ksa_scoreInfo` where subject ="'+id+'"')
+  console.log(rows)
+  conn.release()
+  res.status(200).send(rows)
+})
 router.get('/board/:id', async function(req, res, next) { 
   var id=req.params.id;
   let conn = await pool.getConnection(async _conn => _conn)
@@ -101,6 +109,7 @@ router.get('/onlineTestList/:subject', async (req, res, next) => {
   let conn = await pool.getConnection(async _conn => _conn)
   let [rows] = await conn.query(sql)
   conn.release()
+  // console.log(rows)
   res.status(200).send(rows)
 })
 
@@ -172,6 +181,91 @@ router.post('/insert/:subject', async function(req, res, next) {
   res.status(200).send();
 });
 
+router.post('/enterscore/:subject', async function(req, res, next) { 
+  const array = req.body.arr;
+  const subject = req.params.subject
+  console.log(subject)
+  // const student = body.student
+  console.log(array)
+  console.log("11111111111")
+  let conn = await pool.getConnection(async _conn => _conn)
+  for(var i = 0; i<array.length;i++){
+    console.log("input")
+    await conn.query('INSERT INTO fiveworks_aurora_db.`ksa_scoreInfo` (`subject`, `group`, `std_no`, `name`, `score`, `personal_cmt`, `team_cmt`) VALUES (?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE `group`=?, `score`=?, `personal_cmt`=?, `team_cmt`=?',
+    [subject, array[i].group, array[i].std_no, array[i].std_name, array[i].std_score, array[i].personal_comment,array[i].team_comment,array[i].group, array[i].std_score,array[i].personal_comment,array[i].team_comment])
+  }
+  conn.release()
+  res.status(200).send("success");
+});
+
+// 필기 평가 문제 입력 ajax처리
+router.post('/onlineTest/:subject/testinput',async function(req, res, next){
+  var subject=req.params.subject;
+  var array = req.body.arr; 
+  console.log(array);
+  let conn = await pool.getConnection(async _conn => _conn)
+  let [result] = await conn.query('INSERT INTO fiveworks_aurora_db.ksa_onlineTest (`subject`, `question`, `comment`) VALUES (?, ?, ?);',
+    [subject,array.question, array.question_comment])
+  console.log(result.insertId);
+  var q_no =result.insertId; 
+  await conn.query('INSERT INTO fiveworks_aurora_db.ksa_multipleChoice (q_no,subject, choice, answer) VALUES (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?);',
+    [q_no,subject,array.question_ex1, array.question_ex1_answer,
+      q_no,subject,array.question_ex2,array.question_ex2_answer,
+      q_no,subject,array.question_ex3,array.question_ex3_answer,
+      q_no,subject,array.question_ex4,array.question_ex4_answer])
+  conn.release()
+  res.status(200).send("success");
+  });
+
+router.put('/onlineTest/:subject/testinput',async function(req, res, next){
+  var subject=req.params.subject;
+  var array = req.body.arr; 
+  // console.log(array);
+  let conn = await pool.getConnection(async _conn => _conn)
+  let [result] = await conn.query('update fiveworks_aurora_db.ksa_onlineTest set `subject`=? ,`question`=?, `comment`=? where `q_no`=?',
+    [subject,array.question, array.question_comment,array.q_no])
+  // var q_no =result.insertId; 
+  // await conn.query('update fiveworks_aurora_db.ksa_multipleChoice (q_no,subject, choice, answer) VALUES (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?);',
+  //   [q_no,subject,array.question_ex1, array.question_ex1_answer,q_no,subject,array.question_ex2,array.question_ex2_answer,q_no,subject,array.question_ex3,array.question_ex3_answer,q_no,subject,array.question_ex4,array.question_ex4_answer])
+  await conn.query(`
+  UPDATE fiveworks_aurora_db.ksa_multipleChoice 
+  SET
+      choice = CASE m_no WHEN ? THEN ? ELSE choice END,
+      choice = CASE m_no WHEN ? THEN ? ELSE choice END,
+      choice = CASE m_no WHEN ? THEN ? ELSE choice END,
+      choice = CASE m_no WHEN ? THEN ? ELSE choice END,
+      answer = CASE m_no WHEN ? THEN ? ELSE answer END,
+      answer = CASE m_no WHEN ? THEN ? ELSE answer END,
+      answer = CASE m_no WHEN ? THEN ? ELSE answer END,
+      answer = CASE m_no WHEN ? THEN ? ELSE answer END
+  WHERE
+    m_no IN (?,?,?,?);
+  `,[array.m_nos1,array.question_ex1,
+     array.m_nos2,array.question_ex2,
+     array.m_nos3,array.question_ex3,
+     array.m_nos4,array.question_ex4,
+     array.m_nos1,array.question_ex1_answer,
+     array.m_nos2,array.question_ex2_answer,
+     array.m_nos3,array.question_ex3_answer,
+     array.m_nos4,array.question_ex4_answer,
+     array.m_nos1,array.m_nos2,array.m_nos3,array.m_nos4])
+    conn.release()
+  res.status(200).send("success");
+})
+
+//필기평가 성적 다운로드
+router.post('/board/result/down', async (req, res, next) => {
+  // var subject = req.params.subject;
+  // console.log(subject);
+    console.log("start")
+    let conn = await pool.getConnection(async _conn =>conn) 
+    let [data]=await conn.query("SELECT * FROM fiveworks_aurora_db.ksa_scoreInfo order by subject asc, name asc")
+      // const jsonCustomers = JSON.parse(JSON.stringify(data));
+     console.log(JSON.parse(JSON.stringify(data)));
+     conn.release();
+     var result = JSON.parse(JSON.stringify(data));
+     res.status(200).send(result);
+ });
 
 module.exports = router;
 

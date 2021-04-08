@@ -1,39 +1,3 @@
-convertDate();
-convertDateTime();
-
-function get2digits (num){
-  return ('0' + num).slice(-2);
-}
-
-function getDate(dateObj){
-  if(dateObj instanceof Date)
-    return dateObj.getFullYear() + '-' + get2digits(dateObj.getMonth()+1)+ '-' + get2digits(dateObj.getDate());
-}
-
-function getTime(dateObj){
-  if(dateObj instanceof Date)
-    return get2digits(dateObj.getHours()) + ':' + get2digits(dateObj.getMinutes())+ ':' + get2digits(dateObj.getSeconds());
-}
-
-function convertDate(){
-  $('[data-date]').each(function(index,element){
-    var dateString = $(element).data('date');
-    if(dateString){
-      var date = new Date(dateString);
-      $(element).html(getDate(date));
-    }
-  });
-}
-
-function convertDateTime(){
-  $('[data-date-time]').each(function(index,element){
-    var dateString = $(element).data('date-time');
-    if(dateString){
-      var date = new Date(dateString);
-      $(element).html(getDate(date)+' '+getTime(date));
-    }
-  });
-}
 $('#download').unbind()
 // $('.register').bind('click', validation)
 $('#download').bind('click', download)
@@ -91,31 +55,27 @@ function _excelDown(fileName, sheetName, sheetHtml) {
 function download(){
   alert("start");
   $.ajax({
-    url: `http://localhost:3008/api/board/result/down`,
+    url: `http://localhost:3008/onlineTest/result/down`,
     processData: false,
     contentType: "application/json",
     data: "",
     type: "POST",
     success: function (result) {
-        alert(result[0].name)
+        // alert(result[0].name)
         var str ='<table id="excel" border="1" style="visibility:hidden"'+
          ' <thead>'+ 
           '  <tr>'+
-           '  <th>과목</th>'+ 
-           '  <th>분반</th>'+  
-           '  <th>이름</th>'+ 
-           '  <th>수강생 번호</th>'+ 
-           '  <th>점수</th>'+ 
-            // '  <th>개인과제 코멘트</th>'+ 
-            // '  <th>팀과제 코멘트</th>'+ 
-           ' </tr> '+
-           ' </thead>'+ 
-           ' <tbody> ';
+           '   <th>과목</th>'+ 
+            '  <th>이름</th>'+ 
+            '  <th>수강생 번호</th>'+ 
+            '  <th>점수</th>'+ 
+            ' </tr> '+
+            ' </thead>'+ 
+            ' <tbody> ';
 
             for(var i = 0; i < result.length; i++){
               str +='  <tr>'+
                       '   <td>'+result[i].subject+'</td> '+
-                      '   <td>'+result[i].group+'</td> '+
                       '   <td>'+result[i].name+'</td> '+
                       '   <td>'+result[i].std_no+'</td> '+
                       '   <td>'+result[i].score+'</td> '+

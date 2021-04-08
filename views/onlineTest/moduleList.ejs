@@ -4,8 +4,8 @@
 <!-- / .wrapper -->
     <!-- Jumbotron -->
         <div class="carousel-inner">
-        <aside style="width:20%;float:left; font-size:0.75em;">
-          <h2 style="margin-block-start:0.83em; margin-block-end:0.83em;margin-inline-start:0px;margin-inline-end:0px; padding-inline-start: 20px;">강의 목록</h2>
+        <div style="width:20%;float:left; font-size:0.75em; overflow:auto; height:450px;">
+          <h2 style="margin-block-start:0.83em; margin-block-end:0.83em;margin-inline-start:0px;margin-inline-end:0px; padding-inline-start: 20px;">모듈 목록</h2>
         <nav>
           <% for (var i=0 ; i < modules.length; i++ ) { %>
           <ol style="display: block;
@@ -15,7 +15,8 @@
           margin-inline-start: 0px;
           margin-inline-end: 0px;
           padding-inline-start: 20px;
-          list-style:none;">
+          list-style:none;
+          font-size:12px;">
             <li style="display:list-item;">
               <!-- 문제입력 페이지로 이동 링크 -->
               <!-- <a style="color:#999" href="/onlineTest/<%=modules[i].module_eng%>/submit"> <%= modules[i].module_kr %> </a>  -->
@@ -24,7 +25,7 @@
           </ol>
           <% } %>
         </nav>
-      </aside>
+      </div>
       
 				<!-- Header -->
 					<header id="header">
@@ -34,65 +35,30 @@
 						<div class="content">
 							<div class="inner">
 								<h1>필기 평가</h1>
-								<p>모듈LIST에서 원하는 모듈을 선택하세요.<br />
-								아래에 Test 버튼을 클릭하면 테스트 페이지로 <a href="#">이동</a>합니다.
+								<p style="font-size:12px">모듈 목록에서 원하는 모듈을 선택하세요.<br />
+                 목록에서 원하는 모듈 클릭시 해당 평가 페이지로 <a href="#">이동</a>합니다.</p>
 							</div>
 						</div>
 						<nav>
 							<ul>
+                <li><a href="#">Test</a></li>
                 <% if(locals.isLogin) { %>
-                <li><a id="download" href="">평가 결과 다운로드</a></li>
+								<!-- <li><a href="#">문제 입력</a></li> -->
+								<!-- <li><a href="#">문제 수정</a></li> -->
+                <li><a id="download" href="#">평가 결과 다운로드</a></li>
                 <% } %>
 								<!--<li><a href="#elements">Elements</a></li>-->
 							</ul>
 						</nav>
 					</header>
      </div>
+     <div class="excel_feild">
+     </div>
         <!-- </div>  -->
+        
 </body>
+  <script src="/js/onlinetest_moduleList.js"></script>
   <% include ../footer %>
 </html>
-<script>
-$('#download').unbind()
-// $('.register').bind('click', validation)
-$('#download').bind('click', download)
-function showPopup() { 
-          window.open('/lecture/linearAlgebra/1','_blank', "a", "width=400, height=300, left=100, top=50"); 
-        }
-function download(){
-  alert("start");
-  $.ajax({
-    url: `http://localhost:3008/onlineTest/result/down`,
-    processData: false,
-    contentType: "application/json",
-    data: "",
-    type: "POST",
-    success: function (result) {
-      if (result) {
-        showPopup();
-      }
-    },
-  })
-}
-// $.ajax({ 
-//   type: "POST", 
-//   url: url, // 엑셀 다운로드 관련 미들웨어로 url 
-//   success: function(resp){ 
-//     if(!resp.result) { 
-//       alert('엑셀 다운로드 중 문제가 발생했습니다.'); 
-//       return false; 
-//     } 
-//     let excelUri = "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,"; 
-//     let excelUrl = excelUri + resp.content; // resp.content는 엑셀 데이터입니다. 
-//     let filename = 'ExcelDownLaod-File' // 다운받는 파일의 이름 지정 
-//     setTimeout(function () { 
-//       var a = document.createElement("a"); 
-//       a.href = excelUrl; 
-//       a.download = filename; 
-//       a.click(); 
-//     }, 100); 
-//   } 
-// });
 
 
-</script>
