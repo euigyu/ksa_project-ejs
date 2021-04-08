@@ -51,28 +51,35 @@ function addQuestion(idx) {
                     }
                   }
                   var addStaffText =
-                    '<tr class="box">' +
-                    '    <td class="active col-md-1" style="width:20%"><strong>'+ result[0].module_kr + '평가 문제</strong></td>' +
-                    '    <td class="col-md-11 content" style="width:80%">' +
-                    '    <br/><input style="display:none" class="form-control q_no" type="text" value="'+_result[i].q_no+'" placeholder="문제번호"/><br>' +
-                    '    <input class="form-control question" type="text" value="'+_result[i].question+'" placeholder="문제입력"/><br>' +
-                    '    <br/><input style="display:none" class="form-control m_nos1" type="text" value="'+ques[i].m_nos[0]+'" placeholder=""/>' +
-                    '    <input style="width:40%" class="form-control question_ex1" type="text" value="'+ques[i].choices[0]+'" placeholder="보기 입력"/>' +
-                    '    <input style="width:40%" name="check_'+count+'" class="form-control question_answer" id="question_ex1_answer" '+checked[0]+' type="radio" value="1"/>'+
-                    '    <br/><input style="display:none" class="form-control m_nos2" type="text" value="'+ques[i].m_nos[1]+'" placeholder=""/>' +
-                    '    <input style="width:40%" class="form-control question_ex2" type="text" value="'+ques[i].choices[1]+'" placeholder="보기 입력"/>' +
-                    '    <input style="width:40%" name="check_'+count+'" class="form-control question_answer" id="question_ex2_answer" '+checked[1]+' type="radio" value="2"/>' +
-                    '    <br/><input style="display:none" class="form-control m_nos3" type="text" value="'+ques[i].m_nos[2]+'" placeholder=""/>' +
-                    '    <input style="width:40%" class="form-control question_ex3" type="text" value="'+ques[i].choices[2]+'" placeholder="보기 입력"/>' +
-                    '    <input style="width:40%" name="check_'+count+'" class="form-control question_answer" id="question_ex3_answer" '+checked[2]+' type="radio" value="3"/>' +
-                    '    <br/><input style="display:none" class="form-control m_nos4" type="text" value="'+ques[i].m_nos[3]+'" placeholder=""/>' +
-                    '    <input style="width:40%" class="form-control question_ex4" type="text" value="'+ques[i].choices[3]+'" placeholder="보기 입력"/>' +
-                    '    <input style="width:40%" name="check_'+count+'" class="form-control question_answer" id="question_ex4_answer" '+checked[3]+' type="radio" value="4"/><br>' +
-                    // '    <input style="width:40%" class="form-control question_result" type="text" placeholder="정답"/>'+
-                    '    <input class="form-control question_comment" type="text" name="question_comment" value="'+_result[i].comment+'" placeholder="해설"/><br/>' +
-                    '    <button class="btnt" name="delete"/>삭제</button>' +
-                    '    </td>' +
-                    '</tr>';
+                    '<div class="col-6 content">' +
+                    '<input class="form-control question" type="text" value="'+_result[i].question+'" placeholder="문제입력"/>' +
+                      '<div class="selections">' +
+                        '<div class="multi-selection">' +
+                          '<input class="form-control question_ex1" type="text" value="'+ques[i].choices[0]+'" placeholder="보기 입력"/>' +
+                          '<input name="check_'+count+'" class="form-control question_answer" '+checked[0]+' type="radio" value="1"/>'+
+                        '</div>' +
+                        '<div class="multi-selection">' +
+                          '<input class="form-control question_ex2" type="text" value="'+ques[i].choices[1]+'" placeholder="보기 입력"/>' +
+                          '<input name="check_'+count+'" class="form-control question_answer" '+checked[1]+' type="radio" value="2"/>' +
+                        '</div>' +
+                        '<div class="multi-selection">' +
+                          '<input class="form-control question_ex3" type="text" value="'+ques[i].choices[2]+'" placeholder="보기 입력"/>' +
+                          '<input name="check_'+count+'" class="form-control question_answer" '+checked[2]+' type="radio" value="3"/>' +
+                        '</div>' +
+                        '<div class="multi-selection">' +
+                          '<input class="form-control question_ex4" type="text" value="'+ques[i].choices[3]+'" placeholder="보기 입력"/>' +
+                          '<input name="check_'+count+'" class="form-control question_answer" '+checked[3]+' type="radio" value="4"/>' +
+                        '</div>' +
+                      '</div>' +
+                    // '    <input class="form-control question_result" type="text" placeholder="정답"/>'+
+                    '<input class="form-control question_comment" type="text" name="question_comment" value="'+_result[i].comment+'" placeholder="해설"/><br/>' +
+                    '<button class="btnt" name="delete">삭제</button>' +
+                    '<input style="display:none" class="form-control q_no" type="text" value="'+_result[i].q_no+'" placeholder="문제번호"/>' +
+                    '<input style="display:none" class="form-control m_nos1" type="text" value="'+ques[i].m_nos[0]+'" placeholder=""/>' +
+                    '<input style="display:none" class="form-control m_nos2" type="text" value="'+ques[i].m_nos[1]+'" placeholder=""/>' +
+                    '<input style="display:none" class="form-control m_nos3" type="text" value="'+ques[i].m_nos[2]+'" placeholder=""/>' +
+                    '<input style="display:none" class="form-control m_nos4" type="text" value="'+ques[i].m_nos[3]+'" placeholder=""/>' +
+                    '</div>'
                   var trHtml = $('#tbody'); //last를 사용하여 마지막 태그 호출
                   trHtml.append(addStaffText); //마지막 태그 뒤에 붙인다.
                   count++;
@@ -83,22 +90,29 @@ function addQuestion(idx) {
               }
               else{
                 var addStaffText =
-                  '<tr class="box">' +
-                  '    <td class="active col-md-1" style="width:20%"><strong>'+ result[0].module_kr + '평가 문제</strong></td>' +
-                  '    <td class="col-md-11 content" style="width:80%">' +
-                  '    <br/><input class="form-control question" type="text" value="" placeholder="문제입력"/><br>' +
-                  '    <input style="width:40%" class="form-control question_ex1" type="text" value="" placeholder="보기 입력"/>' +
-                  '    <input name="check_'+count+'" class="form-control question_answer" id="question_ex1_answer" type="radio" value="1"/>' +
-                  '    <input style="width:40%" class="form-control question_ex2" type="text" value="" placeholder="보기 입력"/>' +
-                  '    <input name="check_'+count+'" class="form-control question_answer" id="question_ex2_answer" type="radio" value="2"/>' +
-                  '    <input style="width:40%" class="form-control question_ex3" type="text" value="" placeholder="보기 입력"/>' +
-                  '    <input name="check_'+count+'" class="form-control question_answer" id="question_ex3_answer" type="radio" value="3"/>' +
-                  '    <input style="width:40%" class="form-control question_ex4" type="text" value="" placeholder="보기 입력"/>' +
-                  '    <input name="check_'+count+'" class="form-control question_answer" id="question_ex4_answer" type="radio" value="4"/><br>' +
-                  '    <input class="form-control question_comment" type="text" name="question_comment" value="" placeholder="해설"/><br/>' +
-                  '    <button class="btnt" name="delete"/>삭제</button>' +
-                  '    </td>' +
-                  '</tr>';
+                  '<div class="col-6 content">' +
+                    '<input class="form-control question" type="text" value="" placeholder="문제입력"/><br>' +
+                      '<div class="selections">' +
+                        '<div class="multi-selection">' +
+                          '<input class="form-control question_ex1" type="text" value="" placeholder="보기 입력"/>' +
+                          '<input name="check_'+count+'" class="form-control question_answer" type="radio" value="1"/>' +
+                        '</div>' +
+                        '<div class="multi-selection">' +
+                          '<input class="form-control question_ex2" type="text" value="" placeholder="보기 입력"/>' +
+                          '<input name="check_'+count+'" class="form-control question_answer" type="radio" value="2"/>' +
+                        '</div>' +
+                        '<div class="multi-selection">' +
+                          '<input class="form-control question_ex3" type="text" value="" placeholder="보기 입력"/>' +
+                          '<input name="check_'+count+'" class="form-control question_answer" type="radio" value="3"/>' +
+                        '</div>' +
+                        '<div class="multi-selection">' +
+                          '<input class="form-control question_ex4" type="text" value="" placeholder="보기 입력"/>' +
+                          '<input name="check_'+count+'" class="form-control question_answer" type="radio" value="4"/><br>' +
+                        '</div>' +
+                      '</div>' +
+                    '<input class="form-control question_comment" type="text" name="question_comment" value="" placeholder="해설"/>' +
+                    '<button class="btnt" name="delete">삭제</button>' +
+                  '</div>'
                 var trHtml = $('#tbody'); //last를 사용하여 마지막 태그 호출
                 trHtml.append(addStaffText); //마지막 태그 뒤에 붙인다.
                 count++;

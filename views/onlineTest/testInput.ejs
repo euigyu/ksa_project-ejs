@@ -1,12 +1,19 @@
 <% include ../header %>
-<body>
-    <table border="1" style="width:80%">
-        <tbody id='tbody'>
-        </tbody>
-        <!-- <button name="delete" class="delete">삭제</button> -->
-    </table>
-    <button class="addQuestion">문제 추가</button>
-    <button class="register">문제 등록</button>
+<body class="online-test">
+    <div class="container">
+        <div class="input">
+            <div class="module-name"><%= modulenames[0].module_kr %></div>
+        </div>
+        <div>
+            <div id='tbody' class="box row">
+            </tbody>
+            <!-- <button name="delete" class="delete">삭제</button> -->
+        </div>
+        <div class="buttons">
+            <button class="addQuestion">문제 추가</button>
+            <button class="register">문제 등록</button>
+        </div>
+    </div>
 </body>
 
 <script src="/js/onlinetest_input.js"> </script>
