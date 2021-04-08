@@ -3,11 +3,11 @@
   <body>
     <!-- include('../partials/nav')  -->
   
-    <div class="container mb-3">
+    <div class="container mb-3 board">
 
       <h2 class="mb-3"><%=moduleNames[0].module_kr %> 실기 평가 게시판</h2>
 
-      <table class="board-table table table-sm border-bottom">
+      <table class="board-table table table-sm border-bottom list">
 
         <thead class="thead-light">
           <tr>
@@ -49,12 +49,12 @@
 
       </table>
 
-      <div>
-        <a class="btn btn-primary" href="/board/<%=moduleNames[0].module_eng%>/new">문제 업로드</a>
+      <div class="buttons">
+        <a class="button" href="/board/<%=moduleNames[0].module_eng%>/new">문제 업로드</a>
         <% if(locals.isLogin) { %>
-        <a class="btn btn-primary" href="/admin/<%=moduleNames[0].module_eng%>/enterscore">평가 결과 입력</a> 
+        <a class="button" href="/admin/<%=moduleNames[0].module_eng%>/enterscore">평가 결과 입력</a> 
         <% } %>
-        <a class="btn btn-primary" href="/board/<%=moduleNames[0].module_eng%>/selectscore">평가 결과 조회</a>
+        <a class="button" href="/board/<%=moduleNames[0].module_eng%>/selectscore">평가 결과 조회</a>
       </div>
 
     </div>
