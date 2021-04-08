@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mysql= require('mysql');
 const axios = require('axios')
-const { checkToken } = require('../auth')
+const { checkToken, token } = require('../auth')
 const config = require('../config')
 const dbcon = require('../db/mysql'); // db 모듈 추가 /* GET home page. */ 
 const promiseMysql = require('mysql2/promise')
@@ -16,12 +16,12 @@ const pool = promiseMysql.createPool({
 
 
 //실기평가 점수 입력 페이지
-router.get('/:subject/enterscore', async (req, res, next) => { 
+router.get('/:subject/enterscore', token({required: true}), async (req, res, next) => { 
   checkToken(req, res, next, async (isLogin) => {
     if (isLogin) {
       var subject = req.params.subject;
-      const scores = await axios.get(`${config.dbIp}/scoreInfo/${subject}`)
-      const moduleNames = await axios.get(`${config.dbIp}/moduleList/${subject}`)
+      const scores = await axios.get(`${config.dbIp}/onlineTest/scoreInfo/${subject}`)
+      const moduleNames = await axios.get(`${config.dbIp}/module/list/${subject}`)
       // console.log(moduleNames.data[0].module_kr)
       // console.log(scores);
       // console.log("1")
@@ -38,13 +38,13 @@ router.get('/:subject/enterscore', async (req, res, next) => {
 });
 
 //실기평가 게시판
-router.get('/board/:subject', async (req, res, next) => { 
+router.get('/board/:subject', token({required: true}), async (req, res, next) => { 
   var subject= req.params.subject;
 
   checkToken(req, res, next, async (isLogin) => {
     if (isLogin) {
-      const posts = await axios.get(`${config.dbIp}/boardList/${subject}`)
-      const moduleNames = await axios.get(`${config.dbIp}/moduleList/${subject}`)
+      const posts = await axios.get(`${config.dbIp}/board/boardList/${subject}`)
+      const moduleNames = await axios.get(`${config.dbIp}/module/list/${subject}`)
       res.render('board/board', {
         posts: posts.data,
         subject: subject,
@@ -58,9 +58,9 @@ router.get('/board/:subject', async (req, res, next) => {
 })
 
 //강의 모듈 리스트 
-router.get('/moduleList', async (req, res, next) => { 
+router.get('/moduleList', token({required: true}), async (req, res, next) => { 
   checkToken(req, res, next, async (isLogin) => {
-    let modules = await axios.get(`${config.dbIp}/moduleList`)
+    let modules = await axios.get(`${config.dbIp}/module/list`)
     if (isLogin) {
       res.render('board/moduleList', {
         modules: modules.data,
@@ -73,13 +73,13 @@ router.get('/moduleList', async (req, res, next) => {
 });
 
 //필기평가 문제 수정 페이지
-router.get('/onlineTest/:subject', async function(req, res, next) { 
+router.get('/onlineTest/:subject', token({required: true}), async function(req, res, next) { 
   var subject=req.params.subject;
 
   checkToken(req, res, next, async (isLogin) => {
-    const modules = await axios.get(`${config.dbIp}/moduleList`)
-    const moduleNames = await axios.get(`${config.dbIp}/moduleList/${subject}`)
-    const questions = await axios.get(`${config.dbIp}/onlineTestList/${subject}`)
+    const modules = await axios.get(`${config.dbIp}/module/list`)
+    const moduleNames = await axios.get(`${config.dbIp}/module/list/${subject}`)
+    const questions = await axios.get(`${config.dbIp}/onlineTest/list/${subject}`)
 
     const ques = questions.data.map(question => ({...question, m_nos: question.m_nos.split(','), choices: question.choices.split(',')}))
     res.render('onlineTest/testInput', {
@@ -92,9 +92,9 @@ router.get('/onlineTest/:subject', async function(req, res, next) {
 })
 
 //필기평가 모듈 선택페이지
-router.get('/onlineTest', async (req, res, next) => { 
+router.get('/onlineTest', token({required: true}), async (req, res, next) => { 
   checkToken(req, res, next, async (isLogin) => {
-    let modules = await axios.get(`${config.dbIp}/moduleList`)
+    let modules = await axios.get(`${config.dbIp}/module/list`)
     if (isLogin) {
       res.render('onlineTest/moduleList', {
         modules: modules.data,

@@ -13,19 +13,19 @@ function addQuestionListener (e) {
 }
 function addQuestion(idx) {
   $.ajax({
-    url: `http://localhost:3008/api/moduleList/${subject}`,
+    url: `http://localhost:3008/api/module/list/${subject}`,
     processData: false,
     contentType: "application/json",
     type: "GET",
     success: function (result) {
       $.ajax({
-        url: `http://localhost:3008/api/onlineTestList/${subject}`,
+        url: `http://localhost:3008/api/onlineTest/list/${subject}`,
         processData: false,
         contentType: "application/json",
         type: "GET",
         success: function (_result) {
           $.ajax({
-            url: `http://localhost:3008/api/multipleChoiceList/${subject}`,
+            url: `http://localhost:3008/api/onlineTest/multipleChoiceList/${subject}`,
             processData: false,
             contentType: "application/json",
             type: "GET",

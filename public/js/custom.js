@@ -49,9 +49,9 @@ if(liIndex>=liLength-1){
 }  	 
 /* ===== Sticky Navbar ===== */
 
-$(window).load(function(){
-  $(".navbar").sticky({ topSpacing: 0 });
-});
+// $(window).load(function(){
+//   $(".navbar").sticky({ topSpacing: 0 });
+// });
 
 /* ====== Search box toggle ===== */
 
@@ -183,3 +183,18 @@ $(document).ready(function(){
   });
    return false;
 });
+
+$.setToken = (token) => $.token = token
+$.unsetToken = function() {
+  $.token = undefined
+}
+
+$.ajax2 = function(option = {}) {
+  $.ajax({
+    beforeSend: $.token ? (xhr) => {
+      console.log($.token);
+      xhr.setRequestHeader("Authorization",`Bearer ${token}`);
+    } : () => {},
+    ...option,
+  })
+}

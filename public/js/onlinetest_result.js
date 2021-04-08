@@ -43,7 +43,7 @@ function searchParam(key) {
 
 
 $.ajax({
-  url: `http://localhost:3008/api/multipleChoiceList/${subject}`,
+  url: `http://localhost:3008/api/onlineTest/multipleChoiceList/${subject}`,
   processData: false,
   contentType: "application/json",
   type: "GET",
