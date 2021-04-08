@@ -122,7 +122,7 @@ router.get('/onlineTest/:subject/result', async (req, res, next) => {
     modules: modules.data,
     modulenames: moduleNames.data,
     questions: ques,
-    checked: checked,
+    checked: checked || [],
     subject
   })
 });

@@ -1,3 +1,120 @@
+/* header start */
+.navbar .container {
+  padding:15px;
+}
+/* 강의 */
+.navbar .container .zeta-menu .classes > ul {
+  width: 185px;
+}
+.navbar .container .zeta-menu .classes > ul > li {
+  width: max-content;
+}
+.navbar .container .zeta-menu .classes > ul > li > a:hover{
+  padding: auto;
+}
+/* 공통 */
+.navbar .container .zeta-menu li {
+  transition-duration: 0.25s;
+  transition-timing-function: linear;
+}
+.navbar .container .zeta-menu .depth1 > a{
+  font-size: 20px; 
+}
+/* header end */
+/* footer start */
+footer h3 {
+  font-size: 14px;
+}
+footer p {
+  font-size: 12px;
+}
+/* footer end */
+/* lecture start */
+/* menu start */
+.lecture .wrapp {
+  text-align:center; 
+  vertical-align:middle; 
+  background-color: #eee;
+  border-bottom: 1px solid #ddd; 
+  height:20px;
+}
+.lecture #breadcrumb_line{
+  display:inline-block;margin-top: 10px;margin-bottom: 10px;
+}
+.lecture .menu{
+  width:20%;float:left; font-size:0.75em; overflow:auto; height:550px;
+}
+.lecture .menu .cusor {
+  margin-block-start:0.83em; 
+  margin-block-end:0.83em;
+  margin-inline-start:0px;
+  margin-inline-end:0px; 
+  padding: 20px;
+  font-weight: 700;
+  font-size: 16px;
+  transition-duration: 0.25s;
+  transition-timing-function: linear;
+}
+.lecture .menu ol {
+  display: block;
+  list-style-type: decimal;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding-inline-start: 20px;
+  list-style:none;
+  font-size:14px
+}
+.lecture .menu ol > li{
+  display:list-item;
+}
+.lecture .menu ol > li > a{
+  color:#999;
+}
+/* menu end */
+/* video box start */
+.lecture .container2 {
+  margin:0px;height:550px;
+}
+.lecture .container2 .video-box {
+  width:50%;
+  height:100%;
+  float:left;
+  border:2px solid lightgray;
+  padding: 20px;
+}
+/* video box end */
+/* note start */
+.lecture .container2 .note {
+  width:30%;height:100%;float:left;
+}
+.lecture .container2 .note .toolbar{
+  margin:20px; text-align:left; display: block;
+  flex-basis: auto;
+  flex-direction: column;
+}
+.lecture .container2 .note .toolbar textarea {
+  font-size:14px; 
+  width:100%;
+  height:400px;
+  resize: none;
+}
+.lecture .container2 .note .toolbar button {
+  margin: 10px auto;
+  padding: 3px 10px;
+  display: flex;
+  font-size: 14px;
+  border: 1px solid black;
+  border-radius: 3px;
+  transition-duration: 0.25s;
+  transition-timing-function: linear;
+}
+.lecture .container2 .note .toolbar button:hover {
+  background-color: lightgray;
+}
+/* note end */
+/* lecture end */
 .filebox label { 
   display: inline-block; 
   padding: .5em .75em; 
