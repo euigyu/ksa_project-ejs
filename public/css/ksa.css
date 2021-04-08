@@ -115,6 +115,56 @@ footer p {
 }
 /* note end */
 /* lecture end */
+/* 필기평가 oneline test start */
+/* 정보입력 start */
+.online-test.form {
+  margin: 15px 0;
+  width: 100%;
+  display: flex;
+  place-content: center;
+}
+.online-test.form > input {
+  width:20%;
+  margin: 0 10px;
+  font-size: 14px;
+}
+/* 정보입력 end  */
+/* 문제 풀이 start */
+fieldset.online-test {
+  text-align: center; 
+  text-align: -webkit-center; 
+}
+fieldset.online-test legend{
+  padding-bottom: 15px;
+}
+fieldset.online-test .questions {
+  display: flex;
+  flex-flow: wrap;
+  width: 80%;
+}
+fieldset.online-test .questions > .question {
+  width: 50%;
+  padding: 10px;
+  text-align: left;
+}
+fieldset.online-test .questions > .question .combo > input {
+  margin: 5px 0;
+}
+fieldset.online-test button {
+  margin: 10px auto;
+  padding: 3px 10px;
+  display: flex;
+  font-size: 14px;
+  border: 1px solid black;
+  border-radius: 3px;
+  transition-duration: 0.25s;
+  transition-timing-function: linear;
+}
+fieldset.online-test button:hover {
+  background-color: lightgray;
+}
+/* 문제 풀이 end */
+/* 필기평가 oneline test end  */
 .filebox label { 
   display: inline-block; 
   padding: .5em .75em; 
