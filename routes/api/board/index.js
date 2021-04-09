@@ -64,6 +64,37 @@ router.post('/:subject', async function(req, res, next) {
   res.status(200).send();
 });
 
+router.put('/', async function(req, res, next) { 
+  const body = req.body;
+  const student = body.student
+  const id = body.id
+  let conn = await pool.getConnection(async _conn => _conn)
+  console.log(12);
+  await conn.query('update fiveworks_aurora_db.`ksa_board` set name = "' + 
+    student.name +'", std_no = "' + 
+    student.std_no+ '", title = "' + 
+    student.title +'", content = "' + 
+    student.content + '", update_at = CURRENT_TIMESTAMP where board_id = ' + 
+    id )
+
+  await conn.query('delete from fiveworks_aurora_db.`ksa_attachment` where board_id = ?', [id])
+
+  if(student.files.length) {
+    let sql = 'insert into fiveworks_aurora_db.`ksa_attachment`(board_id, filename, originalname, endpoint) values '
+    student.files.forEach((file, idx) => {
+      sql += `(${id}, '${file.filename}', '${file.originalname}', '${config.fileApi}')`
+      if(student.files.length - 1 != idx) {
+        sql += ','
+      }
+    })
+    await conn.query(sql)
+  }
+
+  conn.release()
+
+  res.status(200).send();
+});
+
 router.get('/scoreInfo/:id', async function(req, res, next) { 
   var id=req.params.id;
   let conn = await pool.getConnection(async _conn => _conn)

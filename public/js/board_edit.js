@@ -5,16 +5,21 @@ $(".submit").bind("click", uploadFile);
 $("#fileupload").unbind();
 $("#fileupload").bind("change", addFiles);
 
-var filesTempArr = []
-var files = []
+var files = Array.from($('.initial-files').map(function () {
+  return {
+    filename: $(this).data('filename'),
+    originalname: $(this).data('originalname'),
+    endpoint: $(this).data('endpoint'),
+  }
+}))
 
 function addFiles(e) {
   var _files = e.target.files;
   var filesArr = Array.prototype.slice.call(_files);
   var filesArrLen = filesArr.length;
-  var filesTempArrLen = filesTempArr.length;
+  var filesTempArrLen = files.length;
+  var formData = new FormData();
   for (var i = 0; i < filesArrLen; i++) {
-    filesTempArr.push(filesArr[i]);
     $("#file-list").append(
       "<div class='item download'>" +
         filesArr[i].name +
@@ -22,37 +27,32 @@ function addFiles(e) {
         (filesTempArrLen + i) +
         ');"></div>'
     );
+    formData.append("files", filesArr[i]);
   }
   // $(this).val("");
 
-  // form Data
-  var formData = new FormData();
-  for (let i = 0, filesTempArrLen = filesTempArr.length; i < filesTempArrLen; i++) {
-    formData.append("files", filesTempArr[i]);
-  }
-
   $.ajax2({
-    url: "http://3.35.50.200:3008/api/file",
+    url: "http://localhost:3008/api/file",
     processData: false,
     contentType: false,
     enctype: "multipart/form-data",
     data: formData,
     type: "POST",
     success: function (result) {
-      files = result.files
-      console.log('result files', files);
+      files = files.concat(result.files)
     },
   });
 }
 // 파일 삭제
 function deleteFile(eventParam, orderParam) {
-  filesTempArr.splice(orderParam, 1);
+  files.splice(orderParam, 1);
+  console.log(files);
   var innerHtmlTemp = "";
-  var filesTempArrLen = filesTempArr.length;
+  var filesTempArrLen = files.length;
   for (var i = 0; i < filesTempArrLen; i++) {
     innerHtmlTemp +=
       "<div class='item download'>" +
-      filesTempArr[i].name +
+      files[i].originalname +
       '<img src="/images/deleteImage.png" onclick="deleteFile(event, ' +
       i +
       ');"></div>';
@@ -62,8 +62,8 @@ function deleteFile(eventParam, orderParam) {
 
 function uploadFile() {
   const subject = window.location.href.split("/")[4];
+  const id = $(this).data('id')
   var student = {};
-
   // 학생정보
   student.name = $("#name").val();
   student.std_no = $("#std_no").val();
@@ -86,12 +86,12 @@ function uploadFile() {
   }
 
   $.ajax2({
-    url: `http://localhost:3008/api/board/${subject}`,
+    url: `http://localhost:3008/api/board`,
     // url: `http://3.35.50.200:3008/api/board/${subject}`,
     processData: false,
     contentType: "application/json",
-    data: JSON.stringify({ student }),
-    type: "POST",
+    data: JSON.stringify({ student, id }),
+    type: "PUT",
     success: function (result) {
       // location.href = `http://3.35.50.200:3008/board/${subject}`
       location.href = `http://localhost:3008/board/${subject}`

@@ -245,18 +245,6 @@ router.get('/board/:subject/new', function(req, res, next) {
     });
   });
 });
-// 게시글 수정 페이지
-router.get('/board/:subject/:id/edit', function(req, res, next) { 
-    var id=req.params.id;
-    var subject=req.params.subject;
-    dbcon.contents(id, function (content) {
-      console.log(content[0]);
-      res.render('board/edit', {
-        content: content,
-        subject
-      });
-    }); 
-});
 
  //게시글 등록
 // router.post("/insert/:subject", function (req, res) {
@@ -283,7 +271,21 @@ router.post('/board/:subject/:id/delete', function(req, res, next) {
   db.query('update fiveworks_aurora_db.`ksa_board` set `delete` = "T" , delete_at = CURRENT_TIMESTAMP where board_id = ?', [id], function () {
     res.redirect('/board/'+subject+'');
     })
-  });;
+  });
+// 게시글 수정 페이지
+router.get('/board/:subject/:id/edit', async (req, res, next) => { 
+  var id=req.params.id;
+  var subject=req.params.subject;
+
+  const rows = await axios.get(`${config.dbIp}/board/${id}`)
+  const files = await axios.get(`${config.dbIp}/board/${id}/files`)
+
+  res.render('board/edit', {
+    content: rows.data,
+    files: files.data,
+    subject: subject || ''
+  });
+});
 //게시글 확인
 router.get('/board/:subject/:id', async (req, res, next) => {
   const id=req.params.id;
@@ -295,7 +297,6 @@ router.get('/board/:subject/:id', async (req, res, next) => {
   var content = {}
   if (rows.data.length) {
     content = rows.data[0]
-    console.log(content);
   }
   res.render('board/content', {
     content: rows.data,

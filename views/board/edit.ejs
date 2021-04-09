@@ -4,40 +4,57 @@
     <%- include('../header') %>
   </head>
   <body>
-    <div class="container mb-3">
+    <div class="container mb-3 board">
 
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb p-1 pl-2 pr-2">
           <li class="breadcrumb-item"><a href="/">Home</a></li>
           <li class="breadcrumb-item"><a href="/board/<%=subject%>">Board</a></li>
           <li class="breadcrumb-item"><a href="/board/<%=subject%>/<%= content[0].board_id %>"><%= content[0].title %></a></li>
-          <li class="breadcrumb-item active" aria-current="page">Edit Post</li>
+          <li class="breadcrumb-item active" aria-current="page"><small>게시물 수정</small></li>
         </ol>
       </nav>
 
-      <form action="/edit/<%=subject%>/<%= content[0].board_id %>" method="post">
-        <div class="form-group">
-          <label for="name">Name</label>
-          <input type="text" id="name" name="name" value="<%= content[0].name %>" class="form-control">
-          <label for="std_no">Student No</label>
-          <input type="text" id="std_no" name="std_no" value="<%= content[0].std_no %>" class="form-control">
-        </div>
-        <div class="form-group">
-          <label for="title">Title</label>
-          <input type="text" id="title" name="title" value="<%= content[0].title %>" class="form-control">
-        </div>
-        <div class="form-group">
-          <label for="content">content</label>
-            <textarea id="body" name="content" rows="5" class="form-control" value=""><%= content[0].content %></textarea>
-        </div>
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" value="<%= content[0].name %>" class="form-control">
+        <label for="std_no">Student No</label>
+        <input type="text" id="std_no" name="std_no" value="<%= content[0].std_no %>" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" id="title" name="title" value="<%= content[0].title %>" class="form-control">
+      </div>
 
-        <div>
-          <a class="btn btn-primary" href="/board/<%=subject%>/<%= content[0].board_id %>">Back</a>
-          <button type="submit" class="btn btn-primary">Submit</button>
+      <div class="form-group">
+        <label for="content">content</label>
+        <textarea id="content" name="content" rows="5" class="form-control"><%= content[0].content %></textarea>
+      </div>
+      <div class="filebox">
+        <label for="fileupload">업로드</label>
+        <input type="file" id="fileupload" name="files" multiple>
+      </div>
+      <div id="file-list">
+        <% for(var i = 0; i < files.length; i ++) { %>
+        <div class='item download'><%= files[i].originalname %>
+          <img 
+            src="/images/deleteImage.png" 
+            class="initial-files"
+            onclick="deleteFile(event, <%= i %> );" 
+            data-filename="<%= files[i].filename %>"
+            data-originalname="<%= files[i].originalname %>"
+            data-endpoint="<%= files[i].endpoint %>"
+          >
         </div>
+        <% } %>
+      </div>
 
-      </form>
+      <div class="buttons">
+        <a class="button" href="/board/<%=subject%>/<%= content[0].board_id %>">뒤로가기</a>
+        <button data-id="<%= content[0].board_id %>" type="submit" class="submit">등록하기</button>
+      </div>
 
     </div>
+    <script src="/js/board_edit.js"></script>
   </body>
 </html>
