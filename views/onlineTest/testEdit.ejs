@@ -58,17 +58,17 @@
         var arr = []
         $('.box').each((idx, element) => {
             var test = {
-                question : $(element).children('.content').children('.question').val(),
-                question_ex1: $(element).children('.content').children('.question_ex1').val() ,
-                question_ex1_answer: $(element).children('.content').children('.question_ex1_answer').val(),
-                question_ex2: $(element).children('.content').children('.question_ex2').val() ,
-                question_ex2_answer: $(element).children('.content').children('.question_ex2_answer').val() ,
-                question_ex3: $(element).children('.content').children('.question_ex3').val(),
-                question_ex3_answer: $(element).children('.content').children('.question_ex3_answer').val() ,
-                question_ex4: $(element).children('.content').children('.question_ex4').val(),
-                question_ex4_answer: $(element).children('.content').children('.question_ex4_answer').val() ,
-                // question_result: $(element).children('.content').children('.question_result').val(),
-                question_comment: $(element).children('.content').children('.question_comment').val(),
+                question : $(element).find('.content .question').val(),
+                question_ex1: $(element).find('.content .question_ex1').val() ,
+                question_ex1_answer: $(element).find('.content .question_ex1_answer').val(),
+                question_ex2: $(element).find('.content .question_ex2').val() ,
+                question_ex2_answer: $(element).find('.content .question_ex2_answer').val() ,
+                question_ex3: $(element).find('.content .question_ex3').val(),
+                question_ex3_answer: $(element).find('.content .question_ex3_answer').val() ,
+                question_ex4: $(element).find('.content .question_ex4').val(),
+                question_ex4_answer: $(element).find('.content .question_ex4_answer').val() ,
+                // question_result: $(element).find('.content .question_result').val(),
+                question_comment: $(element).find('.content .question_comment').val(),
             }; 
             arr.push(test)
         });

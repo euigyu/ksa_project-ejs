@@ -48,12 +48,12 @@
         var arr = []
         $('.box').each((idx, element) => {
             var test = {
-                group : $(element).children('.content').children('.group').val(),
-                std_no: $(element).children('.content').children('.std_no').val() ,
-                std_name: $(element).children('.content').children('.std_name').val(),
-                std_score: $(element).children('.content').children('.std_score').val(),
-                personal_comment: $(element).children('.content').children('.personal_comment').val(),
-                team_comment: $(element).children('.content').children('.team_comment').val(),
+                group : $(element).find('.content .group').val(),
+                std_no: $(element).find('.content .std_no').val() ,
+                std_name: $(element).find('.content .std_name').val(),
+                std_score: $(element).find('.content .std_score').val(),
+                personal_comment: $(element).find('.content .personal_comment').val(),
+                team_comment: $(element).find('.content .team_comment').val(),
             }; 
             arr.push(test);
             console.log(arr);

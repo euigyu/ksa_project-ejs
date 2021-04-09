@@ -150,21 +150,21 @@ $('.register').on('click', function (e) {
       }
     }
     var test = {
-      q_no: $(element).children('.content').children('.q_no').val(),
-      question: $(element).children('.content').children('.question').val(),
-      m_nos1: $(element).children('.content').children('.m_nos1').val(),
-      question_ex1: $(element).children('.content').children('.question_ex1').val(),
+      q_no: $(element).find('.content .q_no').val(),
+      question: $(element).find('.content .question').val(),
+      m_nos1: $(element).find('.content .m_nos1').val(),
+      question_ex1: $(element).find('.content .question_ex1').val(),
       question_ex1_answer: ex[0],
-      m_nos2: $(element).children('.content').children('.m_nos2').val(),
-      question_ex2: $(element).children('.content').children('.question_ex2').val(),
+      m_nos2: $(element).find('.content .m_nos2').val(),
+      question_ex2: $(element).find('.content .question_ex2').val(),
       question_ex2_answer: ex[1],
-      m_nos3: $(element).children('.content').children('.m_nos3').val(),
-      question_ex3: $(element).children('.content').children('.question_ex3').val(),
+      m_nos3: $(element).find('.content .m_nos3').val(),
+      question_ex3: $(element).find('.content .question_ex3').val(),
       question_ex3_answer: ex[2],
-      m_nos4: $(element).children('.content').children('.m_nos4').val(),
-      question_ex4: $(element).children('.content').children('.question_ex4').val(),
+      m_nos4: $(element).find('.content .m_nos4').val(),
+      question_ex4: $(element).find('.content .question_ex4').val(),
       question_ex4_answer: ex[3],
-      question_comment: $(element).children('.content').children('.question_comment').val(),
+      question_comment: $(element).find('.content .question_comment').val(),
     };
     arr.push(test);
     ex=[];
