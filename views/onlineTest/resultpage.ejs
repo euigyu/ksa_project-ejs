@@ -1,41 +1,38 @@
 <% include ../header %>
-<table style="width:100%">
-    <tbody>
-        <tr>
-            <td class="input_box">
-                <input class=input_name type="text" style="width:20%" class="form-control" placeholder="이름"/>
-                <input class=input_no type="text" style="width:20%" class="form-control" placeholder="수강생 번호"/>
-            </td>
-        </tr>
-    </tbody>
-</table>
-<fieldset>
-    <legend><br><%=modulenames[0].module_kr%> 필기 평가 문제 페이지 <br>이름과 수강생 번호를 반드시 입력하세요</legend>
-<% for (var i=0 ; i < questions.length; i++ ) { %>
-    <h4><b><%=questions[i].question%></b><h4>
-    <div class="combo" data-combo="<%=questions[i].q_no%>">
-    <% for (var j=0 ; j < questions[i].choices.length; j++ ) { %>
-        <input 
-            type="radio" 
-            id="mnum_<%=questions[i].m_nos[j]%>"
-            class="q_<%=questions[i].q_no%>" 
-            data-mnum="<%=questions[i].m_nos[j]%>" 
-            disabled
-            <% if(checked[i] == questions[i].m_nos[j]) { %>
-            checked
-            <% } %>
-        />
-        <label for="mnum_<%=questions[i].m_nos[j]%>"><%=questions[i].choices[j]%></label>
-        <br>
-    <% } %>
-    <p style="color:red">해설:<%= questions[i].comment%> </p>
+    <div class="input_box online-test form">
+        <input class=input_name type="text" class="form-control" placeholder="이름"/>
+        <input class=input_no type="text" class="form-control" placeholder="수강생 번호"/>
     </div>
-<% } %>
-
-<legend></legend>
-    <span class="score"></span>
-    <button class="register" type="">제출</button>
-</fieldset>
+    <fieldset class="online-test">
+        <legend><br><%=modulenames[0].module_kr%> 필기 평가 문제 페이지 <br>이름과 수강생 번호를 반드시 입력하세요</legend>
+        <div class="questions">
+            <% for (var i=0 ; i < questions.length; i++ ) { %>
+            <div class="question">
+                <h4><%= i+1 %>. <b><%=questions[i].question%></b><h4>
+                <div class="combo" data-combo="<%=questions[i].q_no%>">
+                <% for (var j=0 ; j < questions[i].choices.length; j++ ) { %>
+                    <input 
+                        type="radio" 
+                        id="mnum_<%=questions[i].m_nos[j]%>"
+                        class="q_<%=questions[i].q_no%>" 
+                        data-mnum="<%=questions[i].m_nos[j]%>" 
+                        disabled
+                        <% if(checked[i] == questions[i].m_nos[j]) { %>
+                        checked
+                        <% } %>
+                    />
+                    <label for="mnum_<%=questions[i].m_nos[j]%>"><%=questions[i].choices[j]%></label>
+                    <br>
+                <% } %>
+                </div>
+                <p style="color:red">해설: <%= questions[i].comment%> </p>
+            </div>
+            <% } %>
+        </div>
+        <legend></legend>
+        <span class="score"></span>
+        <button class="register" type="">제출</button>
+    </fieldset>
 
 <script src="/js/onlinetest_result.js"></script>
 <% include ../footer %>
