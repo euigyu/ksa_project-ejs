@@ -31,7 +31,7 @@ function addFiles(e) {
     formData.append("files", filesTempArr[i]);
   }
 
-  $.ajax({
+  $.ajax2({
     url: "http://3.35.50.200:3008/api/file",
     processData: false,
     contentType: false,
@@ -85,7 +85,7 @@ function uploadFile() {
     return
   }
 
-  $.ajax({
+  $.ajax2({
     url: `http://localhost:3008/api/board/${subject}`,
     // url: `http://3.35.50.200:3008/api/board/${subject}`,
     processData: false,

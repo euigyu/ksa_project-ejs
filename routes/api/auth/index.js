@@ -57,7 +57,7 @@ router.post('/login', password() , async (req, res, next) => {
       }
     })
     await conn.query(sql)
-    console.log(sql);
+    res.cookie('token', token, { httpOnly: true })
     return res.status(201).json({ token, user: { id: user.id }, safetyLogin})
   })
 })

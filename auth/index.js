@@ -27,7 +27,6 @@ passport.use('token', new JwtStrategy({
     ExtractJwt.fromAuthHeaderWithScheme('Bearer')
   ])
 }, async ({ id }, done) => {
-  console.log(id);
   const conn = await pool.getConnection(async _conn => _conn)
   let [rows] = await conn.query('select * from fiveworks_aurora_db.`ksa_user` where `id` = "'+ id +'" ')
   if(!rows.length) {
@@ -38,33 +37,30 @@ passport.use('token', new JwtStrategy({
 }))
 
 module.exports = {
-  checkToken: (req, res, next, callback) => {
+  checkToken: () => (req, res, next) => {
     let token = req.cookies.token
-    console.log(token);
     if (token) {
       jwt.verify(token, "secret", (err, decoded) => {
         if (err) {
           console.log(err);
-          return callback(false)
+          return res.status(401).render('login')
         } else {
           req.decoded = decoded;
-          return callback(true)
         }
       });
     } else {
-      return callback(false)
+      return res.status(401).render('login')
     }
+    next()
   }, 
   token: ({ required } = {}) => (req, res, next) => 
     passport.authenticate('token', { session: false }, (err, user, info) => {
-      console.log(req);
-      console.log(user);
       if (err || required && !user) {
-        return res.status(401).end()
+        return res.status(401).render('login')
       }
       req.logIn(user, { session: false }, (err) => {
         if(err) {
-          return res.status(401).end()
+          return res.status(401).json()
         }
         next()
       })

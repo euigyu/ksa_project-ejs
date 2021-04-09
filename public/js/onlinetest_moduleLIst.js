@@ -54,7 +54,7 @@ function _excelDown(fileName, sheetName, sheetHtml) {
 
 function download(){
   alert("start");
-  $.ajax({
+  $.ajax2({
     url: `http://localhost:3008/onlineTest/result/down`,
     processData: false,
     contentType: "application/json",

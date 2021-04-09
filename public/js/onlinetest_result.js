@@ -13,7 +13,7 @@ function save(){
     score : score
 };
 alert(score);
-  $.ajax({
+  $.ajax2({
     url: `http://localhost:3008/onlineTest/${subject}/result`,
     processData: false,
     contentType: "application/json",
@@ -42,7 +42,7 @@ function searchParam(key) {
 };
 
 
-$.ajax({
+$.ajax2({
   url: `http://localhost:3008/api/onlineTest/multipleChoiceList/${subject}`,
   processData: false,
   contentType: "application/json",

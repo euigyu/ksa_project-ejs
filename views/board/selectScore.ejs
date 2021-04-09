@@ -25,7 +25,7 @@ $('.register').on('click', function (e) {
         std_no : $('.std_no').val()
     };
     // Ajax POST Method TEST
-    $.ajax({
+    $.ajax2({
         url: '/board/'+'<%=subject%>'+'/selectscore/result',
         // dataType: 'json',
         contentType: "application/json",

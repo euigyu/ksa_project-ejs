@@ -12,14 +12,14 @@ function addScoreListener (e) {
   addScore()
 }
 function addScore(idx) {
- $.ajax({
+ $.ajax2({
         url: `http://localhost:3008/api/module/list/${subject}`,
         processData: false,
         contentType: "application/json",
         type: "GET",
         success: function (_result) {
           console.log(_result[0].module_kr)
-            $.ajax({
+            $.ajax2({
                 url: `http://localhost:3008/api/board/scoreInfo/${subject}`,
                 processData: false,
                 contentType: "application/json",
@@ -86,7 +86,7 @@ $('.register').on('click', function (e) {
     var post = 'POST METHOD CALL';
     // Ajax POST Method TEST
     alert("요이")
-    $.ajax({
+    $.ajax2({
         url: `http://localhost:3008/api/board/enterscore/${subject}`,
         processData: false,
         contentType: "application/json",
@@ -96,7 +96,7 @@ $('.register').on('click', function (e) {
           location.href = `http://localhost:3008/admin/board/${subject}`
         },
       });
-    // $.ajax({
+    // $.ajax2({
     //     url: `http://localhost:3008/api/onlineTest/board/${subject}`,
     //     dataType: 'json',
     //     contentType: "application/json",
