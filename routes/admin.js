@@ -18,7 +18,7 @@ const pool = promiseMysql.createPool({
 //실기평가 점수 입력 페이지
 router.get('/:subject/enterscore', checkToken(), async (req, res, next) => { 
   var subject = req.params.subject;
-  const scores = await axios.get(`${config.dbIp}/onlineTest/scoreInfo/${subject}`)
+  const scores = await axios.get(`${config.dbIp}/board/scoreInfo/${subject}`)
   const moduleNames = await axios.get(`${config.dbIp}/module/list/${subject}`)
   // console.log(moduleNames.data[0].module_kr)
   // console.log(scores);

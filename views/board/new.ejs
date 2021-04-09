@@ -4,13 +4,13 @@
     <%- include('../header') %>
   </head>
   <body>
-    <div class="container mb-3">
+    <div class="container mb-3 board">
 
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb p-1 pl-2 pr-2">
           <li class="breadcrumb-item"><a href="/">Home</a></li>
           <li class="breadcrumb-item"><a href="/board/<%= modulenames[0].module_eng%>">Board</a></li>
-          <li class="breadcrumb-item active" aria-current="page"><a><%= modulenames[0].module_kr%></a> 게시글 작성</li>
+          <li class="breadcrumb-item active" aria-current="page"><a><%= modulenames[0].module_kr%></a> <small>게시글 작성</small></li>
         </ol>
       </nav>
 
@@ -35,9 +35,9 @@
         </div>
         <div id="file-list"></div>
 
-        <div>
-          <a class="btn btn-primary" href="/board/<%= modulenames[0].module_eng%>">Back</a>
-          <button type="submit" class="btn btn-primary submit" >Submit</button>
+        <div class="buttons">
+          <a class="button" href="/board/<%= modulenames[0].module_eng%>">뒤로가기</a>
+          <button type="submit" class="submit" >등록하기</button>
         </div>
 
     </div>

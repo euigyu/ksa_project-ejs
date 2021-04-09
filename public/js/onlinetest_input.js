@@ -13,117 +13,113 @@ function addQuestionListener (e) {
 }
 function addQuestion(idx) {
   $.ajax2({
-    url: `http://localhost:3008/api/module/list/${subject}`,
+    url: `http://localhost:3008/api/onlineTest/list/${subject}`,
     processData: false,
     contentType: "application/json",
     type: "GET",
-    success: function (result) {
+    success: function (_result) {
       $.ajax2({
-        url: `http://localhost:3008/api/onlineTest/list/${subject}`,
+        url: `http://localhost:3008/api/onlineTest/multipleChoiceList/${subject}`,
         processData: false,
         contentType: "application/json",
         type: "GET",
-        success: function (_result) {
-          $.ajax2({
-            url: `http://localhost:3008/api/onlineTest/multipleChoiceList/${subject}`,
-            processData: false,
-            contentType: "application/json",
-            type: "GET",
-            success: function (multiple) {
-              const ques = _result.map(_result => ({..._result, m_nos: _result.m_nos.split(','), choices: _result.choices.split(',')}))
-              console.log(ques)
-              //정답 찾기
-              const ans = multiple
-              const answers = ans.map(answer => ({...answer, m_nos: answer.m_nos.split(',')}))
-              //
-              if(_result.length && check_qno==0){
-                check_qno++;
-                for(var i=0; i<_result.length; i++){
-                  // alert("start")
-                  var checked=[];
-                  for(var j=0; j<4;j++){
-                    if(parseInt(ques[i].m_nos[j])==parseInt(answers[i].m_nos[0])){
-                      checked.push("checked")
-                      // alert(answers[i].m_nos[0])
-                    }
-                    else{
-                      checked.push("")
-                    }
-                  }
-                  var addStaffText =
-                    '<div class="col-6 content">' +
-                    '<input class="form-control question" type="text" value="'+_result[i].question+'" placeholder="문제입력"/>' +
-                      '<div class="selections">' +
-                        '<div class="multi-selection">' +
-                          '<input class="form-control question_ex1" type="text" value="'+ques[i].choices[0]+'" placeholder="보기 입력"/>' +
-                          '<input name="check_'+count+'" class="form-control question_answer" '+checked[0]+' type="radio" value="1"/>'+
-                        '</div>' +
-                        '<div class="multi-selection">' +
-                          '<input class="form-control question_ex2" type="text" value="'+ques[i].choices[1]+'" placeholder="보기 입력"/>' +
-                          '<input name="check_'+count+'" class="form-control question_answer" '+checked[1]+' type="radio" value="2"/>' +
-                        '</div>' +
-                        '<div class="multi-selection">' +
-                          '<input class="form-control question_ex3" type="text" value="'+ques[i].choices[2]+'" placeholder="보기 입력"/>' +
-                          '<input name="check_'+count+'" class="form-control question_answer" '+checked[2]+' type="radio" value="3"/>' +
-                        '</div>' +
-                        '<div class="multi-selection">' +
-                          '<input class="form-control question_ex4" type="text" value="'+ques[i].choices[3]+'" placeholder="보기 입력"/>' +
-                          '<input name="check_'+count+'" class="form-control question_answer" '+checked[3]+' type="radio" value="4"/>' +
-                        '</div>' +
-                      '</div>' +
-                    // '    <input class="form-control question_result" type="text" placeholder="정답"/>'+
-                    '<input class="form-control question_comment" type="text" name="question_comment" value="'+_result[i].comment+'" placeholder="해설"/><br/>' +
-                    '<button class="btnt" name="delete">삭제</button>' +
-                    '<input style="display:none" class="form-control q_no" type="text" value="'+_result[i].q_no+'" placeholder="문제번호"/>' +
-                    '<input style="display:none" class="form-control m_nos1" type="text" value="'+ques[i].m_nos[0]+'" placeholder=""/>' +
-                    '<input style="display:none" class="form-control m_nos2" type="text" value="'+ques[i].m_nos[1]+'" placeholder=""/>' +
-                    '<input style="display:none" class="form-control m_nos3" type="text" value="'+ques[i].m_nos[2]+'" placeholder=""/>' +
-                    '<input style="display:none" class="form-control m_nos4" type="text" value="'+ques[i].m_nos[3]+'" placeholder=""/>' +
-                    '</div>'
-                  var trHtml = $('#tbody'); //last를 사용하여 마지막 태그 호출
-                  trHtml.append(addStaffText); //마지막 태그 뒤에 붙인다.
-                  count++;
+        success: function (multiple) {
+          const ques = _result.map(_result => ({..._result, m_nos: _result.m_nos.split(','), choices: _result.choices.split(',')}))
+          console.log(ques)
+          //정답 찾기
+          const ans = multiple
+          const answers = ans.map(answer => ({...answer, m_nos: answer.m_nos.split(',')}))
+          //
+          if(_result.length && check_qno==0){
+            check_qno++;
+            for(var i=0; i<_result.length; i++){
+              // alert("start")
+              var checked=[];
+              for(var j=0; j<4;j++){
+                if(parseInt(ques[i].m_nos[j])==parseInt(answers[i].m_nos[0])){
+                  checked.push("checked")
+                  // alert(answers[i].m_nos[0])
                 }
-              $('.question_answer').unbind();
-              $("button[name=delete]").unbind() 
-              $("button[name=delete]").bind('click', deleteQuestion)
+                else{
+                  checked.push("")
+                }
               }
-              else{
-                var addStaffText =
-                  '<div class="col-6 content">' +
-                    '<input class="form-control question" type="text" value="" placeholder="문제입력"/><br>' +
-                      '<div class="selections">' +
-                        '<div class="multi-selection">' +
-                          '<input class="form-control question_ex1" type="text" value="" placeholder="보기 입력"/>' +
-                          '<input name="check_'+count+'" class="form-control question_answer" type="radio" value="1"/>' +
-                        '</div>' +
-                        '<div class="multi-selection">' +
-                          '<input class="form-control question_ex2" type="text" value="" placeholder="보기 입력"/>' +
-                          '<input name="check_'+count+'" class="form-control question_answer" type="radio" value="2"/>' +
-                        '</div>' +
-                        '<div class="multi-selection">' +
-                          '<input class="form-control question_ex3" type="text" value="" placeholder="보기 입력"/>' +
-                          '<input name="check_'+count+'" class="form-control question_answer" type="radio" value="3"/>' +
-                        '</div>' +
-                        '<div class="multi-selection">' +
-                          '<input class="form-control question_ex4" type="text" value="" placeholder="보기 입력"/>' +
-                          '<input name="check_'+count+'" class="form-control question_answer" type="radio" value="4"/><br>' +
-                        '</div>' +
-                      '</div>' +
-                    '<input class="form-control question_comment" type="text" name="question_comment" value="" placeholder="해설"/>' +
-                    '<button class="btnt" name="delete">삭제</button>' +
-                  '</div>'
-                var trHtml = $('#tbody'); //last를 사용하여 마지막 태그 호출
-                trHtml.append(addStaffText); //마지막 태그 뒤에 붙인다.
-                count++;
-              }
-              $('.question_answer').unbind();
-              $("button[name=delete]").unbind() 
-              $("button[name=delete]").bind('click', deleteQuestion)
+              var addStaffText =
+                '<div class="box col-6">' +
+                '<div class="content">' +
+                '<input class="form-control question" type="text" value="'+_result[i].question+'" placeholder="문제입력"/>' +
+                  '<div class="selections">' +
+                    '<div class="multi-selection">' +
+                      '<input class="form-control question_ex1" type="text" value="'+ques[i].choices[0]+'" placeholder="보기 입력"/>' +
+                      '<input name="check_'+count+'" class="form-control question_answer" '+checked[0]+' type="radio" value="1"/>'+
+                    '</div>' +
+                    '<div class="multi-selection">' +
+                      '<input class="form-control question_ex2" type="text" value="'+ques[i].choices[1]+'" placeholder="보기 입력"/>' +
+                      '<input name="check_'+count+'" class="form-control question_answer" '+checked[1]+' type="radio" value="2"/>' +
+                    '</div>' +
+                    '<div class="multi-selection">' +
+                      '<input class="form-control question_ex3" type="text" value="'+ques[i].choices[2]+'" placeholder="보기 입력"/>' +
+                      '<input name="check_'+count+'" class="form-control question_answer" '+checked[2]+' type="radio" value="3"/>' +
+                    '</div>' +
+                    '<div class="multi-selection">' +
+                      '<input class="form-control question_ex4" type="text" value="'+ques[i].choices[3]+'" placeholder="보기 입력"/>' +
+                      '<input name="check_'+count+'" class="form-control question_answer" '+checked[3]+' type="radio" value="4"/>' +
+                    '</div>' +
+                  '</div>' +
+                // '    <input class="form-control question_result" type="text" placeholder="정답"/>'+
+                '<input class="form-control question_comment" type="text" name="question_comment" value="'+_result[i].comment+'" placeholder="해설"/><br/>' +
+                '<button class="btnt" name="delete">삭제</button>' +
+                '<input style="display:none" class="form-control q_no" type="text" value="'+_result[i].q_no+'" placeholder="문제번호"/>' +
+                '<input style="display:none" class="form-control m_nos1" type="text" value="'+ques[i].m_nos[0]+'" placeholder=""/>' +
+                '<input style="display:none" class="form-control m_nos2" type="text" value="'+ques[i].m_nos[1]+'" placeholder=""/>' +
+                '<input style="display:none" class="form-control m_nos3" type="text" value="'+ques[i].m_nos[2]+'" placeholder=""/>' +
+                '<input style="display:none" class="form-control m_nos4" type="text" value="'+ques[i].m_nos[3]+'" placeholder=""/>' +
+                '</div>' +
+                '</div>'
+              var trHtml = $('#tbody'); //last를 사용하여 마지막 태그 호출
+              trHtml.append(addStaffText); //마지막 태그 뒤에 붙인다.
+              count++;
             }
-          })
+          $('.question_answer').unbind();
+          $("button[name=delete]").unbind() 
+          $("button[name=delete]").bind('click', deleteQuestion)
+          }
+          else{
+            var addStaffText =
+              '<div class="box col-6 ">' +
+              '<div class="content">' +
+                '<input class="form-control question" type="text" value="" placeholder="문제입력"/><br>' +
+                  '<div class="selections">' +
+                    '<div class="multi-selection">' +
+                      '<input class="form-control question_ex1" type="text" value="" placeholder="보기 입력"/>' +
+                      '<input name="check_'+count+'" class="form-control question_answer" type="radio" value="1"/>' +
+                    '</div>' +
+                    '<div class="multi-selection">' +
+                      '<input class="form-control question_ex2" type="text" value="" placeholder="보기 입력"/>' +
+                      '<input name="check_'+count+'" class="form-control question_answer" type="radio" value="2"/>' +
+                    '</div>' +
+                    '<div class="multi-selection">' +
+                      '<input class="form-control question_ex3" type="text" value="" placeholder="보기 입력"/>' +
+                      '<input name="check_'+count+'" class="form-control question_answer" type="radio" value="3"/>' +
+                    '</div>' +
+                    '<div class="multi-selection">' +
+                      '<input class="form-control question_ex4" type="text" value="" placeholder="보기 입력"/>' +
+                      '<input name="check_'+count+'" class="form-control question_answer" type="radio" value="4"/><br>' +
+                    '</div>' +
+                  '</div>' +
+                '<input class="form-control question_comment" type="text" name="question_comment" value="" placeholder="해설"/>' +
+                '<button class="btnt" name="delete">삭제</button>' +
+              '</div>' +
+              '</div>'
+            var trHtml = $('#tbody'); //last를 사용하여 마지막 태그 호출
+            trHtml.append(addStaffText); //마지막 태그 뒤에 붙인다.
+            count++;
+          }
+          $('.question_answer').unbind();
+          $("button[name=delete]").unbind() 
+          $("button[name=delete]").bind('click', deleteQuestion)
         }
-     })
+      })
     }
   })
 }

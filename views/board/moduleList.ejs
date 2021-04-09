@@ -4,19 +4,11 @@
 <!-- / .wrapper -->
     <!-- Jumbotron -->
         <div class="carousel-inner">
-        <div style="width:20%;float:left; font-size:0.75em; overflow:auto; height:450px;">
-          <h2 style="margin-block-start:0.83em; margin-block-end:0.83em;margin-inline-start:0px;margin-inline-end:0px; padding-inline-start: 20px;">모듈 목록</h2>
+        <div class="navigation">
+          <h2>모듈 목록</h2>
         <nav>
           <% for (var i=0 ; i < modules.length; i++ ) { %>
-          <ol style="display: block;
-          list-style-type: decimal;
-          margin-block-start: 1em;
-          margin-block-end: 1em;
-          margin-inline-start: 0px;
-          margin-inline-end: 0px;
-          padding-inline-start: 20px;
-          list-style:none;
-          font-size:12px;">
+          <ol>
             <li style="display:list-item;">
               <a style="color:#999" href="<%= locals.isLogin ? '/admin' : '' %>/board/<%=modules[i].module_eng%>"> <%= modules[i].module_kr %> </a> 
             </li>

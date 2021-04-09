@@ -118,13 +118,13 @@ footer p {
 
 /* 필기평가 oneline test start */
 /* module list start */
-.online-test .navigation {
+.navigation {
   width:20%;float:left; font-size:0.75em; overflow:auto; height:450px;
 }
-.online-test .navigation > h2 {
+.navigation > h2 {
   margin-block-start:0.83em; margin-block-end:0.83em;margin-inline-start:0px;margin-inline-end:0px; padding-inline-start: 20px;
 }
-.online-test .navigation > nav {
+.navigation > nav > ol {
   display: block;
   list-style-type: decimal;
   margin-block-start: 1em;
@@ -203,6 +203,7 @@ fieldset.online-test .questions > .question .combo > input {
 }
 #tbody .content input {
   font-size: 14px;
+  margin: 0 -15px;
 }
 #tbody .content .selections {
   margin: 15px 0;
@@ -240,15 +241,38 @@ fieldset.online-test .questions > .question .combo > input {
 }
 /* 실기평가 board list end */
 /* 실기평가 board content start */
+.container.board {
+  font-size: 14px;
+}
+.container.board .breadcrumb-item a {
+  font-size: 14px;
+}
+.container.board .breadcrumb-item small {
+  font-size: 12px;
+  padding: 0 8px;
+}
+.board .buttons button {
+  padding: 3px 10px;
+  display: flex;
+  font-size: 14px;
+  border: 1px solid black;
+  border-radius: 3px;
+  transition-duration: 0.25s;
+  transition-timing-function: linear;
+}
+.board .buttons button:hover {
+  background-color: lightgray;
+}
 .container.board > .card > h5 {
   font-size: 16px;
   font-weight: 700;
   padding: 7px 15px!important;
 }
 .container.board > .card > .row .content {
+  font-size: 14px;
   padding: 15px!important;
 }
-.container.board > .card > .row .date{
+.container.board > .card > .row .date {
   padding: 5px 10px!important;
 }
 .container.board .attachment > p{
@@ -281,7 +305,42 @@ fieldset.online-test .questions > .question .combo > input {
 #file-list .item.download:nth-child(2n-1):hover {
   background-color: rgba(0,0,0,0.4);
 }
-/* 실기평가 board list end */
+/* 실기평가 board content end */
+/* 실기평가 성적입력 start */
+.enter-score {
+  font-size: 14px;
+  width: 80%;
+  margin: 10px auto;
+}
+.enter-score .box {
+  margin-bottom: 10px;
+}
+.enter-score .box .label {
+  color: black;
+  font-size: 14px;
+  align-self: center;
+}
+.enter-score .box .line.label {
+  margin: 10px 0;
+}
+.enter-score .box textarea {
+  resize: none;
+  font-size: 14px;
+}
+.enter-score button {
+  padding: 3px 10px;
+  display: flex;
+  font-size: 14px;
+  border: 1px solid black;
+  border-radius: 3px;
+  transition-duration: 0.25s;
+  transition-timing-function: linear;
+  width: max-content!important;
+}
+.enter-score button:hover {
+  background-color: lightgray;
+}
+/* 실기평가 성적입력 end */
 /* 실기평가 end */
 
 div.buttons {
