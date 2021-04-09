@@ -32,7 +32,7 @@ function addFiles(e) {
   }
 
   $.ajax2({
-    url: "http://3.35.50.200:3008/api/file",
+    url: "http://localhost:3008/api/file",
     processData: false,
     contentType: false,
     enctype: "multipart/form-data",

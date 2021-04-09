@@ -3,9 +3,11 @@ const subject = window.location.pathname.split('/')[3]
 var count=0;
 var check_qno=0; //수정페이지에서 문제 추가시 불러오는것 방지용
 var result=false;
-$('.addQuestion').bind('click', addQuestionListener);
 
-    
+$('.addQuestion').bind('click', addQuestionListener);
+addQuestion()
+
+
 function addQuestionListener (e) {
   e.preventDefault()
   e.stopPropagation()
@@ -45,7 +47,7 @@ function addQuestion(idx) {
                 }
               }
               var addStaffText =
-                '<div class="box col-6">' +
+                '<div class="box col-md-6 col-sm-12">' +
                 '<div class="content">' +
                 '<input class="form-control question" type="text" value="'+_result[i].question+'" placeholder="문제입력"/>' +
                   '<div class="selections">' +
@@ -86,7 +88,7 @@ function addQuestion(idx) {
           }
           else{
             var addStaffText =
-              '<div class="box col-6 ">' +
+              '<div class="box col-md-6 col-sm-12">' +
               '<div class="content">' +
                 '<input class="form-control question" type="text" value="" placeholder="문제입력"/><br>' +
                   '<div class="selections">' +
@@ -104,7 +106,7 @@ function addQuestion(idx) {
                     '</div>' +
                     '<div class="multi-selection">' +
                       '<input class="form-control question_ex4" type="text" value="" placeholder="보기 입력"/>' +
-                      '<input name="check_'+count+'" class="form-control question_answer" type="radio" value="4"/><br>' +
+                      '<input name="check_'+count+'" class="form-control question_answer" type="radio" value="4"/>' +
                     '</div>' +
                   '</div>' +
                 '<input class="form-control question_comment" type="text" name="question_comment" value="" placeholder="해설"/>' +
@@ -139,7 +141,6 @@ $('.register').on('click', function (e) {
   var ex=[]
   var arr = []
   $('.box').each((idx, element) => {
-    // alert($(element).children('.content').children('.question_comment').val())
     var answer = parseInt($(element).find('input:checked').val());
     for(var i =1; i<=4; i++){
       if(i==answer){

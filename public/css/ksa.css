@@ -167,6 +167,9 @@ fieldset.online-test .questions > .question {
   padding: 10px;
   text-align: left;
 }
+.online-test .box {
+  margin-bottom: 10px;
+}
 fieldset.online-test .questions > .question .combo > input {
   margin: 5px 0;
 }
@@ -203,8 +206,11 @@ fieldset.online-test .questions > .question .combo > input {
 }
 #tbody .content input {
   font-size: 14px;
+}
+.enter-score .content input {
   margin: 0 -15px;
 }
+
 #tbody .content .selections {
   margin: 15px 0;
 }
@@ -259,6 +265,9 @@ fieldset.online-test .questions > .question .combo > input {
   border-radius: 3px;
   transition-duration: 0.25s;
   transition-timing-function: linear;
+}
+.online-test .btnt {
+  width: max-content!important
 }
 .board .buttons button:hover {
   background-color: lightgray;
