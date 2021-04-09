@@ -94,9 +94,9 @@ router.get('/onlineTest', function(req, res, next) {
 router.get('/onlineTest/:subject', async function(req, res, next) { 
   var subject=req.params.subject;
   
-  const modules = await axios.get(`${config.dbIp}/moduleList`)
-  const moduleNames = await axios.get(`${config.dbIp}/moduleList/${subject}`)
-  const questions = await axios.get(`${config.dbIp}/onlineTestList/${subject}`)
+  const modules = await axios.get(`${config.dbIp}/module/list`)
+  const moduleNames = await axios.get(`${config.dbIp}/module/list/${subject}`)
+  const questions = await axios.get(`${config.dbIp}/onlineTest/list/${subject}`)
 
   const ques = questions.data.map(question => ({...question, m_nos: question.m_nos.split(','), choices: question.choices.split(',')}))
   res.render('onlineTest/testpage', {
@@ -112,9 +112,9 @@ router.get('/onlineTest/:subject/result', async (req, res, next) => {
   console.log(checked);
   var subject = req.params.subject;
 
-  const modules = await axios.get(`${config.dbIp}/moduleList`)
-  const moduleNames = await axios.get(`${config.dbIp}/moduleList/${subject}`)
-  const questions = await axios.get(`${config.dbIp}/onlineTestList/${subject}`)
+  const modules = await axios.get(`${config.dbIp}/module/list`)
+  const moduleNames = await axios.get(`${config.dbIp}/module/list/${subject}`)
+  const questions = await axios.get(`${config.dbIp}/onlineTest/list/${subject}`)
 
   const ques = questions.data.map(question => ({...question, m_nos: question.m_nos.split(','), choices: question.choices.split(',')}))
 
@@ -259,14 +259,14 @@ router.get('/board/:subject/:id/edit', function(req, res, next) {
 });
 
  //게시글 등록
-router.post("/insert/:subject", function (req, res) {
-  console.log("삽입 포스트 데이터 진행")
-  var body = req.body;
-  var subject = req.params.subject;
-  db.query('insert into fiveworks_aurora_db.`ksa_board`(name,std_no,subject,title,content,create_at) values (?,?,?,?,?,CURRENT_TIMESTAMP)', [body.name, body.std_no, subject, body.title, body.content], function () {
-  res.redirect('/board/'+subject+'');
-  })
-})
+// router.post("/insert/:subject", function (req, res) {
+//   console.log("삽입 포스트 데이터 진행")
+//   var body = req.body;
+//   var subject = req.params.subject;
+//   db.query('insert into fiveworks_aurora_db.`ksa_board`(name,std_no,subject,title,content,create_at) values (?,?,?,?,?,CURRENT_TIMESTAMP)', [body.name, body.std_no, subject, body.title, body.content], function () {
+//   res.redirect('/board/'+subject+'');
+//   })
+// })
 //게시글 수정
 router.post('/edit/:subject/:id', function(req, res, next) { 
   var id=req.params.id;

@@ -16,7 +16,7 @@ Last change:    06/07/2015
 
 $(document).ready(function(e) {
   $('#form_sendemail').submit(function(e) {
-    $.ajax({
+    $.ajax2({
       url: 'sendmail.php',
       type: 'POST',
       data: $(this).serialize(),

@@ -12,20 +12,20 @@ function addQuestionListener (e) {
   addQuestion()
 }
 function addQuestion(idx) {
-  $.ajax({
-    url: `http://localhost:3008/api/moduleList/${subject}`,
+  $.ajax2({
+    url: `http://localhost:3008/api/module/list/${subject}`,
     processData: false,
     contentType: "application/json",
     type: "GET",
     success: function (result) {
-      $.ajax({
-        url: `http://localhost:3008/api/onlineTestList/${subject}`,
+      $.ajax2({
+        url: `http://localhost:3008/api/onlineTest/list/${subject}`,
         processData: false,
         contentType: "application/json",
         type: "GET",
         success: function (_result) {
-          $.ajax({
-            url: `http://localhost:3008/api/multipleChoiceList/${subject}`,
+          $.ajax2({
+            url: `http://localhost:3008/api/onlineTest/multipleChoiceList/${subject}`,
             processData: false,
             contentType: "application/json",
             type: "GET",
@@ -179,7 +179,7 @@ $('.register').on('click', function (e) {
   var post = 'POST METHOD CALL'
   // ajax post 통신
   $(arr).each(function () {
-    $.ajax({
+    $.ajax2({
       url: `http://localhost:3008/api/onlineTest/${subject}/testinput`,
       // dataType: 'json',
       contentType: "application/json",

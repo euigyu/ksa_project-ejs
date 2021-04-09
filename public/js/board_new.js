@@ -31,8 +31,8 @@ function addFiles(e) {
     formData.append("files", filesTempArr[i]);
   }
 
-  $.ajax({
-    url: "http://3.35.50.200:3008/api/file/insert",
+  $.ajax2({
+    url: "http://3.35.50.200:3008/api/file",
     processData: false,
     contentType: false,
     enctype: "multipart/form-data",
@@ -85,14 +85,16 @@ function uploadFile() {
     return
   }
 
-  $.ajax({
-    url: `http://3.35.50.200:3008/api/insert/${subject}`,
+  $.ajax2({
+    url: `http://localhost:3008/api/board/${subject}`,
+    // url: `http://3.35.50.200:3008/api/board/${subject}`,
     processData: false,
     contentType: "application/json",
     data: JSON.stringify({ student }),
     type: "POST",
     success: function (result) {
-      location.href = `http://3.35.50.200:3008/board/${subject}`
+      // location.href = `http://3.35.50.200:3008/board/${subject}`
+      location.href = `http://localhost:3008/board/${subject}`
     },
   });
 }
