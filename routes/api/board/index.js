@@ -1,11 +1,21 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../../../db')
-const config = require('../../../config')
+const config = require('../../../config');
+const { check } = require('../../../auth');
 
 router.get('/', async function(req, res, next) { 
   let conn = await pool.getConnection(async _conn => _conn)
   let [rows] = await conn.query('select * from fiveworks_aurora_db.`ksa_board` where `delete` != "T" order by board_id desc')
+  conn.release()
+
+  res.status(200).send(rows)
+});
+
+router.get('/moduleName/:subject', async function(req, res, next) { 
+  const subject = req.params.subject
+  let conn = await pool.getConnection(async _conn => _conn)
+  let [rows] = await conn.query('SELECT * FROM fiveworks_aurora_db.`ksa_moduleList` where module_eng = "'+ subject +'"')
   conn.release()
 
   res.status(200).send(rows)
@@ -20,7 +30,7 @@ router.get('/:id/files', async function(req, res, next) {
   res.status(200).send(rows)
 });
 
-router.get('/boardList/:subject', async (req, res, next) => {
+router.get('/list/:subject', async (req, res, next) => {
   var subject = req.params.subject;
   let conn = await pool.getConnection(async _conn => _conn)
   let [rows] = await conn.query('select * from fiveworks_aurora_db.`ksa_board` where subject = "'+ subject +'" and `delete` != "T" order by board_id desc')
@@ -37,16 +47,16 @@ router.get('/:id', async function(req, res, next) {
   res.status(200).send(rows)
 });
 
-router.post('/:subject', async function(req, res, next) { 
+router.post('/:subject', check(), async function(req, res, next) { 
   const body = req.body;
   const subject = req.params.subject
   const student = body.student
+  const id = req.id
+  var show = id ? 'A' : 'S'
 
-  console.log(req);
-  console.log(req.user);
   let conn = await pool.getConnection(async _conn => _conn)
-  let [result] = await conn.query('insert into fiveworks_aurora_db.`ksa_board`(name,std_no,subject,title,content,create_at) values (?,?,?,?,?,CURRENT_TIMESTAMP)',
-    [student.name, student.std_no, subject, student.title, student.content])
+  let [result] = await conn.query('insert into fiveworks_aurora_db.`ksa_board`(name, std_no, subject, title, content, `show`, create_at) values (?,?,?,?,?,?,CURRENT_TIMESTAMP)',
+    [student.name, student.std_no || '', subject, student.title, student.content, show])
 
   if(student.files.length) {
     let sql = 'insert into fiveworks_aurora_db.`ksa_attachment`(board_id, filename, originalname, endpoint) values '

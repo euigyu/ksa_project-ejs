@@ -32,7 +32,7 @@ function addFiles(e) {
   // $(this).val("");
 
   $.ajax2({
-    url: "http://3.35.50.200:3008/api/file",
+    url: "http://localhost:3008/api/file",
     processData: false,
     contentType: false,
     enctype: "multipart/form-data",
@@ -76,7 +76,7 @@ function uploadFile() {
     alert('이름을 입력해 주세요')
     return 
   }
-  if (!student.std_no) {
+  if (!!$("#std_no")[0] && !student.std_no) {
     alert('학생번호를 입력해 주세요')
     return
   }
@@ -86,15 +86,15 @@ function uploadFile() {
   }
 
   $.ajax2({
-    url: `http://3.35.50.200:3008/api/board`,
-    // url: `http://3.35.50.200:3008/api/board/${subject}`,
+    url: `http://localhost:3008/api/board`,
+    // url: `http://localhost:3008/api/board/${subject}`,
     processData: false,
     contentType: "application/json",
     data: JSON.stringify({ student, id }),
     type: "PUT",
     success: function (result) {
-      // location.href = `http://3.35.50.200:3008/board/${subject}`
-      location.href = `http://3.35.50.200:3008/board/${subject}`
+      // location.href = `http://localhost:3008/board/${subject}`
+      location.href = `http://localhost:3008/board/${subject}`
     },
   });
 }

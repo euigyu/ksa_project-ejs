@@ -91,7 +91,7 @@ function _excelDown(fileName, sheetName, sheetHtml) {
 function download(){
   alert("start");
   $.ajax2({
-    url: `http://3.35.50.200:3008/api/board/result/down`,
+    url: `http://localhost:3008/api/board/result/down`,
     processData: false,
     contentType: "application/json",
     data: "",

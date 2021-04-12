@@ -18,9 +18,13 @@
       <div class="form-group">
         <label for="name">Name</label>
         <input type="text" id="name" name="name" value="<%= content[0].name %>" class="form-control">
+      </div>
+      <% if(!locals.isLogin) { %>
+      <div class="form-group">
         <label for="std_no">Student No</label>
         <input type="text" id="std_no" name="std_no" value="<%= content[0].std_no %>" class="form-control">
       </div>
+      <% } %>
       <div class="form-group">
         <label for="title">Title</label>
         <input type="text" id="title" name="title" value="<%= content[0].title %>" class="form-control">

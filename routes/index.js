@@ -3,7 +3,7 @@ const router = express.Router();
 const mysql= require('mysql');
 const axios = require('axios');
 const excel = require('exceljs');
-const { checkToken } = require('../auth')
+const { check } = require('../auth')
 const queryString = require('query-string')
 const config = require('../config')
 const dbcon = require('../db/mysql'); // db 모듈 추가 /* GET home page. */ 
@@ -126,6 +126,21 @@ router.get('/onlineTest/:subject/result', async (req, res, next) => {
     subject
   })
 });
+
+//실기평가 게시판
+router.get('/board/:subject', async (req, res, next) => { 
+  var subject= req.params.subject;
+
+  const posts = await axios.get(`${config.dbIp}/board/list/${subject}`)
+  const moduleNames = await axios.get(`${config.dbIp}/module/list/${subject}`)
+
+  res.render('board/board', {
+    posts: posts.data,
+    subject: subject,
+    moduleNames: moduleNames.data
+  });
+})
+
 //필기평가 성적 다운로드
 router.post('/onlineTest/result/down', async (req, res, next) => {
   // var subject = req.params.subject;
@@ -189,7 +204,6 @@ router.post('/onlineTest/:subject/testinput',async function(req, res, next){
   for(var i=0; i<array.length;i++){
     let [result] = await conn.query('INSERT INTO fiveworks_aurora_db.ksa_onlineTest (`subject`, `question`, `comment`) VALUES (?, ?, ?);',
       [subject,array[i].question, array[i].question_comment])
-    console.log(result.insertId);
     var q_no =result.insertId; 
     await conn.query('INSERT INTO fiveworks_aurora_db.ksa_multipleChoice (q_no,subject, choice, answer) VALUES (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?);',
       [q_no,subject,array[i].question_ex1, array[i].question_ex1_answer,q_no,subject,array[i].question_ex2,array[i].question_ex2_answer,q_no,subject,array[i].question_ex3,array[i].question_ex3_answer,q_no,subject,array[i].question_ex4,array[i].question_ex4_answer])
@@ -198,20 +212,7 @@ router.post('/onlineTest/:subject/testinput',async function(req, res, next){
     res.status(200).send("success");
   });
 
-//실기평가 게시판
-router.get('/board/:subject', function(req, res, next) { 
-  var subject= req.params.subject;
-  dbcon.boardList(subject, function (posts) {
-    dbcon.moduleName(subject, function(moduleNames) {
-    console.log(moduleNames);
-      res.render('board/board', {
-        posts: posts,
-        subject: subject,
-        moduleNames: moduleNames
-      });
-    }); 
-  });
-})
+
 //실기평가 성적 수정 페이지
 router.get('/board/:subject/editScore', function(req, res, next) { 
   var subject= req.params.subject;
@@ -234,28 +235,17 @@ router.get('/moduleList', function(req, res, next) {
       }); 
 });
 //실기 평가 게시글 업로드
-router.get('/board/:subject/new', function(req, res, next) { 
-  // db.lectureList((rows) =>{ 
-    // console.log(rows);
-    var sub = req.params.subject;
-    dbcon.moduleName(sub, function(modulenames){
-      console.log(modulenames)
-    res.render('board/new', { 
-      modulenames: modulenames 
-    });
+router.get('/board/:subject/new', check(), async (req, res, next) => { 
+  var subject = req.params.subject;
+  const { id } = req
+  const rows = await axios.get(`${config.dbIp}/board/moduleName/${subject}`) 
+
+  res.render('board/new', { 
+    modulenames: rows.data,
+    isLogin: !!id 
   });
 });
 
- //게시글 등록
-// router.post("/insert/:subject", function (req, res) {
-//   console.log("삽입 포스트 데이터 진행")
-//   var body = req.body;
-//   var subject = req.params.subject;
-//   db.query('insert into fiveworks_aurora_db.`ksa_board`(name,std_no,subject,title,content,create_at) values (?,?,?,?,?,CURRENT_TIMESTAMP)', [body.name, body.std_no, subject, body.title, body.content], function () {
-//   res.redirect('/board/'+subject+'');
-//   })
-// })
-//게시글 수정
 router.post('/edit/:subject/:id', function(req, res, next) { 
   var id=req.params.id;
   var subject = req.params.subject;
@@ -264,6 +254,7 @@ router.post('/edit/:subject/:id', function(req, res, next) {
   res.redirect('/board/'+subject+'');
   });
 });
+
 // 게시글 삭제
 router.post('/board/:subject/:id/delete', function(req, res, next) { 
   const id=req.params.id;
@@ -272,37 +263,57 @@ router.post('/board/:subject/:id/delete', function(req, res, next) {
     res.redirect('/board/'+subject+'');
     })
   });
+
 // 게시글 수정 페이지
-router.get('/board/:subject/:id/edit', async (req, res, next) => { 
+router.get('/board/:subject/:id/edit', check(), async (req, res, next) => { 
   var id=req.params.id;
   var subject=req.params.subject;
 
+  const std = req.query.std
+
   const rows = await axios.get(`${config.dbIp}/board/${id}`)
+  const _rows = rows.data
   const files = await axios.get(`${config.dbIp}/board/${id}/files`)
 
-  res.render('board/edit', {
-    content: rows.data,
-    files: files.data,
-    subject: subject || ''
-  });
+  if(_rows[0].std_no == std || req.id) {
+    res.render('board/edit', {
+      content: rows.data,
+      files: files.data,
+      subject: subject || '',
+      isLogin: !!req.id
+    });
+  } else {
+    res.render('board/login', {
+      subject: subject || '',
+      id: id
+    })
+  }
 });
 //게시글 확인
-router.get('/board/:subject/:id', async (req, res, next) => {
+router.get('/board/:subject/:id', check(), async (req, res, next) => {
   const id=req.params.id;
   const subject=req.params.subject;
+
+  const std = req.query.std
    
   const rows = await axios.get(`${config.dbIp}/board/${id}`)
+  const _rows = rows.data
   const files = await axios.get(`${config.dbIp}/board/${id}/files`)
 
-  var content = {}
-  if (rows.data.length) {
-    content = rows.data[0]
+  if(_rows[0].show == 'A' || _rows[0].std_no == std || req.id) {
+    res.render('board/content', {
+      content: rows.data,
+      files: files.data,
+      subject: subject || '',
+      id,
+      std
+    })
+  } else {
+    res.render('board/login', {
+      subject: subject || '',
+      id: id
+    })
   }
-  res.render('board/content', {
-    content: rows.data,
-    files: files.data,
-    subject: subject || ''
-  })
 });
 
 router.get('/lecture/:lecture/:id', function(req, res, next) { 

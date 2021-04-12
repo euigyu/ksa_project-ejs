@@ -37,6 +37,20 @@ passport.use('token', new JwtStrategy({
 }))
 
 module.exports = {
+  check: () => (req, res, next) => {
+    let token = req.cookies.token
+    if (token) {
+      jwt.verify(token, "secret", async (err, decoded) => {
+        if (err) {
+          console.log(err);
+          return res.status(401).render('login')
+        } else {
+          req.id = decoded.id;
+        }
+      });
+    }
+    next()
+  }, 
   checkToken: () => (req, res, next) => {
     let token = req.cookies.token
     if (token) {

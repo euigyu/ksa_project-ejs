@@ -1,0 +1,31 @@
+
+<% include ../header %>
+
+  <body>
+
+	<div class="card align-middle login-form" >
+		<div class="card-title" style="margin-top:30px;">
+			<h2 class="card-title text-center" style="color:#113366;">학생번호 입력</h2>
+		</div>
+		<div class="card-body">
+      <div class="form-signin" >
+        <h5 class="form-signin-heading">학생번호를 입력하세요</h5>
+        <label for="std" class="sr-only">학생번호</label>
+        <input type="text" id="std" class="form-control std" placeholder="Your ID" required autofocus><BR>
+        <!-- <div class="checkbox">
+          <label>
+            <input type="checkbox" value="remember-me"> 기억하기
+          </label>
+        </div> -->
+        <button class="btn btn-lg btn-primary btn-block" data-id="<%= id %>" data-subject="<%= subject %>" onclick="login(this)">로 그 인</button>
+      </div>
+      
+		</div>
+	</div>
+
+	<div class="modal">
+	</div>
+    <!-- Optional JavaScript -->
+    <script src="/js/board_login.js"></script>
+  </body>
+</html>

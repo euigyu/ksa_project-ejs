@@ -33,7 +33,7 @@ router.get('/:subject/enterscore', checkToken(), async (req, res, next) => {
 //실기평가 게시판
 router.get('/board/:subject', checkToken(), async (req, res, next) => { 
   var subject= req.params.subject;
-  const posts = await axios.get(`${config.dbIp}/board/boardList/${subject}`)
+  const posts = await axios.get(`${config.dbIp}/board/list/${subject}`)
   const moduleNames = await axios.get(`${config.dbIp}/module/list/${subject}`)
   res.render('board/board', {
     posts: posts.data,
