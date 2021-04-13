@@ -45,7 +45,7 @@ router.get('/board/:subject', checkToken(), async (req, res, next) => {
 
 //강의 모듈 리스트 
 router.get('/moduleList', checkToken(), async (req, res, next) => { 
-  let modules = await axios.get(`${config.dbIp}/module/list`)
+  let modules = await axios.get(`${config.dbIp}/module/board/list`)
   res.render('board/moduleList', {
     modules: modules.data,
     isLogin: true
