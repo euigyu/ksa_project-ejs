@@ -14,13 +14,29 @@ const pool = promiseMysql.createPool({
   password : 'fiveworks',
 //   database : '-'
 })
-function moduleList(callback){ 
-  db.query('SELECT * FROM fiveworks_aurora_db.`ksa_moduleList`', (err, modules) => {
+//function moduleList(callback){ 
+//  db.query('SELECT * FROM fiveworks_aurora_db.`ksa_moduleList`', (err, modules) => {
+//     if(err){
+//      throw err;      
+//     }  
+//     callback(JSON.parse(JSON.stringify(modules))); 
+//    }); 
+// }
+function moduleListOnline(callback){
+  db.query('SELECT * FROM fiveworks_aurora_db.`ksa_moduleList` where online_show = "T"', (err, modules) => {
      if(err){
-      throw err;      
-     }  
-     callback(JSON.parse(JSON.stringify(modules))); 
-    }); 
+      throw err;
+     }
+     callback(JSON.parse(JSON.stringify(modules)));
+    });
+ }
+function moduleListOffline(callback){
+  db.query('SELECT * FROM fiveworks_aurora_db.`ksa_moduleList` where offline_show = "T"', (err, modules) => {
+     if(err){
+      throw err;
+     }
+     callback(JSON.parse(JSON.stringify(modules)));
+    });
  }
  function moduleName(sub, callback){ 
   db.query('SELECT * FROM fiveworks_aurora_db.`ksa_moduleList` where module_eng = "'+sub+'"', (err, subject) => {
@@ -126,7 +142,8 @@ module.exports = {
   lectureLink,
   boardList,
   contents,
-  moduleList,
+  moduleListOnline,
+  moduleListOffline,	
   moduleName,
   scoreInfo,
   onlineTestList,

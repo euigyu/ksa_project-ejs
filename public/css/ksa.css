@@ -4,7 +4,8 @@
 }
 /* 강의 */
 .navbar .container .zeta-menu .classes > ul {
-  width: 185px;
+  /*width: 185px;*/
+  width: auto;
 }
 .navbar .container .zeta-menu .classes > ul > li {
   width: max-content;

@@ -84,7 +84,7 @@ router.post("/:subject/editscore/edit", function (req, res) {
 });
 //필기평가 모듈 선택페이지
 router.get('/onlineTest', function(req, res, next) { 
-  dbcon.moduleList(function (modules) {
+  dbcon.moduleListOnline(function (modules) {
       res.render('onlineTest/moduleList', {
         modules: modules
       });
@@ -228,7 +228,7 @@ router.get('/board/:subject/editScore', function(req, res, next) {
 });
 //강의 모듈 리스트 
 router.get('/moduleList', function(req, res, next) { 
-    dbcon.moduleList(function (modules) {
+    dbcon.moduleListOffline(function (modules) {
         res.render('board/moduleList', {
           modules: modules
         });
