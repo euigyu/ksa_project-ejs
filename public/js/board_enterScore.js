@@ -13,7 +13,7 @@ function addScoreListener(e) {
 }
 function addScore(idx) {
   $.ajax2({
-    url: `http://3.36.159.49:3008/api/board/scoreInfo/${subject}`,
+    url: `http://learnonline.click/api/board/scoreInfo/${subject}`,
     processData: false,
     contentType: "application/json",
     type: "GET",
@@ -102,13 +102,13 @@ $(".register").on("click", function (e) {
   var post = "POST METHOD CALL";
   alert("요이");
   $.ajax2({
-    url: `http://3.36.159.49:3008/api/board/enterscore/${subject}`,
+    url: `http://learnonline.click/api/board/enterscore/${subject}`,
     processData: false,
     contentType: "application/json",
     data: JSON.stringify({ arr }),
     type: "POST",
     success: function (result) {
-      location.href = `http://3.36.159.49:3008/admin/board/${subject}`;
+      location.href = `http://learnonline.click/admin/board/${subject}`;
     },
   });
 });

@@ -14,7 +14,7 @@ function save(){
 };
 alert(score);
   $.ajax2({
-    url: `http://3.36.159.49:3008/onlineTest/${subject}/result`,
+    url: `http://learnonline.click/onlineTest/${subject}/result`,
     processData: false,
     contentType: "application/json",
     data: JSON.stringify( data ),
@@ -43,7 +43,7 @@ function searchParam(key) {
 
 
 $.ajax2({
-  url: `http://3.36.159.49:3008/api/onlineTest/multipleChoiceList/${subject}`,
+  url: `http://learnonline.click/api/onlineTest/multipleChoiceList/${subject}`,
   processData: false,
   contentType: "application/json",
   type: "GET",
