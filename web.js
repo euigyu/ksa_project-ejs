@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 
-var app = require('../app');
+var app = require('./app');
 var debug = require('debug')('ksa-express:server');
 var http = require('http');
 
@@ -12,8 +12,8 @@ var http = require('http');
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3008');
-// var port = normalizePort(process.env.PORT || '8001');
+// var port = normalizePort(process.env.PORT || '3008');
+var port = normalizePort(process.env.PORT || '8001');
 app.set('port', port);
 
 /**

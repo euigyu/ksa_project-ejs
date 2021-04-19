@@ -15,13 +15,13 @@ function addQuestionListener (e) {
 }
 function addQuestion(idx) {
   $.ajax2({
-    url: `http://localhost:3008/api/onlineTest/list/${subject}`,
+    url: `http://learnonline.click/api/onlineTest/list/${subject}`,
     processData: false,
     contentType: "application/json",
     type: "GET",
     success: function (_result) {
       $.ajax2({
-        url: `http://localhost:3008/api/onlineTest/multipleChoiceList/${subject}`,
+        url: `http://learnonline.click/api/onlineTest/multipleChoiceList/${subject}`,
         processData: false,
         contentType: "application/json",
         type: "GET",
@@ -177,7 +177,7 @@ $('.register').on('click', function (e) {
   // ajax post 통신
   $(arr).each(function () {
     $.ajax2({
-      url: `http://localhost:3008/api/onlineTest/${subject}/testinput`,
+      url: `http://learnonline.click/api/onlineTest/${subject}/testinput`,
       // dataType: 'json',
       contentType: "application/json",
       type: this.q_no ? 'PUT' : 'POST',
