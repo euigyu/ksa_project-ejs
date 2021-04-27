@@ -25,10 +25,10 @@ function moduleListOnline(callback){
  function moduleListOffline(callback){ 
   db.query('SELECT * FROM fiveworks_aurora_db.`ksa_moduleList` where offline_show = "T"', (err, modules) => {
      if(err){
-      throw err;      
-     }  
-     callback(JSON.parse(JSON.stringify(modules))); 
-    }); 
+      throw err;
+     }
+     callback(JSON.parse(JSON.stringify(modules)));
+    });
  }
  function moduleName(sub, callback){ 
   db.query('SELECT * FROM fiveworks_aurora_db.`ksa_moduleList` where module_eng = "'+sub+'"', (err, subject) => {

@@ -56,7 +56,8 @@ function _excelDown(fileName, sheetName, sheetHtml) {
             if(t == 'after'){
               _excelDown("사후_평가성적결과.xls", "시트명", table.outerHTML) 
             }
-          }}
+          }
+        }
 
 function beforeResultDownload(){
   alert("before");

@@ -1,6 +1,5 @@
 const path = require('path')
 const env = require('express')().get('env') || 'development'
-
 const development = env
 const config = { 
   root: path.join(__dirname, '..'),
