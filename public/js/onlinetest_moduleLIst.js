@@ -1,6 +1,7 @@
-$('#download').unbind()
-// $('.register').bind('click', validation)
-$('#download').bind('click', download)
+$('#before_download').unbind()
+$('#before_download').bind('click', beforeResultDownload)
+$('#after_download').unbind()
+$('#after_download').bind('click', afterResultDownload)
 function _excelDown(fileName, sheetName, sheetHtml) { 
   var html = ''; 
   html += '<html xmlns:x="urn:schemas-microsoft-com:office:excel">'; 
@@ -43,19 +44,25 @@ function _excelDown(fileName, sheetName, sheetHtml) {
           anchor.click(); // 클릭(다운) 후 요소 제거 
           document.body.removeChild(anchor); 
         }} 
-        function excel_download(){ 
+        function excel_download(t){ 
           // 대상 테이블을 가져옴 
           var table = document.getElementById("excel"); 
           if(table){ 
             // CASE 대상 테이블이 존재하는 경우 
-            // 엑셀다운 (엑셀파일명, 시트명, 내부데이터HTML) 
-            _excelDown("평가성적결과.xls", "시트명", table.outerHTML) 
+            // 엑셀다운 (엑셀파일명, 시트명, 내부데이터HTML)
+            if(t == 'before'){ 
+              _excelDown("사전_평가성적결과.xls", "시트명", table.outerHTML) 
+            }
+            if(t == 'after'){
+              _excelDown("사후_평가성적결과.xls", "시트명", table.outerHTML) 
+            }
           }}
 
-function download(){
-  alert("start");
+function beforeResultDownload(){
+  alert("before");
+  var check = 'before'
   $.ajax2({
-    url: `http://learnonline.click/onlineTest/result/down`,
+    url: `http://learnonline.click/before/onlineTest/result/down`,
     processData: false,
     contentType: "application/json",
     data: "",
@@ -82,7 +89,45 @@ function download(){
                       '  </tr> ';
               }
               $('.excel_feild').append(str);
-              excel_download();
+              excel_download(check);
+ },
+    error: function (result){
+      alert("fail")
+    },
+  });
+};
+function afterResultDownload(){
+  alert("after");
+  var check = 'after'
+  $.ajax2({
+    url: `http://learnonline.click/after/onlineTest/result/down`,
+    processData: false,
+    contentType: "application/json",
+    data: "",
+    type: "POST",
+    success: function (result) {
+        // alert(result[0].name)
+        var str ='<table id="excel" border="1" style="visibility:hidden"'+
+         ' <thead>'+ 
+          '  <tr>'+
+           '   <th>과목</th>'+ 
+            '  <th>이름</th>'+ 
+            '  <th>수강생 번호</th>'+ 
+            '  <th>점수</th>'+ 
+            ' </tr> '+
+            ' </thead>'+ 
+            ' <tbody> ';
+
+            for(var i = 0; i < result.length; i++){
+              str +='  <tr>'+
+                      '   <td>'+result[i].subject+'</td> '+
+                      '   <td>'+result[i].name+'</td> '+
+                      '   <td>'+result[i].std_no+'</td> '+
+                      '   <td>'+result[i].score+'</td> '+
+                      '  </tr> ';
+              }
+              $('.excel_feild').append(str);
+              excel_download(check);
  },
     error: function (result){
       alert("fail")

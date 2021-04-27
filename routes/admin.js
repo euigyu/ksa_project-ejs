@@ -53,7 +53,7 @@ router.get('/moduleList', checkToken(), async (req, res, next) => {
 });
 
 //필기평가 문제 수정 페이지
-router.get('/onlineTest/:subject', checkToken(), async function(req, res, next) { 
+router.get('/onlineTest/:subject/testChoice', checkToken(), async function(req, res, next) { 
   var subject=req.params.subject;
 
   const modules = await axios.get(`${config.dbIp}/module/list`)

@@ -90,8 +90,19 @@ router.get('/onlineTest', function(req, res, next) {
       });
     }); 
 })
+router.get('/onlineTest/:subject/testChoice', async function(req, res, next) { 
+  var subject=req.params.subject;
+  
+  const modules = await axios.get(`${config.dbIp}/module/list`)
+  const moduleNames = await axios.get(`${config.dbIp}/module/list/${subject}`)
+  res.render('onlineTest/testChoice', {
+    modules: modules.data,
+    modulenames: moduleNames.data,
+    subject,
+  });
+})
 //필기 평가 페이지
-router.get('/onlineTest/:subject', async function(req, res, next) { 
+router.get('/:choice/onlineTest/:subject', async function(req, res, next) { 
   var subject=req.params.subject;
   
   const modules = await axios.get(`${config.dbIp}/module/list`)
@@ -107,7 +118,7 @@ router.get('/onlineTest/:subject', async function(req, res, next) {
   });
 })
 //필기 평가 결과 처리 ajax
-router.get('/onlineTest/:subject/result', async (req, res, next) => {
+router.get('/:choice/onlineTest/:subject/result', async (req, res, next) => {
   var checked = req.query.checked;
   console.log(checked);
   var subject = req.params.subject;
@@ -141,27 +152,50 @@ router.get('/board/:subject', async (req, res, next) => {
   });
 })
 
-//필기평가 성적 다운로드
-router.post('/onlineTest/result/down', async (req, res, next) => {
+//사전 필기 평가 성적 다운로드
+router.post('/before/onlineTest/result/down', async (req, res, next) => {
   // var subject = req.params.subject;
   // console.log(subject);
     let conn = await pool.getConnection(async _conn =>conn) 
-    let [data]=await conn.query("SELECT * FROM fiveworks_aurora_db.ksa_scoreInfo_online order by subject asc")
+    let [data]=await conn.query("SELECT * FROM fiveworks_aurora_db.ksa_scoreInfo_before order by subject asc")
       // const jsonCustomers = JSON.parse(JSON.stringify(data));
      console.log(JSON.parse(JSON.stringify(data)));
      conn.release();
      var result = JSON.parse(JSON.stringify(data));
      res.status(200).send(result);
-    });
-
- //필기 평가 성적 결과 저장 ajax
-router.post('/onlineTest/:subject/result/', async (req, res, next) => {
+});
+//사후 필기 평가 성적 다운로드
+router.post('/after/onlineTest/result/down', async (req, res, next) => {
+  // var subject = req.params.subject;
+  // console.log(subject);
+    let conn = await pool.getConnection(async _conn =>conn) 
+    let [data]=await conn.query("SELECT * FROM fiveworks_aurora_db.ksa_scoreInfo_after order by subject asc")
+      // const jsonCustomers = JSON.parse(JSON.stringify(data));
+     console.log(JSON.parse(JSON.stringify(data)));
+     conn.release();
+     var result = JSON.parse(JSON.stringify(data));
+     res.status(200).send(result);
+});
+ //사전 필기 평가 성적 결과 저장 ajax
+router.post('/before/onlineTest/:subject/result/', async (req, res, next) => {
   var subject = req.params.subject;
   var array = (req.body);
   console.log(array.name);
   console.log(subject);
   let conn = await pool.getConnection(async _conn => _conn)
-  await conn.query('INSERT INTO fiveworks_aurora_db.ksa_scoreInfo_online (`subject`, `name`, `std_no`,`score`) VALUES (?, ?, ?, ?);',
+  await conn.query('INSERT INTO fiveworks_aurora_db.ksa_scoreInfo_before (`subject`, `name`, `std_no`,`score`) VALUES (?, ?, ?, ?);',
+  [subject,array.name, array.std_no,array.score])
+  conn.release()
+  res.status(200).send("success");
+  });
+  //사후 필기 평가 성적 결과 저장 ajax
+router.post('/after/onlineTest/:subject/result/', async (req, res, next) => {
+  var subject = req.params.subject;
+  var array = (req.body);
+  console.log(array.name);
+  console.log(subject);
+  let conn = await pool.getConnection(async _conn => _conn)
+  await conn.query('INSERT INTO fiveworks_aurora_db.ksa_scoreInfo_after (`subject`, `name`, `std_no`,`score`) VALUES (?, ?, ?, ?);',
   [subject,array.name, array.std_no,array.score])
   conn.release()
   res.status(200).send("success");

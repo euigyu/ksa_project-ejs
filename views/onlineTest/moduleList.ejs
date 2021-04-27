@@ -12,7 +12,7 @@
                 <li style="display:list-item;">
                   <!-- 문제입력 페이지로 이동 링크 -->
                   <!-- <a style="color:#999" href="/onlineTest/<%=modules[i].module_eng%>/submit"> <%= modules[i].module_kr %> </a>  -->
-                  <a style="color:#999" href="<%= locals.isLogin ? '/admin' : '' %>/onlineTest/<%=modules[i].module_eng%>"> <%= modules[i].module_kr %> </a> 
+                  <a style="color:#999" href="<%= locals.isLogin ? '/admin' : '' %>/onlineTest/<%=modules[i].module_eng%>/testChoice"> <%= modules[i].module_kr %> </a> 
                 </li>
               </ol>
               <% } %>
@@ -37,7 +37,8 @@
                 <% if(locals.isLogin) { %>
 								<!-- <li><a href="#">문제 입력</a></li> -->
 								<!-- <li><a href="#">문제 수정</a></li> -->
-                <li><a id="download" href="#">평가 결과 다운로드</a></li>
+                <li><a id="before_download" href="#">사전 평가 결과 다운로드</a></li>
+                <li><a id="after_download" href="#">사후 평가 결과 다운로드</a></li>
                 <% } %>
 								<!--<li><a href="#elements">Elements</a></li>-->
 							</ul>

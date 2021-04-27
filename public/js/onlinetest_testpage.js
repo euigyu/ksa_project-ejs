@@ -1,5 +1,5 @@
-const subject = window.location.pathname.split('/')[2]
-
+const subject = window.location.pathname.split('/')[3]
+const choice = window.location.pathname.split('/')[1]
 $('.register').unbind()
 // $('.register').bind('click', validation)
 $('.register').bind('click', submit)
@@ -20,7 +20,7 @@ function submit(e) {
     return false
   };
   var checked = [];
-  var url = `/onlineTest/${subject}/result`
+  var url = `/${choice}/onlineTest/${subject}/result`
   var name= $('.input_name').val();
   var std_no =$('.input_no').val();
   $('input[type="radio"]:checked').each(function () {

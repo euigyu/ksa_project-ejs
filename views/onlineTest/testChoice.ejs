@@ -1,0 +1,38 @@
+<% include ../header %> 
+<body>
+ <!-- Wrapper -->
+<!-- / .wrapper -->
+    <!-- Jumbotron -->
+        <div class="carousel-inner online-test">
+      
+          <!-- Header -->
+					<header id="header">
+						<div class="logo">
+							<span class="icon fa-gem"></span>
+						</div>
+						<div class="content">
+							<div class="inner">
+								<h1>필기 평가</h1>
+								<p style="font-size:12px">사전 평가 혹은 사후 평가 해당하는 평가를 선택하세요.<br />
+                 클릭시 해당 평가 페이지로 <a href="#">이동</a>합니다.</p>
+							</div>
+						</div>
+						<nav>
+							<ul>
+                <li><a style="font-size:14px" href="/before/onlineTest/<%=subject%>"> <%= modulenames[0].module_kr %> 사전 평가 </a> </li>
+				<li><a style="font-size:14px" href="/after/onlineTest/<%=subject%>"> <%= modulenames[0].module_kr %> 사후 평가 </a></li>
+								<!--<li><a href="#elements">Elements</a></li>-->
+							</ul>
+						</nav>
+					</header>
+     </div>
+     <div class="excel_feild">
+     </div>
+        <!-- </div>  -->
+        
+</body>
+  <script src="/js/onlinetest_moduleList.js"></script>
+  <% include ../footer %>
+</html>
+
+

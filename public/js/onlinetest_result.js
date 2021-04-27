@@ -1,4 +1,5 @@
-const subject = window.location.pathname.split('/')[2];
+const subject = window.location.pathname.split('/')[3];
+const choice = window.location.pathname.split('/')[1];
 const std_name = (searchParam('name'));
 const std_no =(searchParam('std_no'));
 var score 
@@ -11,20 +12,37 @@ function save(){
     name : std_name,
     std_no : std_no,
     score : score
-};
-alert(score);
-  $.ajax2({
-    url: `http://learnonline.click/onlineTest/${subject}/result`,
-    processData: false,
-    contentType: "application/json",
-    data: JSON.stringify( data ),
-    type: "POST",
-    success: function (result) {
-      if (result) {
-        location.href = '/onlineTest'
-      }
-    },
-  })
+  };
+  
+  if(choice == "before"){
+    $.ajax2({
+      url: `http://learnonline.click/before/onlineTest/${subject}/result`,
+      processData: false,
+      contentType: "application/json",
+      data: JSON.stringify( data ),
+      type: "POST",
+      success: function (result) {
+        if (result) {
+          location.href = '/onlineTest'
+        }
+      },
+    })
+  }
+  if(choice == "after"){
+    alert("start")
+    $.ajax2({
+      url: `http://learnonline.click/after/onlineTest/${subject}/result`,
+      processData: false,
+      contentType: "application/json",
+      data: JSON.stringify( data ),
+      type: "POST",
+      success: function (result) {
+        if (result) {
+          location.href = '/onlineTest'
+        }
+      },
+    })
+  }
 }
 
 function getScore () {
