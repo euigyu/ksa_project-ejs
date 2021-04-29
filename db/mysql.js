@@ -79,7 +79,7 @@ function scoreInfo(id, callback){
     }); 
 }
 function onlineTestList(subject, callback){ 
-  let sql = 'select ot.subject, ot.q_no, ot.question, ot.`comment`, group_concat(mul.m_no) as m_nos, group_concat(mul.choice) as choices from fiveworks_aurora_db.ksa_onlineTest as ot, fiveworks_aurora_db.ksa_multipleChoice as mul where ot.q_no = mul.q_no and'
+  let sql = 'select ot.subject, ot.q_no, ot.question, ot.`comment`, group_concat(mul.m_no) as m_nos, group_concat(mul.choice) as choices from fiveworks_aurora_db.ksa_onlineTest2 as ot, fiveworks_aurora_db.ksa_multipleChoice2 as mul where ot.q_no = mul.q_no and'
   sql += ' ot.subject = "' + subject + '" group by ot.q_no'
   db.query(sql , (err, question) => {
      if(err){
@@ -87,41 +87,17 @@ function onlineTestList(subject, callback){
      }  
      callback(JSON.parse(JSON.stringify(question))); 
     }); 
-  // db.query('select * from fiveworks_aurora_db.`ksa_onlineTest` where subject ="'+id+'"' , (err, question) => {
-  //    if(err){
-  //     throw err;      
-  //    }  
-  //    callback(JSON.parse(JSON.stringify(question))); 
-  //   }); 
 }
-// function multipleChoiceList(id, callback){ 
-//   db.query('select * from fiveworks_aurora_db.`ksa_multipleCoice` where subject ="'+id+'"' , (err, multiples) => {
-//      if(err){
-//       throw err;      
-//      }  
-//      console.log(multiples);
-//      for(var i=0; i< multiples.length; i++){
-//        console.log(multiples);
-
-//      }
-//      callback(JSON.parse(JSON.stringify(multiples))); 
-//     }); 
-// }
 function multipleChoiceList(id, callback){ 
-  db.query('select * from fiveworks_aurora_db.`ksa_multipleChoice` where q_no="'+id+'"' , (err, multiples) => {
+  db.query('select * from fiveworks_aurora_db.`ksa_multipleChoice2` where q_no="'+id+'"' , (err, multiples) => {
      if(err){
       throw err;      
      }  
-    //  console.log(multiples);
-    //  for(var i=0; i< multiples.length; i++){
-    //    console.log(multiples[i]);
-
-    //  }
      callback(JSON.parse(JSON.stringify(multiples))); 
     }); 
 }
 function testcheck(callback){ 
-  db.query('select m_no, q_no from fiveworks_aurora_db.ksa_multipleChoice where answer="t"' , (err, callback) => {
+  db.query('select m_no, q_no from fiveworks_aurora_db.ksa_multipleChoice2 where answer="t"' , (err, callback) => {
      if(err){
       throw err;      
      }  

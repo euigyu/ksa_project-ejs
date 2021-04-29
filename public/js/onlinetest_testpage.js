@@ -35,5 +35,5 @@ function submit(e) {
     })
   }
   location.href = url
-  alert(url);
+  //alert(url);
 }

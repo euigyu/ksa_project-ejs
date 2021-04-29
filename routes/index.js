@@ -122,7 +122,9 @@ router.get('/:choice/onlineTest/:subject/result', async (req, res, next) => {
   var checked = req.query.checked;
   console.log(checked);
   var subject = req.params.subject;
-
+  var choice_eval = req.params.choice;
+  console.log(choice_eval);
+  console.log("===================")
   const modules = await axios.get(`${config.dbIp}/module/list`)
   const moduleNames = await axios.get(`${config.dbIp}/module/list/${subject}`)
   const questions = await axios.get(`${config.dbIp}/onlineTest/list/${subject}`)
@@ -134,7 +136,8 @@ router.get('/:choice/onlineTest/:subject/result', async (req, res, next) => {
     modulenames: moduleNames.data,
     questions: ques,
     checked: checked || [],
-    subject
+    subject,
+    choice_eval
   })
 });
 
@@ -236,11 +239,11 @@ router.post('/onlineTest/:subject/testinput',async function(req, res, next){
   console.log(array);
   let conn = await pool.getConnection(async _conn => _conn)
   for(var i=0; i<array.length;i++){
-    let [result] = await conn.query('INSERT INTO fiveworks_aurora_db.ksa_onlineTest (`subject`, `question`, `comment`) VALUES (?, ?, ?);',
+    let [result] = await conn.query('INSERT INTO fiveworks_aurora_db.ksa_onlineTest2 (`subject`, `question`, `comment`) VALUES (?, ?, ?);',
       [subject,array[i].question, array[i].question_comment])
     var q_no =result.insertId; 
-    await conn.query('INSERT INTO fiveworks_aurora_db.ksa_multipleChoice (q_no,subject, choice, answer) VALUES (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?);',
-      [q_no,subject,array[i].question_ex1, array[i].question_ex1_answer,q_no,subject,array[i].question_ex2,array[i].question_ex2_answer,q_no,subject,array[i].question_ex3,array[i].question_ex3_answer,q_no,subject,array[i].question_ex4,array[i].question_ex4_answer])
+    await conn.query('INSERT INTO fiveworks_aurora_db.ksa_multipleChoice2 (q_no,subject, choice, answer) VALUES (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?);',
+      [q_no,subject,array[i].question_ex1, array[i].question_ex1_answer,q_no,subject,array[i].question_ex2,array[i].question_ex2_answer,q_no,subject,array[i].question_ex3,array[i].question_ex3_answer,q_no,subject,array[i].question_ex4,array[i].question_ex4_answer,q_no,subject,array[i].question_ex5,array[i].question_ex5_answer])
   }
     conn.release()
     res.status(200).send("success");

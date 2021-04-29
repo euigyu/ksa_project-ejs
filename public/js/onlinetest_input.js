@@ -37,7 +37,7 @@ function addQuestion(idx) {
             for(var i=0; i<_result.length; i++){
               // alert("start")
               var checked=[];
-              for(var j=0; j<4;j++){
+              for(var j=0; j<5;j++){
                 if(parseInt(ques[i].m_nos[j])==parseInt(answers[i].m_nos[0])){
                   checked.push("checked")
                   // alert(answers[i].m_nos[0])
@@ -67,6 +67,10 @@ function addQuestion(idx) {
                       '<input class="form-control question_ex4" type="text" value="'+ques[i].choices[3]+'" placeholder="보기 입력"/>' +
                       '<input name="check_'+count+'" class="form-control question_answer" '+checked[3]+' type="radio" value="4"/>' +
                     '</div>' +
+                    '<div class="multi-selection">' +
+                      '<input class="form-control question_ex5" type="text" value="'+ques[i].choices[4]+'" placeholder="모르겠음" readonly/>' +
+                      '<input name="check_'+count+'" class="form-control question_answer" '+checked[4]+' type="radio" value="5"/>' +
+                    '</div>' +
                   '</div>' +
                 // '    <input class="form-control question_result" type="text" placeholder="정답"/>'+
                 '<input class="form-control question_comment" type="text" name="question_comment" value="'+_result[i].comment+'" placeholder="해설"/><br/>' +
@@ -76,6 +80,7 @@ function addQuestion(idx) {
                 '<input style="display:none" class="form-control m_nos2" type="text" value="'+ques[i].m_nos[1]+'" placeholder=""/>' +
                 '<input style="display:none" class="form-control m_nos3" type="text" value="'+ques[i].m_nos[2]+'" placeholder=""/>' +
                 '<input style="display:none" class="form-control m_nos4" type="text" value="'+ques[i].m_nos[3]+'" placeholder=""/>' +
+                '<input style="display:none" class="form-control m_nos5" type="text" value="'+ques[i].m_nos[4]+'" placeholder=""/>' +
                 '</div>' +
                 '</div>'
               var trHtml = $('#tbody'); //last를 사용하여 마지막 태그 호출
@@ -107,6 +112,10 @@ function addQuestion(idx) {
                     '<div class="multi-selection">' +
                       '<input class="form-control question_ex4" type="text" value="" placeholder="보기 입력"/>' +
                       '<input name="check_'+count+'" class="form-control question_answer" type="radio" value="4"/>' +
+                    '</div>' +
+                    '<div class="multi-selection">' +
+                      '<input class="form-control question_ex5" type="text" value="모르겠음" placeholder="모르겠음" readonly />' +
+                      '<input name="check_'+count+'" class="form-control question_answer" type="radio" value="5"/>' +
                     '</div>' +
                   '</div>' +
                 '<input class="form-control question_comment" type="text" name="question_comment" value="" placeholder="해설"/>' +
@@ -142,7 +151,7 @@ $('.register').on('click', function (e) {
   var arr = []
   $('.box').each((idx, element) => {
     var answer = parseInt($(element).find('input:checked').val());
-    for(var i =1; i<=4; i++){
+    for(var i =1; i<=5; i++){
       if(i==answer){
         ex.push('T')
       }
@@ -165,6 +174,9 @@ $('.register').on('click', function (e) {
       m_nos4: $(element).find('.content .m_nos4').val(),
       question_ex4: $(element).find('.content .question_ex4').val(),
       question_ex4_answer: ex[3],
+      m_nos5: $(element).find('.content .m_nos5').val(),
+      question_ex5: $(element).find('.content .question_ex5').val(),
+      question_ex5_answer: ex[4],
       question_comment: $(element).find('.content .question_comment').val(),
     };
     arr.push(test);

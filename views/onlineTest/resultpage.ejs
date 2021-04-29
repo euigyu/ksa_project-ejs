@@ -25,7 +25,9 @@
                     <br>
                 <% } %>
                 </div>
+                <% if (choice_eval == 'after') {%>
                 <p style="color:red">해설: <%= questions[i].comment%> </p>
+                <% } %>
             </div>
             <% } %>
         </div>
