@@ -91,6 +91,7 @@ function beforeResultDownload(){
               }
               $('.excel_feild').append(str);
               excel_download(check);
+              location.reload(true);
  },
     error: function (result){
       alert("fail")
@@ -129,6 +130,7 @@ function afterResultDownload(){
               }
               $('.excel_feild').append(str);
               excel_download(check);
+              location.reload(true);
  },
     error: function (result){
       alert("fail")

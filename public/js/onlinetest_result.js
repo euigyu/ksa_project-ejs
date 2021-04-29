@@ -3,46 +3,57 @@ const choice = window.location.pathname.split('/')[1];
 const std_name = (searchParam('name'));
 const std_no =(searchParam('std_no'));
 var score 
+var subject_kr
 $('.register').unbind()
 // $('.register').bind('click', validation)
 $('.register').bind('click', save);
 
 function save(){
-  var data={
-    name : std_name,
-    std_no : std_no,
-    score : score
-  };
-  
-  if(choice == "before"){
-    $.ajax2({
-      url: `http://learnonline.click/before/onlineTest/${subject}/result`,
-      processData: false,
-      contentType: "application/json",
-      data: JSON.stringify( data ),
-      type: "POST",
-      success: function (result) {
-        if (result) {
-          location.href = '/onlineTest'
+  $.ajax2({
+    url: `http://learnonline.click/api/onlineTest/moduleName/${subject}`,
+    processData: false,
+    contentType: "application/json",
+    type: "GET",
+    success: function (result1) {
+        subject_kr = result1;
+        alert(subject_kr)
+        var data={
+          subject : subject_kr,
+          name : std_name,
+          std_no : std_no,
+          score : score
+        };
+        alert(data.subject)
+        if(choice == "before"){
+          $.ajax2({
+            url: `http://learnonline.click/before/onlineTest/${subject}/result`,
+            processData: false,
+            contentType: "application/json",
+            data: JSON.stringify( data ),
+            type: "POST",
+            success: function (result) {
+              if (result) {
+                location.href = '/onlineTest'
+              }
+            },
+          })
+        }
+        if(choice == "after"){
+          $.ajax2({
+            url: `http://learnonline.click/after/onlineTest/${subject}/result`,
+            processData: false,
+            contentType: "application/json",
+            data: JSON.stringify( data ),
+            type: "POST",
+            success: function (result) {
+              if (result) {
+                location.href = '/onlineTest'
+              }
+            },
+          })
         }
       },
     })
-  }
-  if(choice == "after"){
-    alert("start")
-    $.ajax2({
-      url: `http://learnonline.click/after/onlineTest/${subject}/result`,
-      processData: false,
-      contentType: "application/json",
-      data: JSON.stringify( data ),
-      type: "POST",
-      success: function (result) {
-        if (result) {
-          location.href = '/onlineTest'
-        }
-      },
-    })
-  }
 }
 
 function getScore () {

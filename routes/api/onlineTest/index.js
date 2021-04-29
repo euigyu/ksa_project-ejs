@@ -2,6 +2,16 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../../../db')
 
+router.get('/moduleName/:subject', async function(req, res, next) { 
+  const subject = req.params.subject
+  let conn = await pool.getConnection(async _conn => _conn)
+  let [rows] = await conn.query('SELECT * FROM fiveworks_aurora_db.`ksa_moduleList` where module_eng = "'+ subject +'"')
+  conn.release()
+  console.log(rows[0].module_kr)
+  console.log("===========show==========")
+  res.status(200).send(rows[0].module_kr)
+});
+
 router.get('/multipleChoiceList/:subject', async function(req, res, next) { 
   const subject = req.params.subject
   let conn = await pool.getConnection(async _conn => _conn)

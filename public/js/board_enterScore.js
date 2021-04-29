@@ -100,7 +100,6 @@ $(".register").on("click", function (e) {
   });
   console.log(arr);
   var post = "POST METHOD CALL";
-  alert("요이");
   $.ajax2({
     url: `http://learnonline.click/api/board/enterscore/${subject}`,
     processData: false,

@@ -187,7 +187,7 @@ router.post('/before/onlineTest/:subject/result/', async (req, res, next) => {
   console.log(subject);
   let conn = await pool.getConnection(async _conn => _conn)
   await conn.query('INSERT INTO fiveworks_aurora_db.ksa_scoreInfo_before (`subject`, `name`, `std_no`,`score`) VALUES (?, ?, ?, ?);',
-  [subject,array.name, array.std_no,array.score])
+  [array.subject, array.name, array.std_no,array.score])
   conn.release()
   res.status(200).send("success");
   });
@@ -195,11 +195,11 @@ router.post('/before/onlineTest/:subject/result/', async (req, res, next) => {
 router.post('/after/onlineTest/:subject/result/', async (req, res, next) => {
   var subject = req.params.subject;
   var array = (req.body);
-  console.log(array.name);
-  console.log(subject);
+  console.log(array.subject);
+  console.log("=================");
   let conn = await pool.getConnection(async _conn => _conn)
   await conn.query('INSERT INTO fiveworks_aurora_db.ksa_scoreInfo_after (`subject`, `name`, `std_no`,`score`) VALUES (?, ?, ?, ?);',
-  [subject,array.name, array.std_no,array.score])
+  [array.subject, array.name, array.std_no,array.score])
   conn.release()
   res.status(200).send("success");
   }); 
