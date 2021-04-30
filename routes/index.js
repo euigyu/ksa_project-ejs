@@ -109,7 +109,8 @@ router.get('/:choice/onlineTest/:subject', async function(req, res, next) {
   const moduleNames = await axios.get(`${config.dbIp}/module/list/${subject}`)
   const questions = await axios.get(`${config.dbIp}/onlineTest/list/${subject}`)
 
-  const ques = questions.data.map(question => ({...question, m_nos: question.m_nos.split(','), choices: question.choices.split(',')}))
+  const ques = questions.data.map(question => ({...question, m_nos: question.m_nos.split('<<><'), choices: question.choices.split('<<><')}))
+  console.log(ques)
   res.render('onlineTest/testpage', {
     modules: modules.data,
     modulenames: moduleNames.data,
@@ -129,7 +130,7 @@ router.get('/:choice/onlineTest/:subject/result', async (req, res, next) => {
   const moduleNames = await axios.get(`${config.dbIp}/module/list/${subject}`)
   const questions = await axios.get(`${config.dbIp}/onlineTest/list/${subject}`)
 
-  const ques = questions.data.map(question => ({...question, m_nos: question.m_nos.split(','), choices: question.choices.split(',')}))
+  const ques = questions.data.map(question => ({...question, m_nos: question.m_nos.split('<<><'), choices: question.choices.split('<<><')}))
 
   res.render('onlineTest/resultpage', {
     modules: modules.data,

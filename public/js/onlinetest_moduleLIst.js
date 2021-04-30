@@ -63,7 +63,7 @@ function beforeResultDownload(){
   alert("사전 평가 다운로드");
   var check = 'before'
   $.ajax2({
-    url: `http://learnonline.click/before/onlineTest/result/down`,
+    url: `http://localhost:3008/before/onlineTest/result/down`,
     processData: false,
     contentType: "application/json",
     data: "",
@@ -102,7 +102,7 @@ function afterResultDownload(){
   alert("사후 평가 다운로드");
   var check = 'after'
   $.ajax2({
-    url: `http://learnonline.click/after/onlineTest/result/down`,
+    url: `http://localhost:3008/after/onlineTest/result/down`,
     processData: false,
     contentType: "application/json",
     data: "",

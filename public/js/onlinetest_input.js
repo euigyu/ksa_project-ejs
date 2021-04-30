@@ -15,22 +15,22 @@ function addQuestionListener (e) {
 }
 function addQuestion(idx) {
   $.ajax2({
-    url: `http://learnonline.click/api/onlineTest/list/${subject}`,
+    url: `http://localhost:3008/api/onlineTest/list/${subject}`,
     processData: false,
     contentType: "application/json",
     type: "GET",
     success: function (_result) {
       $.ajax2({
-        url: `http://learnonline.click/api/onlineTest/multipleChoiceList/${subject}`,
+        url: `http://localhost:3008/api/onlineTest/multipleChoiceList/${subject}`,
         processData: false,
         contentType: "application/json",
         type: "GET",
         success: function (multiple) {
-          const ques = _result.map(_result => ({..._result, m_nos: _result.m_nos.split(','), choices: _result.choices.split(',')}))
+          const ques = _result.map(_result => ({..._result, m_nos: _result.m_nos.split('<<><'), choices: _result.choices.split('<<><')}))
           console.log(ques)
           //정답 찾기
           const ans = multiple
-          const answers = ans.map(answer => ({...answer, m_nos: answer.m_nos.split(',')}))
+          const answers = ans.map(answer => ({...answer, m_nos: answer.m_nos.split('<<><')}))
           //
           if(_result.length && check_qno==0){
             check_qno++;
@@ -189,7 +189,7 @@ $('.register').on('click', function (e) {
   // ajax post 통신
   $(arr).each(function () {
     $.ajax2({
-      url: `http://learnonline.click/api/onlineTest/${subject}/testinput`,
+      url: `http://localhost:3008/api/onlineTest/${subject}/testinput`,
       // dataType: 'json',
       contentType: "application/json",
       type: this.q_no ? 'PUT' : 'POST',

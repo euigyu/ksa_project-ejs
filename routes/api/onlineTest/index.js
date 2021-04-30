@@ -15,7 +15,7 @@ router.get('/moduleName/:subject', async function(req, res, next) {
 router.get('/multipleChoiceList/:subject', async function(req, res, next) { 
   const subject = req.params.subject
   let conn = await pool.getConnection(async _conn => _conn)
-  let [rows] = await conn.query('select q_no, group_concat(m_no) as m_nos from fiveworks_aurora_db.`ksa_multipleChoice2` where subject="' + subject + '" and `answer` = "t" group by q_no')
+  let [rows] = await conn.query('select q_no, group_concat(m_no separator "<<><") as m_nos from fiveworks_aurora_db.`ksa_multipleChoice2` where subject="' + subject + '" and `answer` = "t" group by q_no')
   conn.release()
 
   res.status(200).send(rows)
@@ -23,11 +23,12 @@ router.get('/multipleChoiceList/:subject', async function(req, res, next) {
 
 router.get('/list/:subject', async (req, res, next) => {
   var subject = req.params.subject;
-  var sql = 'select ot.subject, ot.q_no, ot.question, ot.`comment`, group_concat(mul.m_no) as m_nos, group_concat(mul.choice) as choices from fiveworks_aurora_db.ksa_onlineTest2 as ot, fiveworks_aurora_db.ksa_multipleChoice2 as mul where ot.q_no = mul.q_no and'
+  var sql = 'select ot.subject, ot.q_no, ot.question, ot.`comment`, group_concat(mul.m_no separator "<<><") as m_nos, group_concat(mul.choice separator "<<><") as choices from fiveworks_aurora_db.ksa_onlineTest2 as ot, fiveworks_aurora_db.ksa_multipleChoice2 as mul where ot.q_no = mul.q_no and'
   sql += ' ot.subject = "' + subject + '" group by ot.q_no'
 
   let conn = await pool.getConnection(async _conn => _conn)
   let [rows] = await conn.query(sql)
+  console.log(rows);
   conn.release()
   // console.log(rows)
   res.status(200).send(rows)

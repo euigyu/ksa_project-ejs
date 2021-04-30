@@ -6,7 +6,7 @@ function login(obj) {
   const user = { id: $id.val(), pwd: $pwd.val() }
 
   $.ajax2({
-    url: `http://learnonline.click/api/auth/login`,
+    url: `http://localhost:3008/api/auth/login`,
     processData: false,
     contentType: "application/json",
     data: JSON.stringify({ user }),

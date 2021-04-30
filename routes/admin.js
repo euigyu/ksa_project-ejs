@@ -60,7 +60,7 @@ router.get('/onlineTest/:subject/testChoice', checkToken(), async function(req, 
   const moduleNames = await axios.get(`${config.dbIp}/module/list/${subject}`)
   const questions = await axios.get(`${config.dbIp}/onlineTest/list/${subject}`)
 
-  const ques = questions.data.map(question => ({...question, m_nos: question.m_nos.split(','), choices: question.choices.split(',')}))
+  const ques = questions.data.map(question => ({...question, m_nos: question.m_nos.split('<<><'), choices: question.choices.split('<<><')}))
   res.render('onlineTest/testInput', {
     modules: modules.data,
     modulenames: moduleNames.data,

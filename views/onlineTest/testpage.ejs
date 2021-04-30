@@ -11,7 +11,7 @@
                 <h4><%= i+1 %>. <b><%=questions[i].question%></b><h4>
                 <div class="combo" data-combo="<%=questions[i].q_no%>">
                 <% for (var j=0 ; j < questions[i].choices.length; j++ ) { %>
-                    <input type="radio" name="q_<%=questions[i].q_no%>" data-mnum="<%=questions[i].m_nos[j]%>" onClick=""> <%=questions[i].choices[j]%><br>
+                    <input type="radio" name="q_<%=questions[i].q_no%>" data-mnum="<%=questions[i].m_nos[j]%>" onClick=""><%=questions[i].choices[j]%></input><br>
                 <% } %>
                 </div>
             </div>
