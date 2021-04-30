@@ -89,7 +89,7 @@ function _excelDown(fileName, sheetName, sheetHtml) {
           }}
 
 function download(){
-  alert("start");
+  alert("실기평가 결과 다운로드");
   $.ajax2({
     url: `http://learnonline.click/api/board/result/down`,
     processData: false,
@@ -97,7 +97,6 @@ function download(){
     data: "",
     type: "POST",
     success: function (result) {
-        alert(result[0].name)
         var str ='<table id="excel" border="1" style="visibility:hidden"'+
          ' <thead>'+ 
           '  <tr>'+
