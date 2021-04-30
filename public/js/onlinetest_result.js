@@ -10,7 +10,7 @@ $('.register').bind('click', save);
 
 function save(){
   $.ajax2({
-    url: `http://localhost:3008/api/onlineTest/moduleName/${subject}`,
+    url: `http://learnonline.click/api/onlineTest/moduleName/${subject}`,
     processData: false,
     contentType: "application/json",
     type: "GET",
@@ -26,7 +26,7 @@ function save(){
         alert(data.subject)
         if(choice == "before"){
           $.ajax2({
-            url: `http://localhost:3008/before/onlineTest/${subject}/result`,
+            url: `http://learnonline.click/before/onlineTest/${subject}/result`,
             processData: false,
             contentType: "application/json",
             data: JSON.stringify( data ),
@@ -40,7 +40,7 @@ function save(){
         }
         if(choice == "after"){
           $.ajax2({
-            url: `http://localhost:3008/after/onlineTest/${subject}/result`,
+            url: `http://learnonline.click/after/onlineTest/${subject}/result`,
             processData: false,
             contentType: "application/json",
             data: JSON.stringify( data ),
@@ -72,7 +72,7 @@ function searchParam(key) {
 
 
 $.ajax2({
-  url: `http://localhost:3008/api/onlineTest/multipleChoiceList/${subject}`,
+  url: `http://learnonline.click/api/onlineTest/multipleChoiceList/${subject}`,
   processData: false,
   contentType: "application/json",
   type: "GET",

@@ -32,7 +32,7 @@ function addFiles(e) {
   // $(this).val("");
 
   $.ajax2({
-    url: "http://localhost:3008/api/file",
+    url: "http://learnonline.click/api/file",
     processData: false,
     contentType: false,
     enctype: "multipart/form-data",
@@ -86,15 +86,15 @@ function uploadFile() {
   }
 
   $.ajax2({
-    url: `http://localhost:3008/api/board`,
-    // url: `http://localhost:3008/api/board/${subject}`,
+    url: `http://learnonline.click/api/board`,
+    // url: `http://learnonline.click/api/board/${subject}`,
     processData: false,
     contentType: "application/json",
     data: JSON.stringify({ student, id }),
     type: "PUT",
     success: function (result) {
-      // location.href = `http://localhost:3008/board/${subject}`
-      location.href = `http://localhost:3008/board/${subject}`
+      // location.href = `http://learnonline.click/board/${subject}`
+      location.href = `http://learnonline.click/board/${subject}`
     },
   });
 }
