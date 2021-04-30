@@ -200,7 +200,7 @@ $('.register').on('click', function (e) {
     });
   })
   if (true) {
-    alert("문제 입력이 완료 되었습니다");
+    alert("문제 입력이 완료 되었습니다.");
     check_qno=0; 
     window.location.href = '/admin/onlineTest/'
   }

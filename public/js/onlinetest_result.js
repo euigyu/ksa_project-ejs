@@ -16,14 +16,14 @@ function save(){
     type: "GET",
     success: function (result1) {
         subject_kr = result1;
-        alert(subject_kr)
+        //alert(subject_kr)
         var data={
           subject : subject_kr,
           name : std_name,
           std_no : std_no,
           score : score
         };
-        alert(data.subject)
+        //alert(data.subject)
         if(choice == "before"){
           $.ajax2({
             url: `http://learnonline.click/before/onlineTest/${subject}/result`,

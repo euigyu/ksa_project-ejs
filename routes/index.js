@@ -47,7 +47,7 @@ router.post('/board/:subject/selectscore/result', function(req, res, next) {
   var subject = req.params.subject;
   var body = req.body;
   console.log(body.std_name);
-  db.query('SELECT * FROM fiveworks_aurora_db.`ksa_scoreInfo` where subject="'+subject+'"and name="'+body.std_name+'" and std_no="'+body.std_no+'"', (err, result) => {
+  db.query('SELECT * FROM fiveworks_aurora_db.`ksa_scoreInfo` where subject="'+body.subject+'"and name="'+body.std_name+'" and std_no="'+body.std_no+'"', (err, result) => {
     if(err){
      throw err;      
     }

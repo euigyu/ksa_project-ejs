@@ -121,16 +121,32 @@ router.post('/enterscore/:subject', async function(req, res, next) {
   console.log(array)
   console.log("11111111111")
   let conn = await pool.getConnection(async _conn => _conn)
-  for(var i = 0; i<array.length;i++){
-    console.log("input")
-    await conn.query('INSERT INTO fiveworks_aurora_db.`ksa_scoreInfo` (`subject`, `group`, `std_no`, `name`, `score`, `personal_cmt`, `team_cmt`) VALUES (?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE `group`=?, `score`=?, `personal_cmt`=?, `team_cmt`=?',
-    [subject, array[i].group, array[i].std_no, array[i].std_name, array[i].std_score, array[i].personal_comment,array[i].team_comment,array[i].group, array[i].std_score,array[i].personal_comment,array[i].team_comment])
-  }
+  //for(var i = 0; i<array.length;i++){
+    console.log(array.subject)
+    await conn.query('INSERT INTO fiveworks_aurora_db.`ksa_scoreInfo` (`subject`, `group`, `std_no`, `name`, `score`, `personal_cmt`, `team_cmt`) VALUES (?, ?, ?, ?, ?, ?, ?)',
+    [array.subject, array.group, array.std_no, array.std_name, array.std_score, array.personal_comment,array.team_comment])
+  //}
   conn.release()
   res.status(200).send("success");
 });
 
-//필기평가 성적 다운로드
+router.put('/enterscore/:subject', async function(req, res, next) { 
+  const array = req.body.arr;
+  const subject = req.params.subject
+  console.log(subject)
+  // const student = body.student
+  console.log(array)
+  console.log("11111111111")
+  let conn = await pool.getConnection(async _conn => _conn)
+  //for(var i = 0; i<array.length;i++){
+    console.log(array.score_id)
+    await conn.query('update fiveworks_aurora_db.`ksa_scoreInfo` set `group`=?, `std_no`=?, `name`=?, `score`=?, `personal_cmt`=?, `team_cmt`=? where `score_id`=?',
+    [array.group, array.std_no, array.std_name, array.std_score, array.personal_comment,array.team_comment,array.score_id])
+  //}
+  conn.release()
+  res.status(200).send("success");
+});
+//평가 성적 다운로드
 router.post('/result/down', async (req, res, next) => {
   // var subject = req.params.subject;
   // console.log(subject);

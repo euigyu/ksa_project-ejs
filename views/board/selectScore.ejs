@@ -18,43 +18,53 @@
 </body>
 
 <script>
+const subject = window.location.pathname.split("/")[2];
 $('.register').on('click', function (e) {
-    var post = 'POST METHOD CALL';
-    var data = {
-        std_name : $('.std_name').val(),
-        std_no : $('.std_no').val()
-    };
-    // Ajax POST Method TEST
-    $.ajax({
-        url: '/board/'+'<%=subject%>'+'/selectscore/result',
-        // dataType: 'json',
+    $.ajax2({
+        url: `http://learnonline.click/api/onlineTest/moduleName/${subject}`,
+        processData: false,
         contentType: "application/json",
-        type: 'POST',
-        data: JSON.stringify(data),
-        success: function(result) {
-           if (result) {
-            console.log(JSON.stringify(result[0].name));
-            alert(result[0.].name+" 수강생의 평가 조회 결과입니다.");
-            var addStaffText =
-            '<table border="1" style="width:100%"">'+
-            '<tbody>'+          
-            '<tr class="box">'+
-                '<td class="active col-md-1" style="width:20%"><strong>'+'<%=modulenames[0].module_kr%>'+'실기 평가 성적 조회 결과</strong></td>'+
-                '<td class="active col-md-11 content"style="width:80%">'+
-                '<br/><input readOnly style="width:20%" class="form-control group" type="text" value="'+result[0].group+'"/>'+
-                '<input readOnly style="width:20%" class="form-control std_no" type="text" value="'+result[0].std_no+'"/>'+
-                '<input disabled style="width:20%" class="form-control std_name" type="text" value="'+result[0].name+'"/>'+
-                '<input disabled style="width:20%" class="form-control std_score" type="text" value="'+result[0].score+'"/>'+
-                '<textarea disabled style="width:80%" class="form-control personal_comment" type="textarea" placeholder="개인 과제 평가 코멘트">'+result[0].personal_cmt+'</textarea>'+
-                '<textarea disabled style="width:80%" class="form-control team_comment" type="textarea" placeholder="팀 과제 평가 코멘트">'+result[0].team_cmt+'</textarea><br/>'+
-                '</td>'+
-            '</tr>'+
-            '</tbody>'+
-            '</table>';
-        var trHtml = $('.field'); 
-        trHtml.append(addStaffText);
-           }
+        type: "GET",
+        success: function (result1) {
+            var post = 'POST METHOD CALL';
+            var data = {
+                subject : result1,
+                std_name : $('.std_name').val(),
+                std_no : $('.std_no').val()
+            };
+            // Ajax POST Method TEST
+            $.ajax({
+                url: '/board/'+'<%=subject%>'+'/selectscore/result',
+                // dataType: 'json',
+                contentType: "application/json",
+                type: 'POST',
+                data: JSON.stringify(data),
+                success: function(result) {
+                if (result) {
+                    console.log(JSON.stringify(result[0].name));
+                    alert(result[0].name+" 수강생의 평가 조회 결과입니다.");
+                    var addStaffText =
+                    '<table border="1" style="width:100%"">'+
+                    '<tbody>'+          
+                    '<tr class="box">'+
+                        '<td class="active col-md-1" style="width:20%"><strong>'+'<%=modulenames[0].module_kr%>'+'실기 평가 성적 조회 결과</strong></td>'+
+                        '<td class="active col-md-11 content"style="width:80%">'+
+                        '<br/><input readOnly style="width:20%" class="form-control group" type="text" value="'+result[0].group+'"/>'+
+                        '<input readOnly style="width:20%" class="form-control std_no" type="text" value="'+result[0].std_no+'"/>'+
+                        '<input disabled style="width:20%" class="form-control std_name" type="text" value="'+result[0].name+'"/>'+
+                        '<input disabled style="width:20%" class="form-control std_score" type="text" value="'+result[0].score+'"/>'+
+                        '<textarea disabled style="width:80%" class="form-control personal_comment" type="textarea" placeholder="개인 과제 평가 코멘트">'+result[0].personal_cmt+'</textarea>'+
+                        '<textarea disabled style="width:80%" class="form-control team_comment" type="textarea" placeholder="팀 과제 평가 코멘트">'+result[0].team_cmt+'</textarea><br/>'+
+                        '</td>'+
+                    '</tr>'+
+                    '</tbody>'+
+                    '</table>';
+                var trHtml = $('.field'); 
+                trHtml.append(addStaffText);
+                }
+                }
+            });
         }
     });
-  });
+});
 </script>
